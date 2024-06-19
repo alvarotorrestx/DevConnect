@@ -33,3 +33,17 @@ DevConnect is an open-source platform designed to connect developers from around
 ### Installation
 
 To be added...
+
+## Contributing
+
+We welcome contributions from the community! If you'd like to contribute, please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch for your feature or bugfix.
+3. Make your changes and commit them with clear and descriptive messages.
+4. Push your changes to your forked repository.
+5. Create a pull request to the main repository.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/alvarotorrestx/DevConnect?tab=MIT-1-ov-file#readme) file for details.
