@@ -39,7 +39,7 @@ __Forking the Project__
 3. Clone your forked repository to your local machine:
 
 ```bash
-git clone https://github.com/alvarotorrestx/DevConnect.git
+git clone https://github.com/yourgithubprofile/DevConnect.git
 cd DevConnect
 ```
 
@@ -91,6 +91,8 @@ cd frontend
 npm run dev
 ```
 
+The frontend server will run on `http://localhost:5173`.
+
 3. In the second terminal, navigate to the backend directory and start the server:
 
 ```bash
@@ -98,7 +100,7 @@ cd backend
 npm start
 ```
 
-4. Open your browser and go to `http://localhost:3000` to see the application running.
+The backend server will run on `http://localhost:3000`.
 
 ## Contributing
 
