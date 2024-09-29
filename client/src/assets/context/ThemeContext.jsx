@@ -4,24 +4,24 @@ const ThemeContext = createContext(null)
 
 export const ThemeProvider = (props) => {
 
-    const [themeMode, setThemeMode] = useState(true)
+    const [darkMode, setDarkMode] = useState(false)
 
-    const handleThemeMode = () => {
-        setThemeMode(prevValue => !prevValue)
+    const handleDarkMode = () => {
+        setDarkMode(prevValue => !prevValue)
 
-        if (!themeMode) {
-            localStorage.setItem('themeMode', true)
+        if (!darkMode) {
+            localStorage.setItem('darkMode', true)
         } else {
-            localStorage.setItem('themeMode', false)
+            localStorage.setItem('darkMode', false)
         }
     }
 
     useEffect(() => {
         if (localStorage) {
-            if (JSON.parse(localStorage.getItem('themeMode')) === true) {
-                setThemeMode(true)
-            } else if (JSON.parse(localStorage.getItem('themeMode')) === false) {
-                setThemeMode(false)
+            if (JSON.parse(localStorage.getItem('darkMode')) === true) {
+                setDarkMode(true)
+            } else if (JSON.parse(localStorage.getItem('darkMode')) === false) {
+                setDarkMode(false)
             }
         }
     }, [])
@@ -29,9 +29,9 @@ export const ThemeProvider = (props) => {
     return (
         <ThemeContext.Provider value={
             {
-                themeMode,
+                darkMode,
                 actions: {
-                    toggleTheme: handleThemeMode
+                    toggleTheme: handleDarkMode
                 }
             }
         }>
