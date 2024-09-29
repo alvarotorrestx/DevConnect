@@ -1,7 +1,7 @@
 {
-  "name": "backend",
+  "name": "server",
   "version": "1.0.0",
-  "description": "Backend for DevConnect",
+  "description": "Server for DevConnect",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
