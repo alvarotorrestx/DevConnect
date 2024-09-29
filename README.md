@@ -16,8 +16,8 @@ DevConnect is an open-source platform designed to connect developers from around
 
 ## Tech Stack
 
-- **Frontend**: Vite ~ React, Tailwind CSS for styling, Redux or Context API for state management.
-- **Backend**: Node.js with Express.js.
+- **Client**: Vite ~ React, Tailwind CSS for styling, Redux or Context API for state management.
+- **Server**: Node.js with Express.js.
 - **Database**: MongoDB with Mongoose.
 - **Authentication**: JWT for token-based authentication.
 - **Hosting**: Vercel or Netlify deployment.
@@ -43,12 +43,12 @@ git clone https://github.com/yourgithubprofile/DevConnect.git
 cd DevConnect
 ```
 
-__Installation for Frontend__
+__Installation for Client__
 
-1. Navigate to the frontend directory:
+1. Navigate to the client directory:
 
 ```bash
-cd frontend
+cd client
 ```
 
 2. Install the required dependencies:
@@ -57,14 +57,14 @@ cd frontend
 npm install
 ```
 
-3. Create a `.env` file in the `frontend` directory and add any necessary environment variables.
+3. Create a `.env` file in the `client` directory and add any necessary environment variables.
 
-__Installation for Backend__
+__Installation for Server__
 
-1. Navigate to the backend directory:
+1. Navigate to the server directory:
 
 ```bash
-cd ../backend
+cd ../server
 ```
 
 2. Install the required dependencies:
@@ -73,7 +73,7 @@ cd ../backend
 npm install
 ```
 
-3. Create a `.env` file in the `backend` directory and add the following environment variables:
+3. Create a `.env` file in the `server` directory and add the following environment variables:
 
 ```ENV
 MONGO_URI=your-mongodb-uri
@@ -84,23 +84,23 @@ __Running the Application__
 
 1. Open two terminal windows or tabs.
 
-2. In the first terminal, navigate to the frontend directory and start the development server:
+2. In the first terminal, navigate to the client directory and start the development server:
 
 ```bash
-cd frontend
+cd client
 npm run dev
 ```
 
-The frontend server will run on `http://localhost:5173`.
+The client server will run on `http://localhost:5173`.
 
-3. In the second terminal, navigate to the backend directory and start the server:
+3. In the second terminal, navigate to the server directory and start the server:
 
 ```bash
-cd backend
+cd server
 npm start
 ```
 
-The backend server will run on `http://localhost:3000`.
+The server will run on `http://localhost:3000`.
 
 ## Contributing
 
