@@ -1,6 +1,6 @@
 // Icon Imports
-import { IoIosHome } from "react-icons/io";
-import { TbLogs } from "react-icons/tb";
+import { IoMdHome } from "react-icons/io";
+import { HiNewspaper } from "react-icons/hi2";
 import { IoMdPeople } from "react-icons/io";
 import { GiSuitcase } from "react-icons/gi";
 import { FaUserCircle } from "react-icons/fa";
@@ -33,8 +33,8 @@ const NavBar = () => {
                     <ul
                         tabIndex={0}
                         className="menu menu-sm dropdown-content bg-base-200 rounded-box z-[1] mt-3 p-2 shadow w-[95%]">
-                        <li><a className='py-4 flex items-center'><span className="text-2xl"><IoIosHome /></span>Home</a></li>
-                        <li><a className='py-4 flex items-center'><span className="text-2xl"><TbLogs /></span>Blogs</a></li>
+                        <li><a className='py-4 flex items-center'><span className="text-2xl"><IoMdHome /></span>Home</a></li>
+                        <li><a className='py-4 flex items-center'><span className="text-2xl"><HiNewspaper /></span>Blogs</a></li>
                         <li><a className='py-4 flex items-center'><span className="text-2xl"><IoMdPeople /></span>Network</a></li>
                         <li><a className='py-4 flex items-center'><span className="text-2xl"><GiSuitcase /></span>Jobs</a></li>
                     </ul>
@@ -47,8 +47,8 @@ const NavBar = () => {
             {/* Desktop Nav */}
             <div className="navbar-center hidden lg:flex w-[unset] justify-center">
                 <ul className="menu menu-horizontal px-1">
-                    <li><a className="flex items-center"><span className="text-2xl"><IoIosHome /></span>Home</a></li>
-                    <li><a className="flex items-center"><span className="text-2xl"><TbLogs /></span>Blogs</a></li>
+                    <li><a className="flex items-center"><span className="text-2xl"><IoMdHome /></span>Home</a></li>
+                    <li><a className="flex items-center"><span className="text-2xl"><HiNewspaper /></span>Blogs</a></li>
                     <li><a className="flex items-center"><span className="text-2xl"><IoMdPeople /></span>Network</a></li>
                     <li><a className="flex items-center"><span className="text-2xl"><GiSuitcase /></span>Jobs</a></li>
                 </ul>
