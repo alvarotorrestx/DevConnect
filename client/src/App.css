@@ -12,6 +12,13 @@
   font-style: normal;
 } */
 
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 .roboto-thin {
   font-family: "Roboto", sans-serif;

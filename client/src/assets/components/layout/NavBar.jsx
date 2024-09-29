@@ -9,7 +9,7 @@ import { RiLogoutBoxLine } from "react-icons/ri";
 
 const NavBar = () => {
     return (
-        <div className="navbar bg-base-100 w-[95%] mx-auto mt-4 rounded-full shadow-md grid grid-cols-2 lg:grid-cols-3 auto-cols-max relative">
+        <div className="navbar bg-base-100 w-[95%] mx-auto rounded-full shadow-md grid grid-cols-2 lg:grid-cols-3 auto-cols-max relative">
 
             {/* Nav start */}
             <div className="navbar-start w-[unset]">
