@@ -1,3 +1,5 @@
+import { useContext } from "react";
+
 // Icon Imports
 import { IoMdHome } from "react-icons/io";
 import { HiNewspaper } from "react-icons/hi2";
@@ -7,7 +9,13 @@ import { FaUserCircle } from "react-icons/fa";
 import { IoSettingsSharp } from "react-icons/io5";
 import { RiLogoutBoxLine } from "react-icons/ri";
 
+// Context Imports
+import ThemeContext from "../../context/ThemeContext";
+
 const NavBar = () => {
+
+    const { darkMode, actions } = useContext(ThemeContext)
+
     return (
         <div className="navbar bg-base-100 w-[95%] mx-auto rounded-full shadow-md grid grid-cols-2 lg:grid-cols-3 auto-cols-max relative">
 
@@ -122,7 +130,14 @@ const NavBar = () => {
                                     <path
                                         d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4" />
                                 </svg>
-                                <input type="checkbox" value="synthwave" className="toggle theme-controller rounded-full" />
+                                {/* Theme Switcher */}
+                                <input
+                                    type="checkbox"
+                                    checked={darkMode ? true : false}
+                                    value="synthwave"
+                                    className="toggle theme-controller rounded-full"
+                                    onChange={() => actions.toggleTheme()}
+                                />
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="20"
