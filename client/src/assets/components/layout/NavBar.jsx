@@ -17,10 +17,10 @@ const NavBar = () => {
     const { darkMode, actions } = useContext(ThemeContext)
 
     return (
-        <div className="navbar bg-base-100 w-[95%] mx-auto rounded-full shadow-md grid grid-cols-2 lg:grid-cols-3 auto-cols-max relative">
+        <div className="navbar bg-base-100 w-[95%] mx-auto rounded-full shadow-md grid grid-cols-2 lg:grid-cols-4 auto-cols-max relative">
 
             {/* Nav start */}
-            <div className="navbar-start w-[unset]">
+            <div className="navbar-start w-[unset] lg:col-span-1">
 
                 {/* Mobile Nav */}
                 <div className="dropdown static">
@@ -53,7 +53,7 @@ const NavBar = () => {
             </div>
 
             {/* Desktop Nav */}
-            <div className="navbar-center hidden lg:flex w-[unset] justify-center">
+            <div className="navbar-center hidden lg:flex w-[unset] justify-center lg:col-span-2">
                 <ul className="menu menu-horizontal px-1">
                     <li><a className="flex items-center"><span className="text-2xl"><IoMdHome /></span>Home</a></li>
                     <li><a className="flex items-center"><span className="text-2xl"><HiNewspaper /></span>Blogs</a></li>
@@ -63,7 +63,7 @@ const NavBar = () => {
             </div>
 
             {/* Nav End */}
-            <div className="navbar-end flex-none md:gap-2 w-[unset]">
+            <div className="navbar-end flex-none md:gap-2 w-[unset] lg:col-span-1">
 
                 {/* Search Icon */}
                 <button className="btn btn-ghost btn-circle">
