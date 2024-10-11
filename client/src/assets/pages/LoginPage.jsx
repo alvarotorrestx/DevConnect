@@ -8,14 +8,10 @@ import { useNavigate } from 'react-router-dom'
 
 function LoginPage() {
     const { darkMode, actions } = useContext(ThemeContext)
-    const navigate=useNavigate()
-    const handleSubmit=(event)=>{
-        event.preventDefault()
-        navigate('/login')
-    }
+    
   return (
     <div className=' w-full h-full flex justify-center items-center'>
-        <form onSubmit={(event)=> handleSubmit(event)} className=' sm:h-auto w-full sm:w-[30%] mt-40'>
+        <form className=' sm:h-auto w-full sm:w-[30%] mt-40'>
             <div>
                <h1 className=' text-stone-600 mx-auto text-xl font-inter'>Login Your Account</h1>
                <div className=' flex flex-col justify-start gap-2 relative mt-2'>

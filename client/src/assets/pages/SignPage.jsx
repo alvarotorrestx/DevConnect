@@ -4,7 +4,7 @@ import { GiMailbox } from 'react-icons/gi'
 import Input from '../components/subcomponents/Input'
 import { useNavigate } from 'react-router-dom'
 
-function SignPage() {
+function SignUpPage() {
     const navigate=useNavigate()
     const handleSubmit=(event)=>{
         event.preventDefault()
@@ -39,4 +39,4 @@ function SignPage() {
   )
 }
 
-export default SignPage
+export default SignUpPage
