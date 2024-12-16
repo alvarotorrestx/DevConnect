@@ -14,7 +14,7 @@ function App() {
   return (
     <main className='w-full min-h-screen' data-theme={darkMode ? "dim" : "nord"}>
       <div className='max-w-[2000px] mx-auto min-h-screen px-2 py-4 bg-base-200'>
-        <NavBar />
+        {/* <NavBar /> */}
       </div>
     </main>
   )
