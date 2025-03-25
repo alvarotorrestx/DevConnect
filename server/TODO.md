@@ -8,8 +8,8 @@ This file tracks the backend development of DevConnect, with user-focused featur
 
 - [x] Initialize Express server  
 - [x] Setup base `/` route with welcome message  
-- [ ] Setup environment variables using `.env`  
-- [ ] Connect to MongoDB using Mongoose  
+- [x] Setup environment variables using `.env`  
+- [x] Connect to MongoDB using Mongoose  
 - [x] Create basic folder structure (models, routes, controllers, etc.)
 
 ---
