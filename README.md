@@ -112,6 +112,8 @@ We welcome contributions from the community! If you'd like to contribute, please
 4. Push your changes to your forked repository.
 5. Create a pull request to the main repository.
 
+> 🔀 **Note**: All changes must go through the `dev` branch. The `main` branch is protected and reserved for stable production-ready code.
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](https://github.com/alvarotorrestx/DevConnect?tab=MIT-1-ov-file#readme) file for details.
