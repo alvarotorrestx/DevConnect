@@ -6,9 +6,13 @@ const port = process.env.PORT || 3000;
 
 connectDB();
 
-app.get('/', (req, res) => {
-    res.send('Welcome to DevConnect');
-});
+// Routes
+const userRoutes = require('./routes/userRoutes');
+
+// Middleware
+app.use(express.json());
+
+app.use('/api/users', userRoutes);
 
 app.listen(port, () => {
     console.log(`Server running on port: ${port}`);

@@ -18,7 +18,7 @@ This file tracks the backend development of DevConnect, with user-focused featur
 
 **Persona: New developer signing up to join the platform**
 
-- [ ] User should be able to register with email, username, first name, last name, and password  
+- [x] User should be able to register with email, username, first name, last name, and password  
 - [ ] User passwords should be securely hashed using `bcrypt`  
 - [ ] User should be able to log in and receive a JWT token  
 - [ ] Protected routes should verify JWT tokens using middleware  
