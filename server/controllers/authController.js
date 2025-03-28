@@ -1,5 +1,7 @@
+require('dotenv').config();
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const loginUser = async (req, res) => {
     try {
@@ -23,13 +25,57 @@ const loginUser = async (req, res) => {
         const pwdMatch = await bcrypt.compare(password, foundUser.password);
         if (!pwdMatch) return res.status(401).json({ message: 'Unauthorized: Invalid credentials.' });
 
-        // Remove password before sending back
-        const { password: _, ...userData } = foundUser.toObject();
+        // If successful login, store access token
+        const accessToken = jwt.sign(
+            {
+                id: foundUser._id,
+                username: foundUser.username,
+                email: foundUser.email,
+                role: foundUser.role
+            },
+            process.env.ACCESS_TOKEN_SECRET,
+            { expiresIn: '15m' }
+        );
 
-        res.status(200).json({ message: `Welcome back, ${userData.firstName}!`, user: userData });
+        // If successful login, provide refresh token
+        const refreshToken = jwt.sign(
+            {
+                id: foundUser._id,
+                username: foundUser.username,
+                email: foundUser.email,
+                role: foundUser.role
+            },
+            process.env.REFRESH_TOKEN_SECRET,
+            { expiresIn: '15d' }
+        );
+
+        // Save refreshToken with the current user
+        foundUser.refreshToken = refreshToken;
+        await foundUser.save();
+
+        // Remove password before sending back
+        const userData = foundUser.toObject();
+        delete userData.password;
+
+        res.cookie('jwt', refreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'Strict',
+            maxAge: 15 * 24 * 60 * 60 * 1000
+        });
+        res.json({
+            message: `Welcome back, ${userData.firstName}!`,
+            user: {
+                id: userData._id,
+                username: userData.username,
+                email: userData.email,
+                role: userData.role,
+            },
+            accessToken
+        });
     }
     catch (err) {
-        res.status(401);
+        res.status(500).json({ message: "Internal server error." });
     }
 }
 
