@@ -7,12 +7,14 @@ const port = process.env.PORT || 3000;
 connectDB();
 
 // Routes
-const userRoutes = require('./routes/userRoutes');
+const registerRoutes = require('./routes/registerRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 // Middleware
 app.use(express.json());
 
-app.use('/api/users', userRoutes);
+app.use('/register', registerRoutes);
+app.use('/auth', authRoutes);
 
 app.listen(port, () => {
     console.log(`Server running on port: ${port}`);
