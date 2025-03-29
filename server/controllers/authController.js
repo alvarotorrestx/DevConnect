@@ -36,7 +36,7 @@ const loginUser = async (req, res) => {
                 role: foundUser.role
             },
             process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: '1m' }
+            { expiresIn: '15m' }
         );
 
         // If successful login, provide refresh token
