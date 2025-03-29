@@ -29,18 +29,22 @@ const loginUser = async (req, res) => {
         const accessToken = jwt.sign(
             {
                 id: foundUser._id,
+                firstName: foundUser.firstName,
+                lastName: foundUser.lastName,
                 username: foundUser.username,
                 email: foundUser.email,
                 role: foundUser.role
             },
             process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: '15m' }
+            { expiresIn: '1m' }
         );
 
         // If successful login, provide refresh token
         const refreshToken = jwt.sign(
             {
                 id: foundUser._id,
+                firstName: foundUser.firstName,
+                lastName: foundUser.lastName,
                 username: foundUser.username,
                 email: foundUser.email,
                 role: foundUser.role
@@ -67,6 +71,8 @@ const loginUser = async (req, res) => {
             message: `Welcome back, ${userData.firstName}!`,
             user: {
                 id: userData._id,
+                firstName: userData.firstName,
+                lastName: userData.lastName,
                 username: userData.username,
                 email: userData.email,
                 role: userData.role,
@@ -75,6 +81,7 @@ const loginUser = async (req, res) => {
         });
     }
     catch (err) {
+        console.error('Error logging in user: ', err);
         res.status(500).json({ message: "Internal server error." });
     }
 }
