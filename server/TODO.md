@@ -20,9 +20,9 @@ This file tracks the backend development of DevConnect, with user-focused featur
 
 - [x] User should be able to register with email, username, first name, last name, and password  
 - [x] User passwords should be securely hashed using `bcrypt`  
-- [ ] User should be able to log in and receive a JWT token  
-- [ ] Protected routes should verify JWT tokens using middleware  
-- [ ] User should be able to stay logged in with token stored in cookies or headers  
+- [x] User should be able to log in and receive a JWT token  
+- [x] Protected routes should verify JWT tokens using middleware  
+- [x] User should be able to stay logged in with token stored in cookies or headers  
 
 ---
 

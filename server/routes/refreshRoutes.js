@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { loginUser } = require('../controllers/authController');
+const { handleRefreshToken } = require('../controllers/refreshTokenController');
 
 router.route('/')
-    .post(loginUser)
+    .get(handleRefreshToken)
 
 module.exports = router;
