@@ -12,6 +12,7 @@ connectDB();
 const registerRoutes = require('./routes/registerRoutes');
 const authRoutes = require('./routes/authRoutes');
 const refreshRoutes = require('./routes/refreshRoutes');
+const logoutRoutes = require('./routes/logoutRoutes');
 
 // Middleware
 app.use(express.json());
@@ -24,6 +25,7 @@ app.get('/auth/verify', verifyJWT, (req, res) => {
     res.json({ message: `Hello ${req.user.firstName}, you have successfully logged on.` });
 })
 app.use('/auth/refresh', refreshRoutes);
+app.use('/auth/logout', logoutRoutes);
 
 app.listen(port, () => {
     console.log(`Server running on port: ${port}`);
