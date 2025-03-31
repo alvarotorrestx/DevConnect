@@ -401,7 +401,8 @@ const Register = () => {
                                         !validEmail ||
                                         !formData.password ||
                                         !formData.passwordMatch ||
-                                        !validMatchingPassword
+                                        !validMatchingPassword ||
+                                        buttonStatus === 'Loading...'
                                     }
                                     className="btn btn-primary">{buttonStatus}</button>
                                 <label className="label mt-2">

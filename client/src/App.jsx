@@ -9,6 +9,7 @@ import NavBar from './assets/components/layout/NavBar'
 import ThemeContext from './assets/context/ThemeContext';
 import Register from './assets/components/subcomponents/Register';
 import Login from './assets/components/subcomponents/Login';
+import Dashboard from './assets/components/Dashboard';
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
           <Route path='/' element={<Register />} />
           <Route path='/register' element={<Register />} />
           <Route path='/login' element={<Login />} />
+          <Route path='/dashboard' element={<Dashboard />} />
         </Routes>
       </div>
     </main>

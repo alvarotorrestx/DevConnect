@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { IoMdEyeOff, IoMdEye } from 'react-icons/io'
 
@@ -7,6 +7,8 @@ import { IoMdEyeOff, IoMdEye } from 'react-icons/io'
 const LOGIN_URL = 'http://localhost:5000/auth';
 
 const Login = () => {
+    
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         login: '',
@@ -49,7 +51,8 @@ const Login = () => {
             });
 
             setSuccess(true);
-            console.log(response.data.accessToken);
+
+            // navigate('/dashboard');
 
         }
         catch (err) {
@@ -91,7 +94,7 @@ const Login = () => {
                                     <h2 className="text-xl font-bold">{formData.login} successfully logged in. ✅</h2>
                                     <p className="text-md mt-1">Welcome back to DevConnect!</p>
                                     <p className="text-md mt-1">You’re all set to start connecting with developers.</p>
-                                    <p className="text-md mt-1"><Link to="/login" className="link link-primary">
+                                    <p className="text-md mt-1"><Link to="/dashboard" className="link link-primary">
                                         Go to Dashboard
                                     </Link></p>
                                 </div>
@@ -172,7 +175,7 @@ const Login = () => {
                             <div className="form-control mt-4">
                                 <label className="fieldset-label flex justify-start items-center">
                                     <input type="checkbox" defaultChecked className="checkbox checkbox-sm checkbox-primary" />
-                                    <span className='ml-2 text-sm'>Remember me</span>
+                                    <span className='ml-2 text-sm'>Keep me logged in for 15 days</span>
                                 </label>
                             </div>
                             {/* End Options Fields */}
@@ -181,7 +184,7 @@ const Login = () => {
                             {/* Login Button */}
                             <div className="form-control mt-6">
                                 <button
-                                    className="btn btn-primary">{buttonStatus}</button>
+                                    className="btn btn-primary" disabled={buttonStatus === 'Loading...'}>{buttonStatus}</button>
                                 <label className="label mt-2">
                                     <Link to="/register" className="label-text-alt link link-hover">Not a member yet? Register here!</Link>
                                 </label>
