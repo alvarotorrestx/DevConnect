@@ -142,7 +142,7 @@ const Register = () => {
     };
 
     return (
-        <div className="hero bg-base-200 min-h-[calc(100vh-48px)]">
+        <div className="hero bg-base-200 min-h-[calc(100vh-48px)] overflow-hidden">
             <div className="hero-content w-full max-w-[725px] lg:max-w-[1000px] flex-col lg:flex-row justify-around">
                 <div className="text-center lg:text-left">
                     <h1 className="text-5xl font-bold">DevConnect</h1>
@@ -150,16 +150,16 @@ const Register = () => {
                         The Platform for Developers to Connect and Grow.
                     </p>
                 </div>
-                <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl mt-4 lg:mt-0">
+                <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-md mt-4 lg:mt-0">
                     {success ?
                         <div className="card-body w-full mx-auto animate-fade">
-                            <div className="flex items-center space-x-3">
+                            <div className="flex items-center space-x-3 flex-col lg:flex-row">
                                 <div className="valid">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
                                 </div>
-                                <div>
+                                <div className='mt-4 lg:mt-0'>
                                     <h2 className="text-xl font-bold">Boom! Account created. ✅</h2>
                                     <p className="text-md mt-1">Welcome to DevConnect, {formData.firstName}.</p>
                                     <p className="text-md mt-1">You’re all set to start connecting with developers.</p>
@@ -173,7 +173,7 @@ const Register = () => {
                         :
                         <form className="card-body" onSubmit={handleRegister}>
 
-                            <div className={errMsg ? "alert alert-error" : "offscreen"} tabIndex="-1" ref={errRef} aria-live='assertive'>
+                            <div className={errMsg ? "alert alert-error animate-fade" : "offscreen"} tabIndex="-1" ref={errRef} aria-live='assertive'>
                                 <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                                 <span>{errMsg}</span>
                             </div>
@@ -207,7 +207,7 @@ const Register = () => {
                                 />
                             </div>
 
-                            <div className={firstnameFocus && formData.firstName && !validFirstName ? "alert alert-warning my-2" : "offscreen"} id="firstnamenote">
+                            <div className={firstnameFocus && formData.firstName && !validFirstName ? "alert alert-warning my-2 animate-fade" : "offscreen"} id="firstnamenote">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
                                 <span>2 to 50 characters.<br />
                                     Letters, spaces, and hyphens (-) allowed.</span>
@@ -237,7 +237,7 @@ const Register = () => {
                                 />
                             </div>
 
-                            <div className={lastnameFocus && formData.lastName && !validLastName ? "alert alert-warning my-2" : "offscreen"} id="lastnamenote">
+                            <div className={lastnameFocus && formData.lastName && !validLastName ? "alert alert-warning my-2 animate-fade" : "offscreen"} id="lastnamenote">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
                                 <span>2 to 50 characters.<br />
                                     Letters, spaces, and hyphens (-) allowed.</span>
@@ -268,7 +268,7 @@ const Register = () => {
                                 />
                             </div>
 
-                            <div className={usernameFocus && formData.username && !validUsername ? "alert alert-warning my-2" : "offscreen"} id="usernamenote">
+                            <div className={usernameFocus && formData.username && !validUsername ? "alert alert-warning my-2 animate-fade" : "offscreen"} id="usernamenote">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
                                 <span>5 to 30 characters.<br />
                                     Letters, numbers, and hyphens (-) allowed.<br />
@@ -300,7 +300,7 @@ const Register = () => {
                                 />
                             </div>
 
-                            <div className={emailFocus && formData.email && !validEmail ? "alert alert-warning my-2" : "offscreen"} id="emailnote">
+                            <div className={emailFocus && formData.email && !validEmail ? "alert alert-warning my-2 animate-fade" : "offscreen"} id="emailnote">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
                                 <span>Email must be valid.<br />
                                     e.g. bwayne@wayneenterprises.com
@@ -341,7 +341,7 @@ const Register = () => {
                                 </div>
                             </div>
 
-                            <div className={passwordFocus && formData.password && !validPassword ? "alert alert-warning my-2" : "offscreen"} id="passwordnote">
+                            <div className={passwordFocus && formData.password && !validPassword ? "alert alert-warning my-2 animate-fade" : "offscreen"} id="passwordnote">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
                                 <span>8 to 24 characters.<br />
                                     Must include:<br />
@@ -386,7 +386,7 @@ const Register = () => {
                                 </div>
                             </div>
 
-                            <div className={matchingPasswordFocus && !validMatchingPassword ? "alert alert-warning my-2" : "offscreen"} id="matchingpasswordnote">
+                            <div className={matchingPasswordFocus && !validMatchingPassword ? "alert alert-warning my-2 animate-fade" : "offscreen"} id="matchingpasswordnote">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
                                 <span>Must match the first password entry.</span>
                             </div>
