@@ -142,15 +142,15 @@ const Register = () => {
     };
 
     return (
-        <div className="hero bg-base-200 my-20">
-            <div className="hero-content w-full max-w-[725px] lg:max-w-[1000px] flex-col lg:flex-row">
+        <div className="hero bg-base-200 min-h-[calc(100vh-48px)]">
+            <div className="hero-content w-full max-w-[725px] lg:max-w-[1000px] flex-col lg:flex-row justify-around">
                 <div className="text-center lg:text-left">
                     <h1 className="text-5xl font-bold">DevConnect</h1>
                     <p className="py-6 lg:mr-10">
                         The Platform for Developers to Connect and Grow.
                     </p>
                 </div>
-                <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
+                <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl mt-4 lg:mt-0">
                     {success ?
                         <div className="card-body w-full mx-auto animate-fade">
                             <div className="flex items-center space-x-3">
