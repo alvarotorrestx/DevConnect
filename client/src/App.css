@@ -51,3 +51,20 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "Roboto", sans-serif;
   font-weight: 900;
 }
+
+.offscreen {
+  position: absolute;
+  left: -9999px;
+}
+
+.hide {
+  display: none;
+}
+
+.invalid {
+  color: red;
+}
+
+.valid {
+  color: rgb(12, 166, 233);
+}
