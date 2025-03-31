@@ -57,7 +57,6 @@ const Register = () => {
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState(false);
 
-    // Temporary button status update during testing
     const [buttonStatus, setButtonStatus] = useState('Sign Up');
 
     useEffect(() => {
@@ -114,6 +113,7 @@ const Register = () => {
 
             if (!v1 || !v2 || !v3 || !v4 || !v5) {
                 setErrMsg('Invalid Entry');
+                setButtonStatus('Sign Up');
                 return;
             }
 
@@ -412,7 +412,7 @@ const Register = () => {
                     }
                 </div>
             </div>
-        </div >
+        </div>
     )
 }
 
