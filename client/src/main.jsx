@@ -5,12 +5,15 @@ import App from './App.jsx'
 
 // Context imports
 import { ThemeProvider } from './assets/context/ThemeContext'
+import { AuthProvider } from './assets/context/AuthContext.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ThemeProvider>
       <BrowserRouter>
-        <App />
+        <AuthProvider>
+          <App />
+        </AuthProvider>
       </BrowserRouter>
     </ThemeProvider>
   </React.StrictMode>,

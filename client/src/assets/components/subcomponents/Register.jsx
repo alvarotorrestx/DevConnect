@@ -26,27 +26,21 @@ const Register = () => {
     const firstNameRef = useRef();
     const errRef = useRef();
 
-    const [firstName, setFirstName] = useState('');
     const [validFirstName, setValidFirstName] = useState(false);
     const [firstnameFocus, setFirstNameFocus] = useState(false);
 
-    const [lastName, setLastName] = useState('');
     const [validLastName, setValidLastName] = useState(false);
     const [lastnameFocus, setLastNameFocus] = useState(false);
 
-    const [username, setUsername] = useState('');
     const [validUsername, setValidUsername] = useState(false);
     const [usernameFocus, setUsernameFocus] = useState(false);
 
-    const [email, setEmail] = useState('');
     const [validEmail, setValidEmail] = useState(false);
     const [emailFocus, setEmailFocus] = useState(false);
 
-    const [password, setPassword] = useState('');
     const [validPassword, setValidPassword] = useState(false);
     const [passwordFocus, setPasswordFocus] = useState(false);
 
-    const [matchingPassword, setMatchingPassword] = useState('');
     const [validMatchingPassword, setValidMatchingPassword] = useState(false);
     const [matchingPasswordFocus, setMatchingPasswordFocus] = useState(false);
 
@@ -89,7 +83,7 @@ const Register = () => {
 
     useEffect(() => {
         setErrMsg('')
-    }, [firstName, lastName, email, password, matchingPassword]);
+    }, [formData.firstName, formData.lastName, formData.email, formData.password, formData.matchingPassword]);
 
 
     const handleChange = (e) => {
@@ -129,15 +123,13 @@ const Register = () => {
             // If no error response
             if (!err?.response) {
                 setErrMsg('No Server Response');
-                errRef.current.focus();
-            } else if (err.response?.status === 409) { // Username or email is taken
+            } else if (err.response?.status === 409 || err.response?.status === 400) { // Username or email is taken / All fields required
                 setErrMsg(`${JSON.stringify(err.response.data.message).slice(1, -1)}`);
-                errRef.current.focus();
             } else {
                 setErrMsg('Registration Failed');
-                errRef.current.focus();
             }
-
+            
+            errRef.current.focus();
             setButtonStatus('Sign Up');
         }
     };

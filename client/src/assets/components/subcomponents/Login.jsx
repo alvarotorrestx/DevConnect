@@ -1,13 +1,16 @@
-import React, { useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { IoMdEyeOff, IoMdEye } from 'react-icons/io'
+import AuthContext from '../../context/AuthContext';
 
 // Login url for post
 const LOGIN_URL = 'http://localhost:5000/auth';
 
 const Login = () => {
-    
+
+    const { setAuth } = useContext(AuthContext)
+
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
@@ -50,24 +53,23 @@ const Login = () => {
                 headers: { 'Content-Type': 'application/json' },
             });
 
+            const accessToken = response?.data?.accessToken;
+            const role = response?.data?.role;
+
+            setAuth({ login, password, role, accessToken });
             setSuccess(true);
-
-            // navigate('/dashboard');
-
         }
         catch (err) {
             // If no error response
             if (!err?.response) {
                 setErrMsg('No Server Response');
-                errRef.current.focus();
-            } else if (err.response?.status === 401) { // Invalid credentials
+            } else if (err.response?.status === 401 || err.response?.status === 400) { // Invalid credentials / All fields required
                 setErrMsg(`${JSON.stringify(err.response.data.message).slice(1, -1)}`);
-                errRef.current.focus();
             } else {
                 setErrMsg('Login Failed');
-                errRef.current.focus();
             }
 
+            errRef.current.focus();
             setButtonStatus('Login');
         }
     }
