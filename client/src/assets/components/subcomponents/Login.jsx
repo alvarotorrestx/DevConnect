@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react'
+import React, { useContext, useRef, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { IoMdEyeOff, IoMdEye } from 'react-icons/io'
@@ -17,6 +17,15 @@ const Login = () => {
         login: '',
         password: '',
     });
+
+    const [loginFocus, setLoginFocus] = useState(false);
+    const [passwordFocus, setPasswordFocus] = useState(false);
+
+    const loginRef = useRef();
+
+    useEffect(() => {
+        loginRef.current.focus();
+    }, []);
 
     const errRef = useRef();
 
@@ -121,6 +130,7 @@ const Login = () => {
                                     <span className="label-text">Username or Email</span>
                                 </label>
                                 <input
+                                    ref={loginRef}
                                     onChange={handleChange}
                                     id='login'
                                     type="text"
@@ -128,11 +138,9 @@ const Login = () => {
                                     placeholder="Enter your username or email address"
                                     className="input input-bordered"
                                     required
-                                // value={formData.email}
-                                // aria-invalid={validEmail ? "false" : "true"}
-                                // aria-describedby='emailnote'
-                                // onFocus={() => setEmailFocus(true)}
-                                // onBlur={() => setEmailFocus(false)}
+                                    value={formData.login}
+                                    onFocus={() => setLoginFocus(true)}
+                                    onBlur={() => setLoginFocus(false)}
                                 />
                             </div>
                             {/* End Username or Email Field */}
@@ -152,11 +160,9 @@ const Login = () => {
                                         placeholder="Enter your password"
                                         className="input input-bordered w-full"
                                         required
-                                    // value={formData.password}
-                                    // aria-invalid={validPassword ? "false" : "true"}
-                                    // aria-describedby='passwordnote'
-                                    // onFocus={() => setPasswordFocus(true)}
-                                    // onBlur={() => setPasswordFocus(false)}
+                                        value={formData.password}
+                                        onFocus={() => setPasswordFocus(true)}
+                                        onBlur={() => setPasswordFocus(false)}
                                     />
                                     {
                                         passwordType === "password"
@@ -166,20 +172,20 @@ const Login = () => {
                                             <IoMdEye className='absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer' onClick={(e) => setPasswordType('password')} />
                                     }
                                 </div>
-                                <label className="label">
+                                {/* <label className="label">
                                     <Link to="/register" className="label-text-alt link link-hover">Forgot your password? Click here!</Link>
-                                </label>
+                                </label> */}
                             </div>
                             {/* End Password Field */}
 
 
                             {/* Options Fields */}
-                            <div className="form-control mt-4">
+                            {/* <div className="form-control mt-4">
                                 <label className="fieldset-label flex justify-start items-center">
                                     <input type="checkbox" defaultChecked className="checkbox checkbox-sm checkbox-primary" />
                                     <span className='ml-2 text-sm'>Keep me logged in for 15 days</span>
                                 </label>
-                            </div>
+                            </div> */}
                             {/* End Options Fields */}
 
 
