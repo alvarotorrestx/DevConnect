@@ -76,8 +76,13 @@ npm install
 3. Create a `.env` file in the `server` directory and add the following environment variables:
 
 ```ENV
-MONGO_URI=your-mongodb-uri
+# .env.example
+PORT=5000
+MONGO_URI=your-mongodb-uri-here
 JWT_SECRET=your-jwt-secret
+
+ACCESS_TOKEN_SECRET=your-access-token-secret
+REFRESH_TOKEN_SECRET=your-refresh-token-secret
 ```
 
 __Running the Application__
