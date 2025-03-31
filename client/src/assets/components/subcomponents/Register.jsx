@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { IoMdEyeOff, IoMdEye } from 'react-icons/io'
 
@@ -163,9 +164,9 @@ const Register = () => {
                                     <h2 className="text-xl font-bold">Boom! Account created. ✅</h2>
                                     <p className="text-md mt-1">Welcome to DevConnect, {formData.firstName}.</p>
                                     <p className="text-md mt-1">You’re all set to start connecting with developers.</p>
-                                    <p className="text-md mt-1"><a href="/login" className="link link-primary">
+                                    <p className="text-md mt-1"><Link to="/login" className="link link-primary">
                                         Click here to log in
-                                    </a> and get started!</p>
+                                    </Link> and get started!</p>
                                 </div>
                             </div>
                         </div>
@@ -404,7 +405,7 @@ const Register = () => {
                                     }
                                     className="btn btn-primary">{buttonStatus}</button>
                                 <label className="label mt-2">
-                                    <a href="/login" className="label-text-alt link link-hover">Already a member? Login here!</a>
+                                    <Link to="/login" className="label-text-alt link link-hover">Already a member? Login here!</Link>
                                 </label>
                             </div>
                         </form>
