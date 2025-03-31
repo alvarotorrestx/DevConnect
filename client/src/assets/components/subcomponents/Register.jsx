@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { IoMdEyeOff, IoMdEye } from 'react-icons/io'
 
@@ -25,27 +26,21 @@ const Register = () => {
     const firstNameRef = useRef();
     const errRef = useRef();
 
-    const [firstName, setFirstName] = useState('');
     const [validFirstName, setValidFirstName] = useState(false);
     const [firstnameFocus, setFirstNameFocus] = useState(false);
 
-    const [lastName, setLastName] = useState('');
     const [validLastName, setValidLastName] = useState(false);
     const [lastnameFocus, setLastNameFocus] = useState(false);
 
-    const [username, setUsername] = useState('');
     const [validUsername, setValidUsername] = useState(false);
     const [usernameFocus, setUsernameFocus] = useState(false);
 
-    const [email, setEmail] = useState('');
     const [validEmail, setValidEmail] = useState(false);
     const [emailFocus, setEmailFocus] = useState(false);
 
-    const [password, setPassword] = useState('');
     const [validPassword, setValidPassword] = useState(false);
     const [passwordFocus, setPasswordFocus] = useState(false);
 
-    const [matchingPassword, setMatchingPassword] = useState('');
     const [validMatchingPassword, setValidMatchingPassword] = useState(false);
     const [matchingPasswordFocus, setMatchingPasswordFocus] = useState(false);
 
@@ -56,7 +51,6 @@ const Register = () => {
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState(false);
 
-    // Temporary button status update during testing
     const [buttonStatus, setButtonStatus] = useState('Sign Up');
 
     useEffect(() => {
@@ -89,7 +83,7 @@ const Register = () => {
 
     useEffect(() => {
         setErrMsg('')
-    }, [firstName, lastName, email, password, matchingPassword]);
+    }, [formData.firstName, formData.lastName, formData.email, formData.password, formData.matchingPassword]);
 
 
     const handleChange = (e) => {
@@ -113,6 +107,7 @@ const Register = () => {
 
             if (!v1 || !v2 || !v3 || !v4 || !v5) {
                 setErrMsg('Invalid Entry');
+                setButtonStatus('Sign Up');
                 return;
             }
 
@@ -128,15 +123,13 @@ const Register = () => {
             // If no error response
             if (!err?.response) {
                 setErrMsg('No Server Response');
-                errRef.current.focus();
-            } else if (err.response?.status === 409) { // Username or email is taken
+            } else if (err.response?.status === 409 || err.response?.status === 400) { // Username or email is taken / All fields required
                 setErrMsg(`${JSON.stringify(err.response.data.message).slice(1, -1)}`);
-                errRef.current.focus();
             } else {
                 setErrMsg('Registration Failed');
-                errRef.current.focus();
             }
-
+            
+            errRef.current.focus();
             setButtonStatus('Sign Up');
         }
     };
@@ -163,9 +156,9 @@ const Register = () => {
                                     <h2 className="text-xl font-bold">Boom! Account created. ✅</h2>
                                     <p className="text-md mt-1">Welcome to DevConnect, {formData.firstName}.</p>
                                     <p className="text-md mt-1">You’re all set to start connecting with developers.</p>
-                                    <p className="text-md mt-1"><a href="/login" className="link link-primary">
+                                    <p className="text-md mt-1"><Link to="/login" className="link link-primary">
                                         Click here to log in
-                                    </a> and get started!</p>
+                                    </Link> and get started!</p>
                                 </div>
                             </div>
                         </div>
@@ -400,18 +393,19 @@ const Register = () => {
                                         !validEmail ||
                                         !formData.password ||
                                         !formData.passwordMatch ||
-                                        !validMatchingPassword
+                                        !validMatchingPassword ||
+                                        buttonStatus === 'Loading...'
                                     }
                                     className="btn btn-primary">{buttonStatus}</button>
                                 <label className="label mt-2">
-                                    <a href="/login" className="label-text-alt link link-hover">Already a member? Login here!</a>
+                                    <Link to="/login" className="label-text-alt link link-hover">Already a member? Login here!</Link>
                                 </label>
                             </div>
                         </form>
                     }
                 </div>
             </div>
-        </div >
+        </div>
     )
 }
 

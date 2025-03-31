@@ -1,4 +1,5 @@
 import { useContext } from 'react'
+import { Routes, Route } from 'react-router-dom'
 import './App.css'
 
 // Component Imports
@@ -7,6 +8,8 @@ import NavBar from './assets/components/layout/NavBar'
 // Context Imports
 import ThemeContext from './assets/context/ThemeContext';
 import Register from './assets/components/subcomponents/Register';
+import Login from './assets/components/subcomponents/Login';
+import Dashboard from './assets/components/Dashboard';
 
 function App() {
 
@@ -16,7 +19,13 @@ function App() {
     <main className='w-full min-h-screen' data-theme={darkMode ? "dim" : "nord"}>
       <div className='max-w-[2000px] mx-auto min-h-screen px-2 py-6 bg-base-200'>
         {/* <NavBar /> */}
-        <Register />
+        <Routes>
+          {/* <Route path='*' element={<NotFound />} /> */}
+          <Route path='/' element={<Register />} />
+          <Route path='/register' element={<Register />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/dashboard' element={<Dashboard />} />
+        </Routes>
       </div>
     </main>
   )
