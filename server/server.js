@@ -14,6 +14,7 @@ connectDB();
 app.use(cors(corsOptions))
 
 // Routes
+const userRoutes = require('./routes/userRoutes');
 const registerRoutes = require('./routes/registerRoutes');
 const authRoutes = require('./routes/authRoutes');
 const refreshRoutes = require('./routes/refreshRoutes');
@@ -23,6 +24,9 @@ const logoutRoutes = require('./routes/logoutRoutes');
 app.use(express.json());
 app.use(cookieParser());
 const { verifyJWT } = require('./middleware/verifyJWT');
+
+// Admin - User Routes
+app.use('/api/users', userRoutes);
 
 app.use('/register', registerRoutes);
 app.use('/auth', authRoutes);

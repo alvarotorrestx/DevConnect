@@ -19,11 +19,11 @@ const loginUser = async (req, res) => {
                 ]
             }
         );
-        if (!foundUser) return res.status(401).json({ message: 'Unauthorized: User not found.' });
+        if (!foundUser) return res.status(401).json({ message: 'User not found.' });
 
         // Compare passwords
         const pwdMatch = await bcrypt.compare(password, foundUser.password);
-        if (!pwdMatch) return res.status(401).json({ message: 'Unauthorized: Invalid credentials.' });
+        if (!pwdMatch) return res.status(401).json({ message: 'Invalid credentials.' });
 
         // If successful login, store access token
         const accessToken = jwt.sign(
