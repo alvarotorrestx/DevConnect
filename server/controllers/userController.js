@@ -1,0 +1,106 @@
+require('dotenv').config();
+const User = require('../models/User');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+const getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find().select('-password -refreshToken');
+        res.status(200).json(users);
+    }
+    catch (err) {
+        res.status(500).json({ message: 'Failed to fetch users.' });
+    }
+}
+
+const createUser = async (req, res) => {
+    try {
+        const { email, username, firstName, lastName, password, role } = req.body;
+
+        // Ensure all fields are entered to register
+        if (!email || !username || !firstName || !lastName || !password) return res.status(400).json({ "message": "All fields are required to create user." });
+
+        // Check if user already exists
+        const duplicateUser = await User.findOne({ $or: [{ email }, { username }] });
+        if (duplicateUser) return res.status(409).json({ message: "Email or username already in use." });
+
+        // Hash password with bcrypt 10 salt rounds
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
+        const newUser = await User.create({
+            email,
+            username,
+            firstName,
+            lastName,
+            password: hashedPassword,
+            role
+        });
+
+        // Remove password before sending back
+        const { password: _, ...userData } = newUser.toObject();
+
+        res.status(201).json({
+            message: `User ${userData.username} successfully created.`,
+            user: userData
+        });
+    }
+    catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+}
+
+const updateUser = async (req, res) => {
+    try {
+        const { email, username, firstName, lastName, password, role } = req.body;
+
+        // Ensure all fields are entered to register
+        if (!email || !username || !firstName || !lastName) return res.status(400).json({ "message": "All fields are required to update user." });
+
+        // Check if user already exists
+        const foundUser = await User.findOne({ $or: [{ email }, { username }] });
+        if (!foundUser) return res.status(500).json({ message: "User not found." });
+
+        const hashedPassword = password ? await bcrypt.hash(password, 10) : foundUser.password;
+
+        // Update user with new fields
+        const updatedUser = await User.findOneAndUpdate(
+            { _id: foundUser._id },
+            {
+                email,
+                username,
+                firstName,
+                lastName,
+                password: hashedPassword,
+                role: role || foundUser.role
+            },
+            { new: true } // Returns the updated user
+        );
+
+        // Remove password before sending back
+        const { password: _, ...userData } = updatedUser.toObject();
+
+        res.status(200).json({
+            message: `User ${userData.username} successfully updated.`,
+            user: userData
+        });
+    }
+    catch (err) {
+        res.status(500).json({ message: 'Failed to fetch users.' });
+    }
+}
+
+const deleteUser = async (req, res) => {
+    try {
+
+    }
+    catch (err) {
+
+    }
+}
+
+module.exports = {
+    getAllUsers,
+    createUser,
+    updateUser,
+    deleteUser
+}

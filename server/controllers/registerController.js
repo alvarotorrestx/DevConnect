@@ -30,7 +30,6 @@ const registerUser = async (req, res) => {
         res.status(201).json(userData);
     }
     catch (err) {
-        console.error('Error registering user: ', err);
         res.status(400).json({ error: err.message });
     }
 };
