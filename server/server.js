@@ -27,9 +27,6 @@ const { verifyJWT } = require('./middleware/verifyJWT');
 
 // Admin - User Routes
 app.use('/api/users', userRoutes);
-app.post('/api/users', userRoutes);
-app.put('/api/users', userRoutes);
-app.delete('/api/users', userRoutes);
 
 app.use('/register', registerRoutes);
 app.use('/auth', authRoutes);

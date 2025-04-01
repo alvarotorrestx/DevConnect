@@ -6,6 +6,8 @@ router.route('/')
     .get(getAllUsers)
     .post(createUser)
     .put(updateUser)
+
+router.route('/:id')
     .delete(deleteUser)
 
 module.exports = router;

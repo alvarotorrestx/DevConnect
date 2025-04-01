@@ -17,7 +17,7 @@ const createUser = async (req, res) => {
     try {
         const { email, username, firstName, lastName, password, role } = req.body;
 
-        // Ensure all fields are entered to register
+        // Ensure all fields are entered to create user
         if (!email || !username || !firstName || !lastName || !password) return res.status(400).json({ "message": "All fields are required to create user." });
 
         // Check if user already exists
@@ -36,7 +36,7 @@ const createUser = async (req, res) => {
             role
         });
 
-        // Remove password before sending back
+        // Remove password before sending data back
         const { password: _, ...userData } = newUser.toObject();
 
         res.status(201).json({
@@ -53,13 +53,14 @@ const updateUser = async (req, res) => {
     try {
         const { email, username, firstName, lastName, password, role } = req.body;
 
-        // Ensure all fields are entered to register
+        // Ensure all fields are entered to update
         if (!email || !username || !firstName || !lastName) return res.status(400).json({ "message": "All fields are required to update user." });
 
-        // Check if user already exists
+        // Find user to update
         const foundUser = await User.findOne({ $or: [{ email }, { username }] });
-        if (!foundUser) return res.status(500).json({ message: "User not found." });
+        if (!foundUser) return res.status(404).json({ message: "User not found." });
 
+        // Hash password if updating
         const hashedPassword = password ? await bcrypt.hash(password, 10) : foundUser.password;
 
         // Update user with new fields
@@ -76,7 +77,7 @@ const updateUser = async (req, res) => {
             { new: true } // Returns the updated user
         );
 
-        // Remove password before sending back
+        // Remove password before sending data back
         const { password: _, ...userData } = updatedUser.toObject();
 
         res.status(200).json({
@@ -91,10 +92,25 @@ const updateUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
     try {
+        const { id } = req.params;
 
+        if (!id) return res.status(400).json({ message: "User ID is required." });
+
+        // Find user to delete
+        const foundUser = await User.findById(id);
+        if (!foundUser) return res.status(404).json({ message: "User not found." });
+        
+        await foundUser.deleteOne();
+
+        const { password, refreshToken, ...userData } = foundUser.toObject();
+
+        res.status(200).json({
+            message: `User ${userData.username} successfully deleted.`,
+            user: userData
+        });
     }
     catch (err) {
-
+        res.status(500).json({ message: 'Failed to delete user.' });
     }
 }
 
