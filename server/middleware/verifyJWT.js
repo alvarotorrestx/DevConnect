@@ -2,7 +2,7 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken');
 
 const verifyJWT = (req, res, next) => {
-    const authHeader = req.headers['authorization'];
+    const authHeader = req.headers.authorization || req.headers.Authorization;
 
     // Check if header exists and starts with "Bearer"
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
