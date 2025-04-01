@@ -98,8 +98,9 @@ This file tracks the backend development of DevConnect, with user-focused featur
 
 **Persona: Admin managing the platform**
 
-- [ ] Admin should be able to view all users and posts  
-- [ ] Admin should be able to delete inappropriate posts or users  
+- [x] Admin should be able to view all users and posts  
+- [x] Admin should be able to delete users  
+- [ ] Admin should be able to delete inappropriate posts
 - [ ] Admin should be able to promote users to moderators  
 - [ ] Admin dashboard endpoint with analytics overview  
 
