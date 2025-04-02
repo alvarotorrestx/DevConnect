@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import axios from 'axios'
+import axios from '../../../api/axios'
 import { IoMdEyeOff, IoMdEye } from 'react-icons/io'
 
 // REGEX for validation
@@ -10,7 +10,7 @@ const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"
 const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/
 
 // Register url for post
-const REGISTER_URL = 'http://localhost:5000/register';
+const REGISTER_URL = '/register';
 
 const Register = () => {
 

@@ -4,6 +4,7 @@ import './App.css'
 
 // Component Imports
 import NavBar from './assets/components/layout/NavBar'
+import RequireAuth from './assets/auth/RequireAuth'
 
 // Context Imports
 import ThemeContext from './assets/context/ThemeContext';

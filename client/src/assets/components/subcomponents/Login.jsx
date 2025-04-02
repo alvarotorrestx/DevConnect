@@ -1,15 +1,16 @@
 import React, { useContext, useRef, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import axios from 'axios'
 import { IoMdEyeOff, IoMdEye } from 'react-icons/io'
-import AuthContext from '../../context/AuthContext';
+import axios from '../../../api/axios'
+import useAuth from '../../auth/useAuth';
+
 
 // Login url for post
-const LOGIN_URL = 'http://localhost:5000/auth';
+const LOGIN_URL = '/auth';
 
 const Login = () => {
 
-    const { setAuth } = useContext(AuthContext)
+    const { setAuth } = useAuth();
 
     const navigate = useNavigate();
 
