@@ -25,7 +25,13 @@ function App() {
           <Route path='/' element={<Register />} />
           <Route path='/register' element={<Register />} />
           <Route path='/login' element={<Login />} />
-          <Route path='/dashboard' element={<Dashboard />} />
+
+          {/* Protected Routes */}
+          <Route element={<RequireAuth allowedRoles={['owner', 'admin', 'moderator', 'user']} />}>
+            <Route path='/dashboard' element={<Dashboard />} />
+          </Route>
+          {/* End Protected Routes */}
+
         </Routes>
       </div>
     </main>
