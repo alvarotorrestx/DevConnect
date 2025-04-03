@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import './App.css'
 import RequireAuth from './auth/RequireAuth'
 import PersistLogin from './auth/PersistLogin'
@@ -13,6 +13,7 @@ import Dashboard from './assets/components/Dashboard';
 
 // Context Imports
 import ThemeContext from './assets/context/ThemeContext';
+import RedirectIfAuth from './auth/RedirectIfAuth'
 
 function App() {
 
@@ -24,10 +25,14 @@ function App() {
         {/* <NavBar /> */}
         <Routes>
           {/* <Route path='*' element={<NotFound />} /> */}
-          <Route path='/' element={<Login />} />
+          <Route path='*' element={<Navigate to='/' replace />} />
           <Route path='/unauthorized' element={<Unauthorized />} />
-          <Route path='/register' element={<Register />} />
-          <Route path='/login' element={<Login />} />
+
+          <Route element={<RedirectIfAuth />}>
+            <Route path='/' element={<Login />} />
+            <Route path='/register' element={<Register />} />
+            <Route path='/login' element={<Login />} />
+          </Route>
 
           {/* Protected Routes */}
           <Route element={<PersistLogin />}>
