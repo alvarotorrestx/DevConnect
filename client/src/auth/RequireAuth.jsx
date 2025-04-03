@@ -15,10 +15,8 @@ const RequireAuth = ({ allowedRoles }) => {
         const verifyToken = async () => {
             try {
                 const res = await axiosPrivate.get('/auth/verify');
-                console.log('✅ Verified:', res.data);
                 setIsVerified(true);
             } catch (err) {
-                console.error('❌ Token verification failed:', err);
                 setAuth({});
             } finally {
                 setIsLoading(false);

@@ -1,15 +1,12 @@
-import { useNavigate } from "react-router-dom";
-import useAuth from "../../auth/useAuth";
+import useLogout from "../../auth/useLogout";
 
 const Dashboard = () => {
-    const { setAuth } = useAuth();
-    const navigate = useNavigate();
+    const logout = useLogout();
 
-    const handleLogout = () => {
-        setAuth({});
-        navigate("/login");
+    const handleLogout = async () => {
+        await logout();
     };
-    
+
     return (
         <div className="flex flex-col items-center justify-center min-h-screen text-center">
             <h1 className="text-4xl font-bold mb-4">Welcome to the Dashboard</h1>

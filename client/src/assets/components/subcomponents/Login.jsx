@@ -10,7 +10,7 @@ const LOGIN_URL = '/auth';
 
 const Login = () => {
 
-    const { setAuth } = useAuth();
+    const { setAuth, persist, setPersist } = useAuth();
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -66,7 +66,7 @@ const Login = () => {
             const role = response?.data?.user.role;
 
             setAuth({ login: formData.login, role, accessToken });
-            
+
             navigate(from, { replace: true });
         }
         catch (err) {
@@ -83,6 +83,14 @@ const Login = () => {
             setButtonStatus('Login');
         }
     }
+
+    const togglePersist = () => {
+        setPersist(prev => !prev);
+    }
+
+    useEffect(() => {
+        localStorage.setItem("persist", persist);
+    }, [persist])
 
     return (
         <div className="hero bg-base-200 min-h-[calc(100vh-48px)] overflow-hidden">
@@ -158,12 +166,17 @@ const Login = () => {
 
 
                         {/* Options Fields */}
-                        {/* <div className="form-control mt-4">
-                                <label className="fieldset-label flex justify-start items-center">
-                                    <input type="checkbox" defaultChecked className="checkbox checkbox-sm checkbox-primary" />
-                                    <span className='ml-2 text-sm'>Keep me logged in for 15 days</span>
-                                </label>
-                            </div> */}
+                        <div className="form-control mt-4">
+                            <label className="fieldset-label flex justify-start items-center">
+                                <input
+                                    type="checkbox"
+                                    className="checkbox checkbox-sm checkbox-primary"
+                                    onChange={togglePersist}
+                                    checked={persist}
+                                />
+                                <span className='ml-2 text-sm'>Keep me logged in for 15 days</span>
+                            </label>
+                        </div>
                         {/* End Options Fields */}
 
 

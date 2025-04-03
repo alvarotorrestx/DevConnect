@@ -36,7 +36,7 @@ const loginUser = async (req, res) => {
                 role: foundUser.role
             },
             process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: '15m' }
+            { expiresIn: '30s' }
         );
 
         // If successful login, provide refresh token
@@ -50,7 +50,7 @@ const loginUser = async (req, res) => {
                 role: foundUser.role
             },
             process.env.REFRESH_TOKEN_SECRET,
-            { expiresIn: '15d' }
+            { expiresIn: '45s' }
         );
 
         // Save refreshToken with the current user
@@ -65,7 +65,7 @@ const loginUser = async (req, res) => {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'Strict',
-            maxAge: 15 * 24 * 60 * 60 * 1000
+            maxAge: 45 * 1000
         });
         res.json({
             message: `Welcome back, ${userData.firstName}!`,

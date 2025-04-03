@@ -32,10 +32,10 @@ const handleRefreshToken = async (req, res) => {
                     role: foundUser.role
                 },
                 process.env.ACCESS_TOKEN_SECRET,
-                { expiresIn: '15m' }
+                { expiresIn: '30s' }
             );
 
-            res.json({ accessToken });
+            res.json({ role: foundUser.role, accessToken });
         });
     } catch (err) {
         console.error('Error refreshing token: ', err);

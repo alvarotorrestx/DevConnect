@@ -29,12 +29,12 @@ const { verifyJWT } = require('./middleware/verifyJWT');
 app.use('/api/users', userRoutes);
 
 app.use('/register', registerRoutes);
+app.use('/logout', logoutRoutes);
 app.use('/auth', authRoutes);
 app.get('/auth/verify', verifyJWT, (req, res) => {
     res.json({ message: `Hello ${req.user.firstName}, you have successfully logged on.` });
 })
 app.use('/auth/refresh', refreshRoutes);
-app.use('/auth/logout', logoutRoutes);
 
 app.listen(port, () => {
     console.log(`Server running on port: ${port}`);
