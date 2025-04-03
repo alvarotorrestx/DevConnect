@@ -6,32 +6,11 @@ import useAxiosPrivate from "./useAxiosPrivate";
 const RequireAuth = ({ allowedRoles }) => {
     const { auth, setAuth } = useAuth();
     const location = useLocation();
-    const axiosPrivate = useAxiosPrivate();
-
-    const [isVerified, setIsVerified] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(() => {
-        const verifyToken = async () => {
-            try {
-                const res = await axiosPrivate.get('/auth/verify');
-                setIsVerified(true);
-            } catch (err) {
-                setAuth({});
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        verifyToken();
-    }, []);
-
-    if (isLoading) return <p>Loading...</p>;
 
     return (
         auth?.role && allowedRoles.includes(auth.role)
             ? <Outlet />
-            : auth?.role
+            : auth?.accessToken
                 ? <Navigate to="/unauthorized" state={{ from: location }} replace />
                 : <Navigate to="/login" state={{ from: location }} replace />
     );

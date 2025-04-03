@@ -4,14 +4,14 @@ import useAuth from './useAuth'
 import useRefreshToken from './useRefreshToken';
 
 const PersistLogin = () => {
-    let isMounted = true;
-
     const { auth, persist } = useAuth();
     const refresh = useRefreshToken();
 
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
+        let isMounted = true;
+
         const verifyRefreshToken = async () => {
             try {
                 await refresh();
@@ -24,15 +24,10 @@ const PersistLogin = () => {
             }
         }
 
-        !auth?.accessToken ? verifyRefreshToken() : setIsLoading(false);
+        !auth?.accessToken && persist ? verifyRefreshToken() : setIsLoading(false);
 
         return () => isMounted = false;
     }, [])
-
-    useEffect(() => {
-        console.log(`isLoading: ${isLoading}`);
-        console.log(`accessToken: ${JSON.stringify(auth?.accessToken)}`);
-    }, [isLoading])
 
     return (
         <>
