@@ -1,8 +1,8 @@
-import React, { useContext, useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { IoMdEyeOff, IoMdEye } from 'react-icons/io'
 import axios from '../../../api/axios'
-import useAuth from '../../auth/useAuth';
+import useAuth from '../../../auth/useAuth';
 
 
 // Login url for post
@@ -21,9 +21,6 @@ const Login = () => {
         password: '',
     });
 
-    const [loginFocus, setLoginFocus] = useState(false);
-    const [passwordFocus, setPasswordFocus] = useState(false);
-
     const loginRef = useRef();
 
     useEffect(() => {
@@ -33,7 +30,6 @@ const Login = () => {
     const errRef = useRef();
 
     const [errMsg, setErrMsg] = useState('');
-    const [success, setSuccess] = useState(false);
 
     // For visible/non visible password icon
     const [passwordType, setPasswordType] = useState('password');
@@ -63,6 +59,7 @@ const Login = () => {
 
             const response = await axios.post(LOGIN_URL, formData, {
                 headers: { 'Content-Type': 'application/json' },
+                withCredentials: true
             });
 
             const accessToken = response?.data?.accessToken;
@@ -97,7 +94,6 @@ const Login = () => {
                     </p>
                 </div>
                 <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-md mt-4 lg:mt-0">
-
                     <form className="card-body" onSubmit={handleLogin}>
 
                         <div className={errMsg ? "alert alert-error animate-fade" : "offscreen"} tabIndex="-1" ref={errRef} aria-live='assertive'>
@@ -125,8 +121,6 @@ const Login = () => {
                                 className="input input-bordered"
                                 required
                                 value={formData.login}
-                                onFocus={() => setLoginFocus(true)}
-                                onBlur={() => setLoginFocus(false)}
                             />
                         </div>
                         {/* End Username or Email Field */}
@@ -147,8 +141,6 @@ const Login = () => {
                                     className="input input-bordered w-full"
                                     required
                                     value={formData.password}
-                                    onFocus={() => setPasswordFocus(true)}
-                                    onBlur={() => setPasswordFocus(false)}
                                 />
                                 {
                                     passwordType === "password"
