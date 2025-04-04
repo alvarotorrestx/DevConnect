@@ -4,7 +4,7 @@ import useAuth from "./useAuth";
 import useAxiosPrivate from "./useAxiosPrivate";
 
 const RequireAuth = ({ allowedRoles }) => {
-    const { auth, setAuth } = useAuth();
+    const { auth } = useAuth();
     const location = useLocation();
 
     return (

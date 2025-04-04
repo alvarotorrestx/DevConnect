@@ -1,12 +1,14 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import useAuth from "./useAuth";
 
 const RedirectIfAuth = () => {
     const { auth } = useAuth();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || '/dashboard';
 
     return (
         auth?.accessToken
-            ? <Navigate to="/dashboard" replace />
+            ? <Navigate to={from} replace />
             : <Outlet />
     );
 };
