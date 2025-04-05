@@ -51,17 +51,30 @@ const createUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
     try {
+        const { id } = req.params;
+        const userRole = req.user.role;
+
         const { email, username, firstName, lastName, password, role } = req.body;
 
         // Ensure all fields are entered to update
         if (!email || !username || !firstName || !lastName) return res.status(400).json({ "message": "All fields are required to update user." });
 
         // Find user to update
-        const foundUser = await User.findOne({ $or: [{ email }, { username }] });
+        const foundUser = await User.findById(id);
         if (!foundUser) return res.status(404).json({ message: "User not found." });
 
         // Hash password if updating
         const hashedPassword = password ? await bcrypt.hash(password, 10) : foundUser.password;
+
+        let newRole = foundUser.role;
+
+        if (role) {
+            if (userRole === 'owner') {
+                newRole = role; // Owner can assign any role
+            } else if (userRole === 'admin' && ['user', 'moderator'].includes(role)) {
+                newRole = role; // Admin can only assign user/moderator
+            }
+        }
 
         // Update user with new fields
         const updatedUser = await User.findOneAndUpdate(
@@ -72,7 +85,7 @@ const updateUser = async (req, res) => {
                 firstName,
                 lastName,
                 password: hashedPassword,
-                role: role || foundUser.role
+                role: newRole,
             },
             { new: true } // Returns the updated user
         );
@@ -99,7 +112,7 @@ const deleteUser = async (req, res) => {
         // Find user to delete
         const foundUser = await User.findById(id);
         if (!foundUser) return res.status(404).json({ message: "User not found." });
-        
+
         await foundUser.deleteOne();
 
         const { password, refreshToken, ...userData } = foundUser.toObject();

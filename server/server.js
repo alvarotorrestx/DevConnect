@@ -29,6 +29,7 @@ const { verifyJWT } = require('./middleware/verifyJWT');
 // Admin - User Routes
 app.use('/api/users', userRoutes);
 
+// Main DB Routes
 app.use('/register', registerRoutes);
 app.use('/logout', logoutRoutes);
 app.use('/auth', authRoutes);
