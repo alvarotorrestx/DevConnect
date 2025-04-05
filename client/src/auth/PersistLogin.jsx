@@ -4,7 +4,7 @@ import useAuth from './useAuth'
 import useRefreshToken from './useRefreshToken';
 
 const PersistLogin = () => {
-    const { auth, persist } = useAuth();
+    const { auth } = useAuth();
     const refresh = useRefreshToken();
 
     const [isLoading, setIsLoading] = useState(true);
@@ -24,24 +24,15 @@ const PersistLogin = () => {
             }
         }
 
-        !auth?.accessToken && persist ? verifyRefreshToken() : setIsLoading(false);
+        !auth?.accessToken ? verifyRefreshToken() : setIsLoading(false);
 
         return () => isMounted = false;
     }, [])
 
     return (
-        <>
-            {!persist
-                ?
-                <Outlet />
-                :
-                isLoading
-                    ?
-                    <p>Loading...</p>
-                    :
-                    <Outlet />
-            }
-        </>
+        isLoading
+            ? <p>Loading...</p>
+            : <Outlet />
     )
 }
 

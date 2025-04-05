@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 
 const loginUser = async (req, res) => {
     try {
-        const { login, password } = req.body;
+        const { login, password, persist } = req.body;
 
         // If no email, username or password is entered
         if (!login || !password) return res.status(400).json({ message: 'Email or Username and Password are required.' });
@@ -36,7 +36,7 @@ const loginUser = async (req, res) => {
                 role: foundUser.role
             },
             process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: '15m' }
+            { expiresIn: '60m' }
         );
 
         // If successful login, provide refresh token
@@ -50,7 +50,7 @@ const loginUser = async (req, res) => {
                 role: foundUser.role
             },
             process.env.REFRESH_TOKEN_SECRET,
-            { expiresIn: '15d' }
+            { expiresIn: persist ? '15d' : '60m' }
         );
 
         // Save refreshToken with the current user
@@ -65,7 +65,7 @@ const loginUser = async (req, res) => {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'Strict',
-            maxAge: 15 * 24 * 60 * 60 * 1000
+            maxAge: persist ? 15 * 24 * 60 * 60 * 1000 : 60 * 60 * 1000
         });
         res.json({
             message: `Welcome back, ${userData.firstName}!`,

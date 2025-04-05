@@ -57,7 +57,10 @@ const Login = () => {
                 return;
             }
 
-            const response = await axios.post(LOGIN_URL, formData, {
+            const response = await axios.post(LOGIN_URL, {
+                ...formData,
+                persist
+            }, {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             });
