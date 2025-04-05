@@ -6,15 +6,15 @@ import PersistLogin from './auth/PersistLogin';
 import RedirectIfAuth from './auth/RedirectIfAuth';
 
 // Component Imports
-import NavBar from './assets/components/layout/NavBar';
+import Layout from './assets/components/layout/Layout';
 import Unauthorized from './assets/components/subcomponents/Unauthorized';
 import Register from './assets/components/subcomponents/Register';
 import Login from './assets/components/subcomponents/Login';
 import Dashboard from './assets/components/Dashboard';
+import TesterComponent from './assets/components/TesterComponent';
 
 // Context Imports
 import ThemeContext from './assets/context/ThemeContext';
-import TesterComponent from './assets/components/TesterComponent';
 
 function App() {
 
@@ -23,7 +23,6 @@ function App() {
   return (
     <main className='w-full min-h-screen' data-theme={darkMode ? "dim" : "nord"}>
       <div className='max-w-[2000px] mx-auto min-h-screen px-2 py-6 bg-base-200'>
-        {/* <NavBar /> */}
         <Routes>
           {/* <Route path='*' element={<NotFound />} /> */}
           <Route path='*' element={<Navigate to='/' replace />} />
@@ -40,8 +39,10 @@ function App() {
           {/* Protected Routes */}
           <Route element={<PersistLogin />}>
             <Route element={<RequireAuth allowedRoles={['owner', 'admin', 'moderator', 'user']} />}>
-              <Route path='/dashboard' element={<Dashboard />} />
-              <Route path='/tester' element={<TesterComponent />} />
+              <Route element={<Layout />}>
+                <Route path='/dashboard' element={<Dashboard />} />
+                <Route path='/tester' element={<TesterComponent />} />
+              </Route>
             </Route>
           </Route>
           {/* End Protected Routes */}

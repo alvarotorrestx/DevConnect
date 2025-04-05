@@ -31,7 +31,7 @@ const PersistLogin = () => {
 
     return (
         isLoading
-            ? <p>Loading...</p>
+            ? <span className="loading loading-spinner text-primary min-h-[calc(100vh-48px)] mx-auto flex w-full max-w-[5rem]"></span>
             : <Outlet />
     )
 }
