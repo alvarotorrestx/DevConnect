@@ -34,7 +34,7 @@ This file tracks the backend development of DevConnect, with user-focused featur
 - [ ] User should be able to create a profile with name, bio, skills, location, etc.  
 - [ ] User should be able to update their profile  
 - [ ] Other users should be able to view public profiles  
-- [ ] Link profile to registered user  
+- [x] Link profile to registered user  
 
 ---
 
