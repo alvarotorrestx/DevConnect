@@ -1,4 +1,6 @@
 import { useContext } from "react";
+import { NavLink, Link } from 'react-router-dom'
+import useLogout from "../../../auth/useLogout";
 
 // Icon Imports
 import { IoMdHome } from "react-icons/io";
@@ -15,6 +17,12 @@ import ThemeContext from "../../context/ThemeContext";
 const NavBar = () => {
 
     const { darkMode, actions } = useContext(ThemeContext)
+
+    const logout = useLogout();
+
+    const handleLogout = async () => {
+        await logout();
+    };
 
     return (
         <div className="navbar bg-base-100 w-[95%] mx-auto rounded-full shadow-md grid grid-cols-2 lg:grid-cols-4 auto-cols-max relative">
@@ -41,24 +49,26 @@ const NavBar = () => {
                     <ul
                         tabIndex={0}
                         className="menu menu-sm dropdown-content bg-base-200 rounded-box z-[1] mt-3 p-2 shadow w-[95%]">
-                        <li><a className='py-4 flex items-center'><span className="text-2xl"><IoMdHome /></span>Home</a></li>
-                        <li><a className='py-4 flex items-center'><span className="text-2xl"><HiNewspaper /></span>Blogs</a></li>
-                        <li><a className='py-4 flex items-center'><span className="text-2xl"><IoMdPeople /></span>Network</a></li>
-                        <li><a className='py-4 flex items-center'><span className="text-2xl"><GiSuitcase /></span>Jobs</a></li>
+                        <li><NavLink to='/dashboard' className='py-4 flex items-center'><span className="text-2xl"><IoMdHome /></span>Home</NavLink></li>
+                        {/* <li><NavLink to='/tester' className='py-4 flex items-center'><span className="text-2xl"><IoMdHome /></span>Tester</NavLink></li> */}
+                        <li><NavLink to='' className='py-4 flex items-center'><span className="text-2xl"><HiNewspaper /></span>Blogs</NavLink></li>
+                        <li><NavLink to='' className='py-4 flex items-center'><span className="text-2xl"><IoMdPeople /></span>Network</NavLink></li>
+                        <li><NavLink to='' className='py-4 flex items-center'><span className="text-2xl"><GiSuitcase /></span>Jobs</NavLink></li>
                     </ul>
                 </div>
 
                 {/* DevConnect Link */}
-                <a className="btn btn-ghost text-xl rounded-full">DevConnect</a>
+                <Link to='/' className="btn btn-ghost text-xl rounded-full">DevConnect</Link>
             </div>
 
             {/* Desktop Nav */}
             <div className="navbar-center hidden lg:flex w-[unset] justify-center lg:col-span-2">
                 <ul className="menu menu-horizontal px-1">
-                    <li><a className="flex items-center"><span className="text-2xl"><IoMdHome /></span>Home</a></li>
-                    <li><a className="flex items-center"><span className="text-2xl"><HiNewspaper /></span>Blogs</a></li>
-                    <li><a className="flex items-center"><span className="text-2xl"><IoMdPeople /></span>Network</a></li>
-                    <li><a className="flex items-center"><span className="text-2xl"><GiSuitcase /></span>Jobs</a></li>
+                    <li><NavLink to='/dashboard' className="flex items-center"><span className="text-2xl"><IoMdHome /></span>Home</NavLink></li>
+                    {/* <li><NavLink to='/tester' className="flex items-center"><span className="text-2xl"><HiNewspaper /></span>Tester</NavLink></li> */}
+                    <li><NavLink to='' className="flex items-center"><span className="text-2xl"><HiNewspaper /></span>Blogs</NavLink></li>
+                    <li><NavLink to='' className="flex items-center"><span className="text-2xl"><IoMdPeople /></span>Network</NavLink></li>
+                    <li><NavLink to='' className="flex items-center"><span className="text-2xl"><GiSuitcase /></span>Jobs</NavLink></li>
                 </ul>
             </div>
 
@@ -152,9 +162,9 @@ const NavBar = () => {
                                 </svg>
                             </label>
                         </li>
-                        <li><a className='py-4 flex items-center'><span className="text-2xl"><FaUserCircle /></span>Profile</a></li>
-                        <li><a className='py-4 flex items-center'><span className="text-2xl"><IoSettingsSharp /></span>Settings</a></li>
-                        <li><a className='py-4 flex items-center'><span className="text-2xl"><RiLogoutBoxLine /></span>Logout</a></li>
+                        <li><button className='py-4 flex items-center'><span className="text-2xl"><FaUserCircle /></span>Profile</button></li>
+                        <li><button className='py-4 flex items-center'><span className="text-2xl"><IoSettingsSharp /></span>Settings</button></li>
+                        <li><button onClick={handleLogout} className='py-4 flex items-center'><span className="text-2xl"><RiLogoutBoxLine /></span>Logout</button></li>
                     </ul>
                 </div>
             </div>
