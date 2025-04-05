@@ -12,13 +12,16 @@ import Register from './assets/components/subcomponents/Register';
 import Login from './assets/components/subcomponents/Login';
 import Dashboard from './assets/components/Dashboard';
 import TesterComponent from './assets/components/TesterComponent';
+import Profile from './assets/components/profile/Profile';
 
 // Context Imports
 import ThemeContext from './assets/context/ThemeContext';
+import useAuth from './auth/useAuth';
 
 function App() {
 
   const { darkMode } = useContext(ThemeContext);
+  const { auth } = useAuth();
 
   return (
     <main className='w-full min-h-screen' data-theme={darkMode ? "dim" : "nord"}>
@@ -41,6 +44,8 @@ function App() {
             <Route element={<RequireAuth allowedRoles={['owner', 'admin', 'moderator', 'user']} />}>
               <Route element={<Layout />}>
                 <Route path='/dashboard' element={<Dashboard />} />
+                <Route path='/profile' element={<Navigate to={`/profile/${auth?.username}`} />} />
+                <Route path='/profile/:username' element={<Profile />} />
                 <Route path='/tester' element={<TesterComponent />} />
               </Route>
             </Route>

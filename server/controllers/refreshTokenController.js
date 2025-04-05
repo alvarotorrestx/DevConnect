@@ -35,7 +35,7 @@ const handleRefreshToken = async (req, res) => {
                 { expiresIn: '60m' }
             );
 
-            res.json({ role: foundUser.role, accessToken });
+            res.json({ username: foundUser.username, role: foundUser.role, accessToken });
         });
     } catch (err) {
         console.error('Error refreshing token: ', err);

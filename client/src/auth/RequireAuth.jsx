@@ -1,7 +1,5 @@
 import { useLocation, Navigate, Outlet } from "react-router-dom";
-import { useEffect, useState } from "react";
 import useAuth from "./useAuth";
-import useAxiosPrivate from "./useAxiosPrivate";
 
 const RequireAuth = ({ allowedRoles }) => {
     const { auth } = useAuth();
