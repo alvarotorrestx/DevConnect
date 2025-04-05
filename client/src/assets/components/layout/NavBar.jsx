@@ -1,7 +1,6 @@
-import { useContext, useEffect } from "react";
-import { NavLink, Link, useParams } from 'react-router-dom'
+import { useContext } from "react";
+import { NavLink, Link } from 'react-router-dom'
 import useLogout from "../../../auth/useLogout";
-import { axiosPrivate } from "../../../api/axios";
 
 // Icon Imports
 import { IoMdHome } from "react-icons/io";
@@ -14,32 +13,10 @@ import { RiLogoutBoxLine } from "react-icons/ri";
 
 // Context Imports
 import ThemeContext from "../../context/ThemeContext";
-import useAuth from "../../../auth/useAuth";
 
 const NavBar = () => {
 
     const { darkMode, actions } = useContext(ThemeContext)
-
-    const { auth } = useAuth();
-
-    const { username } = useParams();
-
-    useEffect(() => {
-        const fetchProfile = async () => {
-            try {
-                const res = await axiosPrivate.get(`/profile/${username}`, {
-                    headers: {
-                        Authorization: `Bearer ${auth?.accessToken}`
-                    }
-                });
-                console.log(res.data);
-            } catch (err) {
-                console.error('Failed to load profile data:', err);
-            }
-        };
-
-        if (auth?.accessToken) fetchProfile();
-    }, [auth, username]);
 
     const logout = useLogout();
 
@@ -185,7 +162,7 @@ const NavBar = () => {
                                 </svg>
                             </label>
                         </li>
-                        <li><NavLink to='/profile' className='py-4 flex items-center'><span className="text-2xl"><FaUserCircle /></span>Profile</NavLink></li>
+                        <li><Link to='/profile' className='py-4 flex items-center'><span className="text-2xl"><FaUserCircle /></span>Profile</Link></li>
                         <li><button className='py-4 flex items-center'><span className="text-2xl"><IoSettingsSharp /></span>Settings</button></li>
                         <li><button onClick={handleLogout} className='py-4 flex items-center'><span className="text-2xl"><RiLogoutBoxLine /></span>Logout</button></li>
                     </ul>
