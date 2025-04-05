@@ -7,9 +7,9 @@ const { getAllUsers, createUser, updateUser, deleteUser } = require('../controll
 router.route('/')
     .get(verifyJWT, verifyRoles('admin', 'owner'), getAllUsers)
     .post(verifyJWT, verifyRoles('admin', 'owner'), createUser)
-    .put(verifyJWT, verifyRoles('moderator', 'admin', 'owner'), updateUser)
 
 router.route('/:id')
+    .put(verifyJWT, verifyRoles('admin', 'owner'), updateUser)
     .delete(verifyJWT, verifyRoles('admin', 'owner'), deleteUser)
 
 module.exports = router;

@@ -31,10 +31,10 @@ This file tracks the backend development of DevConnect, with user-focused featur
 
 **Persona: Developer setting up their public profile**
 
-- [ ] User should be able to create a profile with name, bio, skills, location, etc.  
-- [ ] User should be able to update their profile  
-- [ ] Other users should be able to view public profiles  
-- [ ] Link profile to registered user  
+- [x] User should be able to create a profile with name, bio, skills, location, etc.  
+- [x] User should be able to update their profile  
+- [x] Other users should be able to view public profiles  
+- [x] Link profile to registered user  
 
 ---
 
