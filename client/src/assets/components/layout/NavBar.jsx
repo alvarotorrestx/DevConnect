@@ -162,7 +162,7 @@ const NavBar = () => {
                                 </svg>
                             </label>
                         </li>
-                        <li><Link to='/profile' className='py-4 flex items-center'><span className="text-2xl"><FaUserCircle /></span>Profile</Link></li>
+                        <li><NavLink to='/profile' className='py-4 flex items-center'><span className="text-2xl"><FaUserCircle /></span>Profile</NavLink></li>
                         <li><button className='py-4 flex items-center'><span className="text-2xl"><IoSettingsSharp /></span>Settings</button></li>
                         <li><button onClick={handleLogout} className='py-4 flex items-center'><span className="text-2xl"><RiLogoutBoxLine /></span>Logout</button></li>
                     </ul>

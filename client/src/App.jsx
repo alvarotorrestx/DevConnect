@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import './App.css'
 import RequireAuth from './auth/RequireAuth';
@@ -17,6 +17,7 @@ import Profile from './assets/components/profile/Profile';
 // Context Imports
 import ThemeContext from './assets/context/ThemeContext';
 import useAuth from './auth/useAuth';
+import { ProfileProvider } from './assets/context/ProfileContext';
 
 function App() {
 
@@ -45,7 +46,11 @@ function App() {
               <Route element={<Layout />}>
                 <Route path='/dashboard' element={<Dashboard />} />
                 <Route path='/profile' element={<Navigate to={`/profile/${auth?.username}`} />} />
-                <Route path='/profile/:username' element={<Profile />} />
+                <Route path='/profile/:username' element={
+                  <ProfileProvider>
+                    <Profile />
+                  </ProfileProvider>
+                } />
                 <Route path='/tester' element={<TesterComponent />} />
               </Route>
             </Route>

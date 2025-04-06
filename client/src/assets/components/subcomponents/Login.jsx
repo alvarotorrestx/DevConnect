@@ -3,12 +3,15 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { IoMdEyeOff, IoMdEye } from 'react-icons/io'
 import axios from '../../../api/axios'
 import useAuth from '../../../auth/useAuth';
+import useRefreshToken from '../../../auth/useRefreshToken';
 
 
 // Login url for post
 const LOGIN_URL = '/auth';
 
 const Login = () => {
+
+    const refresh = useRefreshToken();
 
     const { setAuth, persist, setPersist } = useAuth();
 
@@ -66,9 +69,12 @@ const Login = () => {
             });
 
             const accessToken = response?.data?.accessToken;
+            const username = response?.data?.user.username;
             const role = response?.data?.user.role;
 
-            setAuth({ login: formData.login, role, accessToken });
+            setAuth({ login: formData.login, username, role, accessToken });
+
+            await refresh();
 
             navigate(from, { replace: true });
         }

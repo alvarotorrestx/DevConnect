@@ -1,28 +1,14 @@
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
-import useAuth from '../../../auth/useAuth';
-import { axiosPrivate } from '../../../api/axios';
+import React, { useContext } from 'react'
 import Loading from '../subcomponents/Loading'
+import ProfileContext from '../../context/ProfileContext';
 
 const Profile = () => {
 
-  const { auth } = useAuth();
+  const { profile, loading } = useContext(ProfileContext);
+  if (loading) return <Loading />;
+  if (!profile) return <p className="text-center">Profile not found.</p>;
 
-  const { username } = useParams();
-
-  const [profile, setProfile] = useState(null);
-
-  useEffect(() => {
-    const fetchProfile = async () => {
-      const res = await axiosPrivate.get(`/profile/${username}`, {
-        headers: {
-          Authorization: `Bearer ${auth?.accessToken}`
-        }
-      });
-      setProfile(res.data);
-    };
-    if (auth?.accessToken) fetchProfile();
-  }, []);
+  const { name, avatar, bio, skills, location, website } = profile;
 
   return profile ? (
     <div className="max-w-4xl mx-auto p-6 bg-base-100 rounded shadow-md mt-10">
