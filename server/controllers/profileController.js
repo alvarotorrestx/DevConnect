@@ -6,6 +6,8 @@ const viewProfile = async (req, res) => {
         if (!foundUser) return res.status(404).json({ message: 'User not found.' });
 
         res.status(200).json({
+            firstName: foundUser.firstName,
+            lastName: foundUser.lastName,
             name: `${foundUser.firstName} ${foundUser.lastName}`,
             email: foundUser.email,
             username: foundUser.username,

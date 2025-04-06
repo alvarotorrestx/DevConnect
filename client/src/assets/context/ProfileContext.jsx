@@ -1,11 +1,12 @@
+// ProfileProvider.jsx
 import { createContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import useAuth from '../../auth/useAuth';
+import { useParams, Outlet } from 'react-router-dom';
 import { axiosPrivate } from '../../api/axios';
+import useAuth from '../../auth/useAuth';
 
 const ProfileContext = createContext(null);
 
-export const ProfileProvider = ({ children }) => {
+export const ProfileProvider = () => {
   const { auth } = useAuth();
   const { username } = useParams();
 
@@ -22,23 +23,20 @@ export const ProfileProvider = ({ children }) => {
         });
         setProfile(res.data);
       } catch (err) {
-        console.error('Failed to fetch profile data:', err);
+        console.error('Failed to fetch profile:', err);
         setProfile(null);
       } finally {
         setLoading(false);
       }
     };
 
-    if (auth?.accessToken && username) {
-      fetchProfile();
-    } else {
-      setLoading(false);
-    }
+    if (auth?.accessToken && username) fetchProfile();
+    
   }, [auth?.accessToken, username]);
 
   return (
     <ProfileContext.Provider value={{ profile, loading, setLoading }}>
-      {children}
+      <Outlet />
     </ProfileContext.Provider>
   );
 };

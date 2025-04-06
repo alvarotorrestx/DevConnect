@@ -48,16 +48,10 @@ function App() {
               <Route element={<Layout />}>
                 <Route path='/dashboard' element={<Dashboard />} />
                 <Route path='/profile' element={<Navigate to={`/profile/${auth?.username}`} />} />
-                <Route path='/profile/:username' element={
-                  <ProfileProvider>
-                    <Profile />
-                  </ProfileProvider>
-                } />
-                <Route path="/profile/:username/edit" element={
-                  <ProfileProvider>
-                    <EditProfile />
-                  </ProfileProvider>
-                } />
+                <Route path="/profile/:username" element={<ProfileProvider />}>
+                  <Route index element={<Profile />} />
+                  <Route path="edit" element={<EditProfile />} />
+                </Route>
                 <Route path='/network' element={<Network />} />
                 <Route path='/tester' element={<TesterComponent />} />
               </Route>
