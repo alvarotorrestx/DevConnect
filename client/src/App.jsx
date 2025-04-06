@@ -18,6 +18,7 @@ import Profile from './assets/components/profile/Profile';
 import ThemeContext from './assets/context/ThemeContext';
 import useAuth from './auth/useAuth';
 import { ProfileProvider } from './assets/context/ProfileContext';
+import Network from './assets/components/network/Network';
 
 function App() {
 
@@ -51,6 +52,7 @@ function App() {
                     <Profile />
                   </ProfileProvider>
                 } />
+                <Route path='/network' element={<Network />} />
                 <Route path='/tester' element={<TesterComponent />} />
               </Route>
             </Route>

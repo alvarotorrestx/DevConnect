@@ -29,13 +29,14 @@ const handleRefreshToken = async (req, res) => {
                     lastName: foundUser.lastName,
                     username: foundUser.username,
                     email: foundUser.email,
-                    role: foundUser.role
+                    role: foundUser.role,
+                    avatar: foundUser.avatar
                 },
                 process.env.ACCESS_TOKEN_SECRET,
                 { expiresIn: '60m' }
             );
 
-            res.json({ username: foundUser.username, role: foundUser.role, accessToken });
+            res.json({ username: foundUser.username, avatar: foundUser.avatar, role: foundUser.role, accessToken });
         });
     } catch (err) {
         console.error('Error refreshing token: ', err);

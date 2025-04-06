@@ -7,7 +7,7 @@ const Layout = () => {
 
     return (
         <>
-            {auth?.accessToken && <NavBar />}
+            {auth?.accessToken && <NavBar avatar={auth?.avatar} username={auth?.username} />}
             <Outlet />
         </>
     );
