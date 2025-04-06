@@ -13,6 +13,7 @@ import Login from './assets/components/subcomponents/Login';
 import Dashboard from './assets/components/Dashboard';
 import TesterComponent from './assets/components/TesterComponent';
 import Profile from './assets/components/profile/Profile';
+import EditProfile from './assets/components/profile/EditProfile'
 
 // Context Imports
 import ThemeContext from './assets/context/ThemeContext';
@@ -50,6 +51,11 @@ function App() {
                 <Route path='/profile/:username' element={
                   <ProfileProvider>
                     <Profile />
+                  </ProfileProvider>
+                } />
+                <Route path="/profile/:username/edit" element={
+                  <ProfileProvider>
+                    <EditProfile />
                   </ProfileProvider>
                 } />
                 <Route path='/network' element={<Network />} />

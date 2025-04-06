@@ -1,20 +1,38 @@
 import React, { useContext } from 'react'
+import { Link } from 'react-router-dom'
 import Loading from '../subcomponents/Loading'
 import ProfileContext from '../../context/ProfileContext';
+import { FaUserEdit } from "react-icons/fa";
+import useAuth from '../../../auth/useAuth';
 
 const Profile = () => {
+
+  const { auth } = useAuth();
 
   const { profile, loading } = useContext(ProfileContext);
   if (loading) return <Loading />;
   if (!profile) return <div className="max-w-4xl mx-auto p-6 bg-base-100 rounded shadow-md mt-10"><p className="text-center">Profile not found.</p></div>;
 
   const mailTo = `mailto:${profile.email}`;
+  const editURL = `edit`
+
+  const isOwnProfile = profile.username === auth?.username;
+  const isAdminOrOwner = ['admin', 'owner'].includes(auth?.role);
+  const showEditButton = isOwnProfile || isAdminOrOwner;
 
   return profile ? (
-    <div className="max-w-[90%] lg:max-w-4xl mx-auto p-6 bg-base-100 rounded shadow-md mt-10">
+    <div className="max-w-[90%] lg:max-w-4xl mx-auto p-6 bg-base-100 rounded shadow-md mt-10 relative">
+      {/* Edit Icon - For User, Admin, and Owner */}
+      {showEditButton
+        ?
+        <Link to={editURL} className="absolute top-0 right-0 p-6 text-2xl opacity-75 hover:opacity-100 transition duration-300 ease-in-out"><FaUserEdit /></Link>
+        :
+        null
+      }
+
       {/* Top Section */}
       {/* <div className="flex flex-col md:flex-row items-center md:items-start gap-6 mb-6"> */}
-      <div className="grid grid-cols-1 justify-items-start md:items-center md:grid-cols-[25%_75%] gap-6 mb-6">
+      <div className="grid grid-cols-1 justify-items-center md:justify-items-start md:items-start md:grid-cols-[25%_75%] gap-6 mb-6">
         {/* Avatar */}
         <div className="w-32 h-32 rounded-full overflow-hidden bg-base-200 flex items-center justify-center mx-auto">
           {profile.avatar ? (
