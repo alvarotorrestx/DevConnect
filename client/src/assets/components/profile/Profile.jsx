@@ -25,7 +25,7 @@ const Profile = () => {
         {canEdit && (
           <Link
             to='edit'
-            className="absolute top-0 right-0 p-6 text-2xl opacity-75 hover:opacity-100 transition"
+            className="absolute top-0 right-0 p-6 text-2xl opacity-75 hover:opacity-100 transition text-primary"
           >
             <FaUserEdit />
           </Link>
