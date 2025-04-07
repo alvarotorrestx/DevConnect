@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Outlet } from "react-router-dom"
 import useAuth from './useAuth'
 import useRefreshToken from './useRefreshToken';
+import Loading from '../assets/components/subcomponents/Loading'
 
 const PersistLogin = () => {
     const { auth } = useAuth();
@@ -31,7 +32,7 @@ const PersistLogin = () => {
 
     return (
         isLoading
-            ? <span className="loading loading-spinner text-primary min-h-[calc(100vh-48px)] mx-auto flex w-full max-w-[5rem]"></span>
+            ? <Loading />
             : <Outlet />
     )
 }

@@ -14,9 +14,11 @@ import { RiLogoutBoxLine } from "react-icons/ri";
 // Context Imports
 import ThemeContext from "../../context/ThemeContext";
 
-const NavBar = () => {
+const NavBar = ({ avatar, username }) => {
 
     const { darkMode, actions } = useContext(ThemeContext)
+
+    const profileURL = `/profile/${username}`;
 
     const logout = useLogout();
 
@@ -52,7 +54,7 @@ const NavBar = () => {
                         <li><NavLink to='/dashboard' className='py-4 flex items-center'><span className="text-2xl"><IoMdHome /></span>Home</NavLink></li>
                         {/* <li><NavLink to='/tester' className='py-4 flex items-center'><span className="text-2xl"><IoMdHome /></span>Tester</NavLink></li> */}
                         <li><NavLink to='' className='py-4 flex items-center'><span className="text-2xl"><HiNewspaper /></span>Blogs</NavLink></li>
-                        <li><NavLink to='' className='py-4 flex items-center'><span className="text-2xl"><IoMdPeople /></span>Network</NavLink></li>
+                        <li><NavLink to='/network' className='py-4 flex items-center'><span className="text-2xl"><IoMdPeople /></span>Network</NavLink></li>
                         <li><NavLink to='' className='py-4 flex items-center'><span className="text-2xl"><GiSuitcase /></span>Jobs</NavLink></li>
                     </ul>
                 </div>
@@ -67,7 +69,7 @@ const NavBar = () => {
                     <li><NavLink to='/dashboard' className="flex items-center"><span className="text-2xl"><IoMdHome /></span>Home</NavLink></li>
                     {/* <li><NavLink to='/tester' className="flex items-center"><span className="text-2xl"><HiNewspaper /></span>Tester</NavLink></li> */}
                     <li><NavLink to='' className="flex items-center"><span className="text-2xl"><HiNewspaper /></span>Blogs</NavLink></li>
-                    <li><NavLink to='' className="flex items-center"><span className="text-2xl"><IoMdPeople /></span>Network</NavLink></li>
+                    <li><NavLink to='/network' className="flex items-center"><span className="text-2xl"><IoMdPeople /></span>Network</NavLink></li>
                     <li><NavLink to='' className="flex items-center"><span className="text-2xl"><GiSuitcase /></span>Jobs</NavLink></li>
                 </ul>
             </div>
@@ -117,7 +119,8 @@ const NavBar = () => {
                         <div className="w-10 rounded-full">
                             <img
                                 alt="Tailwind CSS Navbar component"
-                                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                                src={avatar}
+                            />
                         </div>
                     </div>
                     <ul
@@ -162,7 +165,7 @@ const NavBar = () => {
                                 </svg>
                             </label>
                         </li>
-                        <li><button className='py-4 flex items-center'><span className="text-2xl"><FaUserCircle /></span>Profile</button></li>
+                        <li><NavLink to={profileURL} className='py-4 flex items-center'><span className="text-2xl"><FaUserCircle /></span>Profile</NavLink></li>
                         <li><button className='py-4 flex items-center'><span className="text-2xl"><IoSettingsSharp /></span>Settings</button></li>
                         <li><button onClick={handleLogout} className='py-4 flex items-center'><span className="text-2xl"><RiLogoutBoxLine /></span>Logout</button></li>
                     </ul>
