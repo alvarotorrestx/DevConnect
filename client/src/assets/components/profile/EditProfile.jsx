@@ -95,6 +95,11 @@ const EditProfile = () => {
   const errRef = useRef();
   const [errMsg, setErrMsg] = useState('');
 
+  useEffect(() => {
+    const hasEdits = Object.values(isEditing).some(Boolean);
+    if (hasEdits) setErrMsg('');
+  }, [formData, isEditing]);
+
   const handleSave = async (field) => {
 
     if (typeof formData[field] === 'string' && formData[field].trim() === profile[field]?.trim()) {
@@ -107,8 +112,23 @@ const EditProfile = () => {
       return;
     }
 
+    const USERNAME_REGEX = /^[a-z0-9-]{5,30}$/;
+
+    const username = formData.username?.trim();
+    if (!username) {
+      setErrMsg("Username is required.");
+      errRef.current.focus();
+      return;
+    }
+
+    if (field === 'username' && !USERNAME_REGEX.test(formData.username)) {
+      setErrMsg("Invalid username.\n5 to 30 characters.\nLetters, numbers, and hyphens (-) allowed.\nLowercase only.");
+      errRef.current.focus();
+      return;
+    }
+
     try {
-      const response = await axiosPrivate.put(`/profile/${formData.username}/edit`,
+      const response = await axiosPrivate.put(`/profile/${username}/edit`,
         {
           [field]: formData[field]
         },
@@ -121,10 +141,8 @@ const EditProfile = () => {
       // If no error response
       if (!err?.response) {
         setErrMsg('No Server Response');
-      } else if (err.response?.status === 401 || err.response?.status === 403) {
-        setErrMsg(`${JSON.stringify(err.response.data.message).slice(1, -1)}`);
       } else {
-        setErrMsg('Update Failed');
+        setErrMsg(`${JSON.stringify(err.response.data.message).slice(1, -1)}` || 'Update Failed');
       }
 
       errRef.current.focus();
@@ -174,7 +192,11 @@ const EditProfile = () => {
 
       <div className={errMsg ? "alert alert-error animate-fade flex mt-6" : "offscreen"} tabIndex="-1" ref={errRef} aria-live='assertive'>
         <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-        <span>{errMsg}</span>
+        <span>
+          {errMsg.replaceAll('\\n', '\n').split('\n').map((line, i) => (
+            <p key={i}>{line}</p>
+          ))}
+        </span>
       </div>
 
       {/* First Name Field */}
@@ -361,6 +383,7 @@ const EditProfile = () => {
             value={formData.bio}
             disabled={!isEditing.bio}
             onChange={handleChange}
+            maxLength={500}
           />
 
           {!isEditing.bio ? (
@@ -395,6 +418,7 @@ const EditProfile = () => {
             value={formData.location}
             disabled={!isEditing.location}
             onChange={handleChange}
+            maxLength={100}
           />
 
           {!isEditing.location ? (
@@ -416,39 +440,56 @@ const EditProfile = () => {
       {/* End Location Field */}
 
       {/* Role Field */}
-      {isAdminOrOwner &&
+      {isAdminOrOwner && (
         <div className="form-control my-3">
           <label className="label">
             <span className="label-text">Role</span>
           </label>
           <div className="flex items-center gap-2">
-            <input
+            <select
               ref={inputRefs.role}
-              id='role'
-              type="text"
-              className="input input-bordered flex-1"
+              id="role"
+              className="select select-bordered flex-1"
               value={formData.role}
               disabled={!isEditing.role}
               onChange={handleChange}
-            />
+            >
+              {/* Only allow valid roles based on auth */}
+              <option value="user">User</option>
+              <option value="moderator">Moderator</option>
+              {auth?.role === 'owner' && <option value="admin">Admin</option>}
+              {auth?.role === 'owner' && <option value="owner">Owner</option>}
+            </select>
 
             {!isEditing.role ? (
-              <button type="button" className="btn btn-ghost text-lg" onClick={() => handleIsEditing('role')}>
+              <button
+                type="button"
+                className="btn btn-ghost text-lg"
+                onClick={() => handleIsEditing('role')}
+              >
                 <FaEdit />
               </button>
             ) : (
               <>
-                <button type="button" className="btn btn-success btn-sm" onClick={() => handleSave('role')}>
+                <button
+                  type="button"
+                  className="btn btn-success btn-sm"
+                  onClick={() => handleSave('role')}
+                >
                   <FaCheck />
                 </button>
-                <button type="button" className="btn btn-error btn-sm" onClick={() => handleCancel('role')}>
+                <button
+                  type="button"
+                  className="btn btn-error btn-sm"
+                  onClick={() => handleCancel('role')}
+                >
                   <FaTimes />
                 </button>
               </>
             )}
           </div>
         </div>
-      }
+      )}
       {/* End Role Field */}
 
       {/* Website Field */}

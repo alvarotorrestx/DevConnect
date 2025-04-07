@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const validator = require('validator');
 
 const viewProfile = async (req, res) => {
     try {
@@ -28,6 +29,15 @@ const viewProfile = async (req, res) => {
 }
 
 const updateProfile = async (req, res) => {
+
+    // REGEX for validation
+    const NAME_REGEX = /^[a-zA-Z][a-zA-Z- ]{1,50}$/;
+    const USERNAME_REGEX = /^[a-z0-9-]{5,30}$/;
+    const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const WEBSITE_REGEX = /^(https?:\/\/)?([\w\d-]+\.)+[\w-]+(\/[\w\-._~:/?#[\]@!$&'()*+,;=.]+)?$/;
+    const LOCATION_REGEX = /^[a-zA-Z\s,.'-]{2,100}$/;
+    const VALID_ROLES = ['user', 'moderator', 'admin', 'owner'];
+
     try {
         const { username: requestedUsername } = req.params;
         const userRole = req.user.role;
@@ -53,11 +63,73 @@ const updateProfile = async (req, res) => {
         let newRole = foundUser.role;
 
         if (role) {
-            if (userRole === 'owner') {
-                newRole = role; // Owner can assign any role
-            } else if (userRole === 'admin' && ['user', 'moderator'].includes(role)) {
-                newRole = role; // Admin can only assign user/moderator
+            if (!VALID_ROLES.includes(role)) {
+                return res.status(422).json({ message: 'Invalid role provided.' });
             }
+
+            if (userRole === 'owner') {
+                newRole = role; // Full access
+            } else if (userRole === 'admin') {
+                if (['user', 'moderator'].includes(role)) {
+                    newRole = role;
+                } else {
+                    return res.status(403).json({ message: 'Admins can only assign user or moderator roles.' });
+                }
+            } else {
+                // Non-admin/owner trying to set a role
+                return res.status(403).json({ message: 'You are not authorized to change roles.' });
+            }
+        }
+
+        if (firstName !== undefined && !NAME_REGEX.test(firstName)) {
+            return res.status(422).json({
+                message: "Invalid first name.\n2 to 50 characters.\nLetters, spaces, and hyphens (-) allowed."
+            });
+        }
+
+        if (lastName !== undefined && !NAME_REGEX.test(lastName)) {
+            return res.status(422).json({
+                message: "Invalid last name.\n2 to 50 characters.\nLetters, spaces, and hyphens (-) allowed."
+            });
+        }
+
+        if (username !== undefined && !USERNAME_REGEX.test(username)) {
+            return res.status(422).json({
+                message: "Invalid username.\n5 to 30 characters.\nLetters, numbers, and hyphens (-) allowed.\nLowercase only."
+            });
+        }
+
+        if (email !== undefined && !EMAIL_REGEX.test(email)) {
+            return res.status(422).json({
+                message: "Invalid email.\ne.g. bwayne@wayneenterprises.com"
+            });
+        }
+
+        const urlFields = [
+            { field: avatar, label: "Avatar URL" },
+            { field: website, label: "Website URL" },
+            { field: github, label: "GitHub URL" },
+            { field: linkedin, label: "LinkedIn URL" },
+            { field: otherWebsite, label: "Other Website URL" },
+        ];
+
+        for (const { field, label } of urlFields) {
+            if (field !== undefined && field.trim() !== '' && !WEBSITE_REGEX.test(field)) {
+                return res.status(422).json({ message: `Invalid ${label}.` });
+            }
+        }
+
+        if (bio !== undefined) {
+            const sanitizedBio = validator.escape(bio.trim());
+            if (sanitizedBio.length > 500) {
+                return res.status(422).json({ message: "Bio must be 500 characters or less." });
+            }
+        }
+
+        if (location !== undefined && location.trim() !== '' && !LOCATION_REGEX.test(location.trim())) {
+            return res.status(422).json({
+                message: "Invalid location.\nOnly letters, spaces, commas, hyphens, apostrophes, and periods allowed.\n2 to 100 characters."
+            });
         }
 
         // Update user with new fields
