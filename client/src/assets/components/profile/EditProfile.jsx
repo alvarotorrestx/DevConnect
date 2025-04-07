@@ -32,9 +32,33 @@ const EditProfile = () => {
 
   const [isEditing, setIsEditing] = useState({});
 
+  // const handleIsEditing = (field) => {
+  //   setIsEditing(prev => ({ ...prev, [field]: !prev[field] }));
+  // };
+
   const handleIsEditing = (field) => {
-    setIsEditing(prev => ({ ...prev, [field]: !prev[field] }));
+    setIsEditing(prev => {
+      const updated = { ...prev, [field]: !prev[field] };
+
+      // Focus after enabling the field
+      if (!prev[field]) {
+        setTimeout(() => currentRef(field), 0); // small delay to ensure input is editable
+      }
+
+      return updated;
+    });
   };
+
+  const inputRefs = {
+    firstName: useRef(),
+    lastName: useRef(),
+    username: useRef(),
+  };
+
+  const currentRef = (field) => {
+    inputRefs[field]?.current?.focus();
+  };
+
 
   const handleChange = (e) => {
     setFormData(prev => ({ ...prev, [e.target.id]: e.target.value }));
@@ -119,6 +143,7 @@ const EditProfile = () => {
         </label>
         <div className="flex items-center gap-2">
           <input
+            ref={inputRefs.firstName}
             id='firstName'
             type="text"
             className="input input-bordered flex-1"
@@ -144,6 +169,73 @@ const EditProfile = () => {
         </div>
       </div>
       {/* End First Name Field */}
+
+      {/* Last Name Field */}
+      <div className="form-control my-3">
+        <label className="label">
+          <span className="label-text">Last Name</span>
+        </label>
+        <div className="flex items-center gap-2">
+          <input
+            id='lastName'
+            type="text"
+            className="input input-bordered flex-1"
+            value={formData.lastName}
+            disabled={!isEditing.lastName}
+            onChange={handleChange}
+          />
+
+          {!isEditing.lastName ? (
+            <button type="button" className="btn btn-ghost text-lg" onClick={() => handleIsEditing('lastName')}>
+              <FaEdit />
+            </button>
+          ) : (
+            <>
+              <button type="button" className="btn btn-success btn-sm" onClick={() => handleSave('lastName')}>
+                <FaCheck />
+              </button>
+              <button type="button" className="btn btn-error btn-sm" onClick={() => handleCancel('lastName')}>
+                <FaTimes />
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+      {/* End Last Name Field */}
+
+      {/* Username Field */}
+      <div className="form-control my-3">
+        <label className="label">
+          <span className="label-text">Username (Also your @ or URL)</span>
+        </label>
+        <div className="flex items-center gap-2">
+          <input
+            id='username'
+            type="text"
+            className="input input-bordered flex-1"
+            value={formData.username}
+            disabled={!isEditing.username}
+            onChange={handleChange}
+          />
+
+          {!isEditing.username ? (
+            <button type="button" className="btn btn-ghost text-lg" onClick={() => handleIsEditing('username')}>
+              <FaEdit />
+            </button>
+          ) : (
+            <>
+              <button type="button" className="btn btn-success btn-sm" onClick={() => handleSave('username')}>
+                <FaCheck />
+              </button>
+              <button type="button" className="btn btn-error btn-sm" onClick={() => handleCancel('username')}>
+                <FaTimes />
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+      {/* End Username Field */}
+
     </div>
   );
 };
