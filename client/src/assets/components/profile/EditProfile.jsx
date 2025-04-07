@@ -1,10 +1,12 @@
 import { useContext, useEffect, useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { FaEdit, FaCheck, FaTimes } from 'react-icons/fa';
 import ProfileContext from '../../context/ProfileContext';
 import Loading from '../subcomponents/Loading';
 import { axiosPrivate } from '../../../api/axios';
 import useAuth from '../../../auth/useAuth';
 import { useNavigate } from 'react-router-dom';
+import { FaUserCheck } from "react-icons/fa";
 
 const EditProfile = () => {
   const { profile, loading } = useContext(ProfileContext);
@@ -17,6 +19,7 @@ const EditProfile = () => {
         firstName: profile.firstName || '',
         lastName: profile.lastName || '',
         username: profile.username || '',
+        avatar: profile.avatar || '',
         bio: profile.bio || '',
         email: profile.email || '',
         location: profile.location || '',
@@ -31,10 +34,6 @@ const EditProfile = () => {
   }, [profile]);
 
   const [isEditing, setIsEditing] = useState({});
-
-  // const handleIsEditing = (field) => {
-  //   setIsEditing(prev => ({ ...prev, [field]: !prev[field] }));
-  // };
 
   const handleIsEditing = (field) => {
     setIsEditing(prev => {
@@ -53,6 +52,16 @@ const EditProfile = () => {
     firstName: useRef(),
     lastName: useRef(),
     username: useRef(),
+    avatar: useRef(),
+    bio: useRef(),
+    email: useRef(),
+    location: useRef(),
+    role: useRef(),
+    website: useRef(),
+    github: useRef(),
+    linkedin: useRef(),
+    otherWebsite: useRef(),
+    skills: useRef()
   };
 
   const currentRef = (field) => {
@@ -88,8 +97,12 @@ const EditProfile = () => {
 
   const handleSave = async (field) => {
 
-    // If value hasn't changed, don't send the API request
-    if (formData[field]?.trim() === profile[field]?.trim()) {
+    if (typeof formData[field] === 'string' && formData[field].trim() === profile[field]?.trim()) {
+      handleCancel(field);
+      return;
+    }
+
+    if (Array.isArray(formData[field]) && JSON.stringify(formData[field]) === JSON.stringify(profile[field])) {
       handleCancel(field);
       return;
     }
@@ -121,15 +134,43 @@ const EditProfile = () => {
     }
   };
 
+  const [newSkill, setNewSkill] = useState('');
+
+  const handleSkillKeyDown = (e) => {
+    if (e.key === 'Enter' && newSkill.trim()) {
+      e.preventDefault();
+      setFormData(prev => ({
+        ...prev,
+        skills: [...prev.skills, newSkill.trim()]
+      }));
+      setNewSkill('');
+    }
+  };
+
+  const handleRemoveSkill = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      skills: prev.skills.filter((_, i) => i !== index)
+    }));
+  };
+
+
   if (loading || !formData) return <Loading />;
   if (!profile) return <p>Profile not found.</p>;
 
   return (
-    <div className="max-w-[90%] md:max-w-2xl mx-auto p-6 bg-base-100 rounded-lg shadow-md mt-10">
-      <h1 className="text-2xl font-bold">Edit Profile</h1>
+    <div className="max-w-[90%] md:max-w-2xl mx-auto p-6 bg-base-100 rounded-lg shadow-md mt-10 relative">
+      <h1 className="text-2xl font-bold">Edit Profile - {profile.username}</h1>
       <p className="text-sm">
         Edit your details to help others connect with you better.
       </p>
+
+      <a
+        href={'/profile/' + profile.username}
+        className="absolute top-0 right-0 p-6 text-2xl opacity-75 hover:opacity-100 transition"
+      >
+        <FaUserCheck />
+      </a>
 
       <div className={errMsg ? "alert alert-error animate-fade flex mt-6" : "offscreen"} tabIndex="-1" ref={errRef} aria-live='assertive'>
         <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
@@ -177,6 +218,7 @@ const EditProfile = () => {
         </label>
         <div className="flex items-center gap-2">
           <input
+            ref={inputRefs.lastName}
             id='lastName'
             type="text"
             className="input input-bordered flex-1"
@@ -210,6 +252,7 @@ const EditProfile = () => {
         </label>
         <div className="flex items-center gap-2">
           <input
+            ref={inputRefs.username}
             id='username'
             type="text"
             className="input input-bordered flex-1"
@@ -235,6 +278,387 @@ const EditProfile = () => {
         </div>
       </div>
       {/* End Username Field */}
+
+      {/* Email Field */}
+      <div className="form-control my-3">
+        <label className="label">
+          <span className="label-text">Email</span>
+        </label>
+        <div className="flex items-center gap-2">
+          <input
+            ref={inputRefs.email}
+            id='email'
+            type="text"
+            className="input input-bordered flex-1"
+            value={formData.email}
+            disabled={!isEditing.email}
+            onChange={handleChange}
+          />
+
+          {!isEditing.email ? (
+            <button type="button" className="btn btn-ghost text-lg" onClick={() => handleIsEditing('email')}>
+              <FaEdit />
+            </button>
+          ) : (
+            <>
+              <button type="button" className="btn btn-success btn-sm" onClick={() => handleSave('email')}>
+                <FaCheck />
+              </button>
+              <button type="button" className="btn btn-error btn-sm" onClick={() => handleCancel('email')}>
+                <FaTimes />
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+      {/* End Email Field */}
+
+      {/* Avatar Field */}
+      <div className="form-control my-3">
+        <label className="label">
+          <span className="label-text">Avatar</span>
+        </label>
+        <div className="flex items-center gap-2">
+          <input
+            ref={inputRefs.avatar}
+            id='avatar'
+            type="text"
+            className="input input-bordered flex-1"
+            value={formData.avatar}
+            disabled={!isEditing.avatar}
+            onChange={handleChange}
+          />
+
+          {!isEditing.avatar ? (
+            <button type="button" className="btn btn-ghost text-lg" onClick={() => handleIsEditing('avatar')}>
+              <FaEdit />
+            </button>
+          ) : (
+            <>
+              <button type="button" className="btn btn-success btn-sm" onClick={() => handleSave('avatar')}>
+                <FaCheck />
+              </button>
+              <button type="button" className="btn btn-error btn-sm" onClick={() => handleCancel('avatar')}>
+                <FaTimes />
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+      {/* End Avatar Field */}
+
+      {/* Bio Field */}
+      <div className="form-control my-3">
+        <label className="label">
+          <span className="label-text">Bio</span>
+        </label>
+        <div className="flex items-center gap-2">
+          <textarea
+            ref={inputRefs.bio}
+            id='bio'
+            type="text"
+            className="textarea textarea-bordered flex-1 min-h-20 max-h-40 resize-y"
+            value={formData.bio}
+            disabled={!isEditing.bio}
+            onChange={handleChange}
+          />
+
+          {!isEditing.bio ? (
+            <button type="button" className="btn btn-ghost text-lg" onClick={() => handleIsEditing('bio')}>
+              <FaEdit />
+            </button>
+          ) : (
+            <>
+              <button type="button" className="btn btn-success btn-sm" onClick={() => handleSave('bio')}>
+                <FaCheck />
+              </button>
+              <button type="button" className="btn btn-error btn-sm" onClick={() => handleCancel('bio')}>
+                <FaTimes />
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+      {/* End Bio Field */}
+
+      {/* Location Field */}
+      <div className="form-control my-3">
+        <label className="label">
+          <span className="label-text">Location</span>
+        </label>
+        <div className="flex items-center gap-2">
+          <input
+            ref={inputRefs.location}
+            id='location'
+            type="text"
+            className="input input-bordered flex-1"
+            value={formData.location}
+            disabled={!isEditing.location}
+            onChange={handleChange}
+          />
+
+          {!isEditing.location ? (
+            <button type="button" className="btn btn-ghost text-lg" onClick={() => handleIsEditing('location')}>
+              <FaEdit />
+            </button>
+          ) : (
+            <>
+              <button type="button" className="btn btn-success btn-sm" onClick={() => handleSave('location')}>
+                <FaCheck />
+              </button>
+              <button type="button" className="btn btn-error btn-sm" onClick={() => handleCancel('location')}>
+                <FaTimes />
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+      {/* End Location Field */}
+
+      {/* Role Field */}
+      {isAdminOrOwner &&
+        <div className="form-control my-3">
+          <label className="label">
+            <span className="label-text">Role</span>
+          </label>
+          <div className="flex items-center gap-2">
+            <input
+              ref={inputRefs.role}
+              id='role'
+              type="text"
+              className="input input-bordered flex-1"
+              value={formData.role}
+              disabled={!isEditing.role}
+              onChange={handleChange}
+            />
+
+            {!isEditing.role ? (
+              <button type="button" className="btn btn-ghost text-lg" onClick={() => handleIsEditing('role')}>
+                <FaEdit />
+              </button>
+            ) : (
+              <>
+                <button type="button" className="btn btn-success btn-sm" onClick={() => handleSave('role')}>
+                  <FaCheck />
+                </button>
+                <button type="button" className="btn btn-error btn-sm" onClick={() => handleCancel('role')}>
+                  <FaTimes />
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      }
+      {/* End Role Field */}
+
+      {/* Website Field */}
+      <div className="form-control my-3">
+        <label className="label">
+          <span className="label-text">Website</span>
+        </label>
+        <div className="flex items-center gap-2">
+          <input
+            ref={inputRefs.website}
+            id='website'
+            type="text"
+            className="input input-bordered flex-1"
+            value={formData.website}
+            disabled={!isEditing.website}
+            onChange={handleChange}
+          />
+
+          {!isEditing.website ? (
+            <button type="button" className="btn btn-ghost text-lg" onClick={() => handleIsEditing('website')}>
+              <FaEdit />
+            </button>
+          ) : (
+            <>
+              <button type="button" className="btn btn-success btn-sm" onClick={() => handleSave('website')}>
+                <FaCheck />
+              </button>
+              <button type="button" className="btn btn-error btn-sm" onClick={() => handleCancel('website')}>
+                <FaTimes />
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+      {/* End Website Field */}
+
+      {/* GitHub Field */}
+      <div className="form-control my-3">
+        <label className="label">
+          <span className="label-text">GitHub</span>
+        </label>
+        <div className="flex items-center gap-2">
+          <input
+            ref={inputRefs.github}
+            id='github'
+            type="text"
+            className="input input-bordered flex-1"
+            value={formData.github}
+            disabled={!isEditing.github}
+            onChange={handleChange}
+          />
+
+          {!isEditing.github ? (
+            <button type="button" className="btn btn-ghost text-lg" onClick={() => handleIsEditing('github')}>
+              <FaEdit />
+            </button>
+          ) : (
+            <>
+              <button type="button" className="btn btn-success btn-sm" onClick={() => handleSave('github')}>
+                <FaCheck />
+              </button>
+              <button type="button" className="btn btn-error btn-sm" onClick={() => handleCancel('github')}>
+                <FaTimes />
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+      {/* End GitHub Field */}
+
+      {/* LinkedIn Field */}
+      <div className="form-control my-3">
+        <label className="label">
+          <span className="label-text">LinkedIn</span>
+        </label>
+        <div className="flex items-center gap-2">
+          <input
+            ref={inputRefs.linkedin}
+            id='linkedin'
+            type="text"
+            className="input input-bordered flex-1"
+            value={formData.linkedin}
+            disabled={!isEditing.linkedin}
+            onChange={handleChange}
+          />
+
+          {!isEditing.linkedin ? (
+            <button type="button" className="btn btn-ghost text-lg" onClick={() => handleIsEditing('linkedin')}>
+              <FaEdit />
+            </button>
+          ) : (
+            <>
+              <button type="button" className="btn btn-success btn-sm" onClick={() => handleSave('linkedin')}>
+                <FaCheck />
+              </button>
+              <button type="button" className="btn btn-error btn-sm" onClick={() => handleCancel('linkedin')}>
+                <FaTimes />
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+      {/* End LinkedIn Field */}
+
+      {/* Other Website Field */}
+      <div className="form-control my-3">
+        <label className="label">
+          <span className="label-text">Other Website</span>
+        </label>
+        <div className="flex items-center gap-2">
+          <input
+            ref={inputRefs.otherWebsite}
+            id='otherWebsite'
+            type="text"
+            className="input input-bordered flex-1"
+            value={formData.otherWebsite}
+            disabled={!isEditing.otherWebsite}
+            onChange={handleChange}
+          />
+
+          {!isEditing.otherWebsite ? (
+            <button type="button" className="btn btn-ghost text-lg" onClick={() => handleIsEditing('otherWebsite')}>
+              <FaEdit />
+            </button>
+          ) : (
+            <>
+              <button type="button" className="btn btn-success btn-sm" onClick={() => handleSave('otherWebsite')}>
+                <FaCheck />
+              </button>
+              <button type="button" className="btn btn-error btn-sm" onClick={() => handleCancel('otherWebsite')}>
+                <FaTimes />
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+      {/* End Other Website Field */}
+
+      {/* Skills Field */}
+      <div className="form-control my-3">
+        <label className="label">
+          <span className="label-text">Skills</span>
+        </label>
+
+        {isEditing.skills ? (
+          <>
+            <div className="flex flex-wrap gap-2 mb-2">
+              {formData.skills.map((skill, index) => (
+                <span
+                  key={index}
+                  className="bg-base-300 text-base-content px-3 py-1 rounded-full flex items-center gap-1"
+                >
+                  {skill}
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveSkill(index)}
+                    className="text-sm text-error hover:text-red-500"
+                  >
+                    &times;
+                  </button>
+                </span>
+              ))}
+            </div>
+            <div className="flex gap-2 items-center">
+              <input
+                ref={inputRefs.skills}
+                type="text"
+                value={newSkill}
+                onChange={(e) => setNewSkill(e.target.value)}
+                onKeyDown={handleSkillKeyDown}
+                placeholder="Type a skill and press Enter"
+                className="input input-bordered flex-1"
+              />
+              <button
+                type="button"
+                className="btn btn-success btn-sm"
+                onClick={() => handleSave('skills')}
+              >
+                <FaCheck />
+              </button>
+              <button
+                type="button"
+                className="btn btn-error btn-sm"
+                onClick={() => handleCancel('skills')}
+              >
+                <FaTimes />
+              </button>
+            </div>
+          </>
+        ) : (
+          <div className="flex items-center gap-2 flex-wrap">
+            {formData.skills.map((skill, index) => (
+              <span
+                key={index}
+                className="bg-primary text-primary-content px-3 py-1 rounded-full text-sm"
+              >
+                {skill}
+              </span>
+            ))}
+            <button
+              type="button"
+              className="btn btn-ghost text-lg"
+              onClick={() => handleIsEditing('skills')}
+            >
+              <FaEdit />
+            </button>
+          </div>
+        )}
+      </div>
+      {/* End Skills Field */}
 
     </div>
   );
