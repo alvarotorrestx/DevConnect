@@ -23,12 +23,19 @@ const createPost = async (req, res) => {
             return res.status(400).json({ message: "Body is required to create post." });
         }
 
+        // Helps prevent scripting in post
+        // Limits character count to 3000
+        const sanitizedBody = validator.escape(body.trim());
+        if (sanitizedBody.length > 3000) {
+            return res.status(422).json({ message: "Post must be 3,000 characters or less." });
+        }
+
         // Clean tags
-        const cleanedTags = tags.map(tag => tag.trim().toLowerCase());
+        const cleanedTags = tags.map(tag => tag.startsWith('#') ? tag.slice(1).trim().toLowerCase() : tag.trim().toLowerCase());
 
         // Create the post
         const newPost = await Post.create({
-            body,
+            body: sanitizedBody,
             tags: cleanedTags,
             featured,
             author: userId
@@ -39,7 +46,7 @@ const createPost = async (req, res) => {
         });
 
         res.status(201).json({
-            message: `Post successfully created by user ${newPost.author}`,
+            message: `Post successfully created by user id: ${newPost.author}`,
             post: newPost
         });
     }
