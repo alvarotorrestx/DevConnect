@@ -57,7 +57,65 @@ const createPost = async (req, res) => {
 
 const updatePost = async (req, res) => {
     try {
+        const postId = req.params.id
+        const userRole = req.user.role;
+        const userId = req.user.id;
 
+        const foundPost = await Post.findOne({ postId });
+        if (!foundPost) return res.status(404).json({ message: "Post not found." });
+
+        // Restrict edit access unless it's your own post or you are an moderator, admin, owner
+        if (foundPost.author._id.toString() !== userId && !['moderator', 'admin', 'owner'].includes(userRole)) return res.status(403).json({ message: "You are not authorized to edit this profile." });
+
+        const { body, tags, featured } = req.body;
+
+        const allowedUpdates = ['body', 'tags', 'featured'];
+        const hasValidUpdate = allowedUpdates.some(field => req.body[field] !== undefined);
+        if (!hasValidUpdate) return res.status(400).json({ message: "At least one valid field must be changed to update the post." });
+
+        if (userRole === 'owner') {
+            newRole = role; // Full access
+        } else if (userRole === 'admin') {
+            if (['user', 'moderator'].includes(role)) {
+                newRole = role;
+            } else {
+                return res.status(403).json({ message: 'Admins can only assign user or moderator roles.' });
+            }
+        } else {
+            // Non-admin/owner trying to set a role
+            return res.status(403).json({ message: 'You are not authorized to change roles.' });
+        }
+
+
+        // Update user with new fields
+        const updatedUser = await User.findOneAndUpdate(
+            { _id: foundPost._id },
+            {
+                email,
+                username,
+                firstName,
+                lastName,
+                password: hashedPassword,
+                role: newRole,
+                bio: sanitizedBio,
+                location,
+                skills,
+                avatar,
+                website,
+                github,
+                linkedin,
+                otherWebsite
+            },
+            { new: true } // Returns the updated user
+        );
+
+        // Remove password before sending data back
+        const { password: _, ...userData } = updatedUser.toObject();
+
+        res.status(200).json({
+            message: `User ${userData.username} successfully updated.`,
+            user: userData
+        });
     }
     catch (err) {
         res.status(500).json({ message: "Error updating post." });
