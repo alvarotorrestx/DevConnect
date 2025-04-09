@@ -5,6 +5,7 @@ import axios from "../../../api/axios";
 import { FaTimesCircle } from "react-icons/fa";
 import { FaCheckCircle } from "react-icons/fa";
 import useAuth from "../../../auth/useAuth";
+import useRefreshToken from '../../../auth/useRefreshToken'
 
 // Toast imports
 import ErrorToast from "../toast/ErrorToast";
@@ -20,7 +21,6 @@ const Login = () => {
   const navigate = useNavigate();
   const refresh = useRefreshToken();
   const from = location.state?.from?.pathname || "/dashboard";
-  const errRef = useRef();
 
   const [formData, setFormData] = useState({
     login: "",
@@ -75,39 +75,16 @@ const Login = () => {
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
-            });
-
-            const accessToken = response?.data?.accessToken;
-            const username = response?.data?.user.username;
-            const role = response?.data?.user.role;
-
-            setAuth({ login: formData.login, username, role, accessToken });
-
-            await refresh();
-
-            navigate(from, { replace: true });
-        }
-        catch (err) {
-            // If no error response
-            if (!err?.response) {
-                setErrMsg('No Server Response');
-            } else if (err.response?.status === 401 || err.response?.status === 400) { // Invalid credentials / All fields required
-                setErrMsg(`${JSON.stringify(err.response.data.message).slice(1, -1)}`);
-            } else {
-                setErrMsg('Login Failed');
-            }
-
-            errRef.current.focus();
-            setButtonStatus('Login');
-        }
-      );
+        });
 
       const accessToken = response?.data?.accessToken;
+      const username = response?.data?.user.username;
       const role = response?.data?.user.role;
 
-      setAuth({ login: formData.login, role, accessToken });
+      setAuth({ login: formData.login, username, role, accessToken });
 
-      showSuccess("Login successful!");
+      await refresh();
+
       navigate(from, { replace: true });
     } catch (err) {
       if (!err?.response) {
