@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react"; 
+import { useRef, useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { IoMdEyeOff, IoMdEye } from "react-icons/io";
 import axios from "../../../api/axios";
@@ -81,7 +81,7 @@ const Login = () => {
 
       setAuth({ login: formData.login, role, accessToken });
 
-      showSuccess("Login successful!"); 
+      showSuccess("Login successful!");
       navigate(from, { replace: true });
     } catch (err) {
       if (!err?.response) {
@@ -93,7 +93,6 @@ const Login = () => {
       }
       setButtonStatus("Login");
     }
-    
   };
 
   const togglePersist = () => setPersist((prev) => !prev);
@@ -200,9 +199,9 @@ const Login = () => {
 
       {/* Toasts line no 84  success msg can edit if you want AI*/}
       <SuccessToast
-      message={errorMessage} 
-      show={showErrorToast}
-      status="error"
+        message={successMessage}
+        show={showSuccessToast}
+        status="error"
         icon={
           <FaCheckCircle className="text-green-600 text-4xl bg-transparent p-0 m-0" />
         }
