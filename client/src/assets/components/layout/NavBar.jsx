@@ -14,9 +14,11 @@ import { RiLogoutBoxLine } from "react-icons/ri";
 // Context Imports
 import ThemeContext from "../../context/ThemeContext";
 
-const NavBar = () => {
+const NavBar = ({ avatar, username }) => {
 
     const { darkMode, actions } = useContext(ThemeContext)
+
+    const profileURL = `/profile/${username}`;
 
     const logout = useLogout();
 
@@ -49,11 +51,11 @@ const NavBar = () => {
                     <ul
                         tabIndex={0}
                         className="menu menu-sm dropdown-content bg-base-200 rounded-box z-[1] mt-3 p-2 shadow w-[95%]">
-                        <li><NavLink to='/dashboard' className='py-4 flex items-center'><span className="text-2xl"><IoMdHome /></span>Home</NavLink></li>
-                        {/* <li><NavLink to='/tester' className='py-4 flex items-center'><span className="text-2xl"><IoMdHome /></span>Tester</NavLink></li> */}
-                        <li><NavLink to='' className='py-4 flex items-center'><span className="text-2xl"><HiNewspaper /></span>Blogs</NavLink></li>
-                        <li><NavLink to='' className='py-4 flex items-center'><span className="text-2xl"><IoMdPeople /></span>Network</NavLink></li>
-                        <li><NavLink to='' className='py-4 flex items-center'><span className="text-2xl"><GiSuitcase /></span>Jobs</NavLink></li>
+                        <li><NavLink to='/dashboard' className='py-4 flex items-center'><span className="text-2xl text-primary"><IoMdHome /></span>Home</NavLink></li>
+                        {/* <li><NavLink to='/tester' className='py-4 flex items-center'><span className="text-2xl text-primary"><IoMdHome /></span>Tester</NavLink></li> */}
+                        <li><NavLink to='' className='py-4 flex items-center'><span className="text-2xl text-primary"><HiNewspaper /></span>Blogs</NavLink></li>
+                        <li><NavLink to='/network' className='py-4 flex items-center'><span className="text-2xl text-primary"><IoMdPeople /></span>Network</NavLink></li>
+                        <li><NavLink to='' className='py-4 flex items-center'><span className="text-2xl text-primary"><GiSuitcase /></span>Jobs</NavLink></li>
                     </ul>
                 </div>
 
@@ -64,11 +66,11 @@ const NavBar = () => {
             {/* Desktop Nav */}
             <div className="navbar-center hidden lg:flex w-[unset] justify-center lg:col-span-2">
                 <ul className="menu menu-horizontal px-1">
-                    <li><NavLink to='/dashboard' className="flex items-center"><span className="text-2xl"><IoMdHome /></span>Home</NavLink></li>
-                    {/* <li><NavLink to='/tester' className="flex items-center"><span className="text-2xl"><HiNewspaper /></span>Tester</NavLink></li> */}
-                    <li><NavLink to='' className="flex items-center"><span className="text-2xl"><HiNewspaper /></span>Blogs</NavLink></li>
-                    <li><NavLink to='' className="flex items-center"><span className="text-2xl"><IoMdPeople /></span>Network</NavLink></li>
-                    <li><NavLink to='' className="flex items-center"><span className="text-2xl"><GiSuitcase /></span>Jobs</NavLink></li>
+                    <li><NavLink to='/dashboard' className="flex items-center"><span className="text-2xl text-primary"><IoMdHome /></span>Home</NavLink></li>
+                    {/* <li><NavLink to='/tester' className="flex items-center"><span className="text-2xl text-primary"><HiNewspaper /></span>Tester</NavLink></li> */}
+                    <li><NavLink to='' className="flex items-center"><span className="text-2xl text-primary"><HiNewspaper /></span>Blogs</NavLink></li>
+                    <li><NavLink to='/network' className="flex items-center"><span className="text-2xl text-primary"><IoMdPeople /></span>Network</NavLink></li>
+                    <li><NavLink to='' className="flex items-center"><span className="text-2xl text-primary"><GiSuitcase /></span>Jobs</NavLink></li>
                 </ul>
             </div>
 
@@ -117,7 +119,8 @@ const NavBar = () => {
                         <div className="w-10 rounded-full">
                             <img
                                 alt="Tailwind CSS Navbar component"
-                                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                                src={avatar}
+                            />
                         </div>
                     </div>
                     <ul
@@ -125,7 +128,7 @@ const NavBar = () => {
                         className="menu menu-sm dropdown-content bg-base-200 rounded-box z-[1] mt-3 w-52 p-2 shadow">
                         <li>
                             {/* Theme Switcher */}
-                            <label className="flex cursor-pointer gap-2">
+                            <label className="flex cursor-pointer gap-2 text-primary">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="20"
@@ -162,9 +165,9 @@ const NavBar = () => {
                                 </svg>
                             </label>
                         </li>
-                        <li><button className='py-4 flex items-center'><span className="text-2xl"><FaUserCircle /></span>Profile</button></li>
-                        <li><button className='py-4 flex items-center'><span className="text-2xl"><IoSettingsSharp /></span>Settings</button></li>
-                        <li><button onClick={handleLogout} className='py-4 flex items-center'><span className="text-2xl"><RiLogoutBoxLine /></span>Logout</button></li>
+                        <li><NavLink to={profileURL} className='py-4 flex items-center'><span className="text-2xl text-primary"><FaUserCircle /></span>Profile</NavLink></li>
+                        <li><button className='py-4 flex items-center'><span className="text-2xl text-primary"><IoSettingsSharp /></span>Settings</button></li>
+                        <li><button onClick={handleLogout} className='py-4 flex items-center'><span className="text-2xl text-primary"><RiLogoutBoxLine /></span>Logout</button></li>
                     </ul>
                 </div>
             </div>

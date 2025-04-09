@@ -18,7 +18,9 @@ const Login = () => {
   const { setAuth, persist, setPersist } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+  const refresh = useRefreshToken();
   const from = location.state?.from?.pathname || "/dashboard";
+  const errRef = useRef();
 
   const [formData, setFormData] = useState({
     login: "",
@@ -73,6 +75,30 @@ const Login = () => {
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
+            });
+
+            const accessToken = response?.data?.accessToken;
+            const username = response?.data?.user.username;
+            const role = response?.data?.user.role;
+
+            setAuth({ login: formData.login, username, role, accessToken });
+
+            await refresh();
+
+            navigate(from, { replace: true });
+        }
+        catch (err) {
+            // If no error response
+            if (!err?.response) {
+                setErrMsg('No Server Response');
+            } else if (err.response?.status === 401 || err.response?.status === 400) { // Invalid credentials / All fields required
+                setErrMsg(`${JSON.stringify(err.response.data.message).slice(1, -1)}`);
+            } else {
+                setErrMsg('Login Failed');
+            }
+
+            errRef.current.focus();
+            setButtonStatus('Login');
         }
       );
 
