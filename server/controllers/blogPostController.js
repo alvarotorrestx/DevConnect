@@ -61,11 +61,11 @@ const updatePost = async (req, res) => {
         const userRole = req.user.role;
         const userId = req.user.id;
 
-        const foundPost = await Post.findOne({ postId });
+        const foundPost = await Post.findById(postId);
         if (!foundPost) return res.status(404).json({ message: "Post not found." });
 
         // Restrict edit access unless it's your own post or you are an moderator, admin, owner
-        if (foundPost.author._id.toString() !== userId && !['moderator', 'admin', 'owner'].includes(userRole)) return res.status(403).json({ message: "You are not authorized to edit this profile." });
+        if (foundPost.author.toString() !== userId && !['moderator', 'admin', 'owner'].includes(userRole)) return res.status(403).json({ message: "You are not authorized to edit this profile." });
 
         const { body, tags, featured } = req.body;
 
@@ -75,44 +75,33 @@ const updatePost = async (req, res) => {
 
         // Helps prevent scripting in post
         // Limits character count to 3000
-        const sanitizedBody = validator.escape(body.trim());
+        const sanitizedBody = body ? validator.escape(body.trim()) : foundPost.body;
         if (sanitizedBody.length > 3000) {
             return res.status(422).json({ message: "Post must be 3,000 characters or less." });
         }
 
         // Clean tags
-        const cleanedTags = tags.map(tag => tag.startsWith('#') ? tag.slice(1).trim().toLowerCase() : tag.trim().toLowerCase());
+        const cleanedTags = tags
+            ? tags.map(tag => tag.startsWith('#') ? tag.slice(1).trim().toLowerCase() : tag.trim().toLowerCase())
+            : foundPost.tags;
 
-        if (!typeof featured === "boolean") return res.status(422).json({ message: "Featured must be of type boolean." }); 
+
+        if (featured !== undefined && typeof featured !== "boolean") return res.status(422).json({ message: "Featured must be a boolean." });
 
         // Update user with new fields
-        const updatedUser = await User.findOneAndUpdate(
-            { _id: foundPost._id },
+        const updatedPost = await Post.findByIdAndUpdate(
+            postId,
             {
-                email,
-                username,
-                firstName,
-                lastName,
-                password: hashedPassword,
-                role: newRole,
-                bio: sanitizedBio,
-                location,
-                skills,
-                avatar,
-                website,
-                github,
-                linkedin,
-                otherWebsite
+                body: sanitizedBody,
+                tags: cleanedTags,
+                featured: featured !== undefined ? featured : foundPost.featured
             },
-            { new: true } // Returns the updated user
+            { new: true }
         );
 
-        // Remove password before sending data back
-        const { password: _, ...userData } = updatedUser.toObject();
-
         res.status(200).json({
-            message: `User ${userData.username} successfully updated.`,
-            user: userData
+            message: `Post successfully created by user id: ${updatedPost.author}`,
+            post: updatedPost
         });
     }
     catch (err) {
