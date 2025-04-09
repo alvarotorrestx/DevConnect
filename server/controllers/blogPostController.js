@@ -73,19 +73,17 @@ const updatePost = async (req, res) => {
         const hasValidUpdate = allowedUpdates.some(field => req.body[field] !== undefined);
         if (!hasValidUpdate) return res.status(400).json({ message: "At least one valid field must be changed to update the post." });
 
-        if (userRole === 'owner') {
-            newRole = role; // Full access
-        } else if (userRole === 'admin') {
-            if (['user', 'moderator'].includes(role)) {
-                newRole = role;
-            } else {
-                return res.status(403).json({ message: 'Admins can only assign user or moderator roles.' });
-            }
-        } else {
-            // Non-admin/owner trying to set a role
-            return res.status(403).json({ message: 'You are not authorized to change roles.' });
+        // Helps prevent scripting in post
+        // Limits character count to 3000
+        const sanitizedBody = validator.escape(body.trim());
+        if (sanitizedBody.length > 3000) {
+            return res.status(422).json({ message: "Post must be 3,000 characters or less." });
         }
 
+        // Clean tags
+        const cleanedTags = tags.map(tag => tag.startsWith('#') ? tag.slice(1).trim().toLowerCase() : tag.trim().toLowerCase());
+
+        if (!typeof featured === "boolean") return res.status(422).json({ message: "Featured must be of type boolean." }); 
 
         // Update user with new fields
         const updatedUser = await User.findOneAndUpdate(
