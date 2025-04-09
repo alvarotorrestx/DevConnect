@@ -65,7 +65,7 @@ const updatePost = async (req, res) => {
         if (!foundPost) return res.status(404).json({ message: "Post not found." });
 
         // Restrict edit access unless it's your own post or you are an moderator, admin, owner
-        if (foundPost.author.toString() !== userId && !['moderator', 'admin', 'owner'].includes(userRole)) return res.status(403).json({ message: "You are not authorized to edit this profile." });
+        if (foundPost.author.toString() !== userId && !['moderator', 'admin', 'owner'].includes(userRole)) return res.status(403).json({ message: "You are not authorized to edit this post." });
 
         const { body, tags, featured } = req.body;
 
@@ -100,7 +100,7 @@ const updatePost = async (req, res) => {
         );
 
         res.status(200).json({
-            message: `Post successfully created by user id: ${updatedPost.author}`,
+            message: `Post successfully updated by user id: ${updatedPost.author}`,
             post: updatedPost
         });
     }
@@ -111,7 +111,25 @@ const updatePost = async (req, res) => {
 
 const deletePost = async (req, res) => {
     try {
+        const postId = req.params.id
+        const userRole = req.user.role;
+        const userId = req.user.id;
 
+        const foundPost = await Post.findById(postId);
+        if (!foundPost) return res.status(404).json({ message: "Post not found." });
+
+        // Restrict delete access unless it's your own post or you are an moderator, admin, owner
+        if (foundPost.author.toString() !== userId && !['moderator', 'admin', 'owner'].includes(userRole)) return res.status(403).json({ message: "You are not authorized to delete this post." });
+
+        await foundPost.deleteOne();
+
+        await User.findByIdAndUpdate(userId, {
+            $pull: { posts: postId }
+        });
+
+        res.status(200).json({
+            message: `Post ${postId} successfully deleted.`,
+        });
     }
     catch (err) {
         res.status(500).json({ message: "Error deleting post." });
