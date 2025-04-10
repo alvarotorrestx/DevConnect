@@ -8,10 +8,36 @@ import useAuth from '../../../auth/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { FaUserCheck } from "react-icons/fa";
 
+
+
+// Toast imports
+import ErrorToast from "../toast/ErrorToast";
+import { useErrorToast } from "../toast/useErrorToast";
+import SuccessToast from "../toast/SuccessToast";
+import { useSuccessToast } from "../toast/useSuccessToast";
+
+
+
 const EditProfile = () => {
   const { profile, loading } = useContext(ProfileContext);
 
   const [formData, setFormData] = useState(null);
+
+
+
+
+
+  const {
+    message: errorMessage,
+    show: showErrorToast,
+    showError,
+  } = useErrorToast();
+
+  const {
+    message: successMessage,
+    show: showSuccessToast,
+    showSuccess,
+  } = useSuccessToast();
 
   useEffect(() => {
     if (profile) {
@@ -136,6 +162,13 @@ const EditProfile = () => {
           headers: { Authorization: `Bearer ${auth?.accessToken}` },
           withCredentials: true
         })
+      if (response?.status === 200) {
+        showSuccess(`${field} updated successfully`);
+        setErrMsg('');
+      }
+      else {
+        showError(`${field} update failed`);
+      }
     }
     catch (err) {
       // If no error response
@@ -700,7 +733,15 @@ const EditProfile = () => {
         )}
       </div>
       {/* End Skills Field */}
-
+      {/* Toast components */}
+      <ErrorToast
+        message={errorMessage}
+        show={showErrorToast}
+      />
+      <SuccessToast
+        message={successMessage}
+        show={showSuccessToast}
+      />
     </div>
   );
 };
