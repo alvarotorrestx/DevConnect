@@ -119,8 +119,8 @@ const updateProfile = async (req, res) => {
             }
         }
 
+        const sanitizedBio = bio ? validator.escape(bio.trim()) : foundUser.bio;
         if (bio !== undefined) {
-            const sanitizedBio = validator.escape(bio.trim());
             if (sanitizedBio.length > 500) {
                 return res.status(422).json({ message: "Bio must be 500 characters or less." });
             }
