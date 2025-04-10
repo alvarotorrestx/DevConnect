@@ -23,14 +23,6 @@ const userSchema = new mongoose.Schema({
     github: { type: String, default: '' },
     linkedin: { type: String, default: '' },
     otherWebsite: { type: String, default: '' },
-
-    // Posts - Reference to Posts model
-    posts: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Post'
-        }
-    ]
 }, { timestamps: true });
 
 const User = mongoose.model('User', userSchema);

@@ -142,7 +142,7 @@ const updateProfile = async (req, res) => {
                 lastName,
                 password: hashedPassword,
                 role: newRole,
-                bio: sanitizedBio,
+                bio,
                 location,
                 skills,
                 avatar,
