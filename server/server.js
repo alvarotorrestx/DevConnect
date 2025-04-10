@@ -20,12 +20,14 @@ const authRoutes = require('./routes/authRoutes');
 const refreshRoutes = require('./routes/refreshRoutes');
 const logoutRoutes = require('./routes/logoutRoutes');
 const profileRoutes = require('./routes/profileRoutes');
-const blogPostRoutes = require('./routes/blogPostRoutes');
 
 // Middleware
 app.use(express.json());
 app.use(cookieParser());
 const { verifyJWT } = require('./middleware/verifyJWT');
+
+// Admin - User Routes
+app.use('/api/users', userRoutes);
 
 // Main DB Routes
 app.use('/register', registerRoutes);
@@ -36,14 +38,8 @@ app.get('/auth/verify', verifyJWT, (req, res) => {
 })
 app.use('/auth/refresh', refreshRoutes);
 
-// User Routes
-app.use('/api/users', userRoutes);
-
 // Profile Routes
 app.use('/profile', profileRoutes);
-
-// Blog Post Routes
-app.use('/api/posts', blogPostRoutes)
 
 app.listen(port, () => {
     console.log(`Server running on port: ${port}`);
