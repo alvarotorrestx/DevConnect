@@ -163,6 +163,7 @@ const updateProfile = async (req, res) => {
         });
     }
     catch (err) {
+        console.error("UpdateProfile Error:", err);
         res.status(500).json({ message: 'Failed to fetch user.' });
     }
 }
