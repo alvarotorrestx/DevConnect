@@ -53,7 +53,7 @@ const NavBar = ({ avatar, username }) => {
                         className="menu menu-sm dropdown-content bg-base-200 rounded-box z-[1] mt-3 p-2 shadow w-[95%]">
                         <li><NavLink to='/dashboard' className='py-4 flex items-center'><span className="text-2xl text-primary"><IoMdHome /></span>Home</NavLink></li>
                         {/* <li><NavLink to='/tester' className='py-4 flex items-center'><span className="text-2xl text-primary"><IoMdHome /></span>Tester</NavLink></li> */}
-                        <li><NavLink to='' className='py-4 flex items-center'><span className="text-2xl text-primary"><HiNewspaper /></span>Blogs</NavLink></li>
+                        <li><NavLink to='/blogs' className='py-4 flex items-center'><span className="text-2xl text-primary"><HiNewspaper /></span>Blogs</NavLink></li>
                         <li><NavLink to='/network' className='py-4 flex items-center'><span className="text-2xl text-primary"><IoMdPeople /></span>Network</NavLink></li>
                         <li><NavLink to='' className='py-4 flex items-center'><span className="text-2xl text-primary"><GiSuitcase /></span>Jobs</NavLink></li>
                     </ul>
@@ -68,7 +68,7 @@ const NavBar = ({ avatar, username }) => {
                 <ul className="menu menu-horizontal px-1">
                     <li><NavLink to='/dashboard' className="flex items-center"><span className="text-2xl text-primary"><IoMdHome /></span>Home</NavLink></li>
                     {/* <li><NavLink to='/tester' className="flex items-center"><span className="text-2xl text-primary"><HiNewspaper /></span>Tester</NavLink></li> */}
-                    <li><NavLink to='' className="flex items-center"><span className="text-2xl text-primary"><HiNewspaper /></span>Blogs</NavLink></li>
+                    <li><NavLink to='/blogs' className="flex items-center"><span className="text-2xl text-primary"><HiNewspaper /></span>Blogs</NavLink></li>
                     <li><NavLink to='/network' className="flex items-center"><span className="text-2xl text-primary"><IoMdPeople /></span>Network</NavLink></li>
                     <li><NavLink to='' className="flex items-center"><span className="text-2xl text-primary"><GiSuitcase /></span>Jobs</NavLink></li>
                 </ul>
