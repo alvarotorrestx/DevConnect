@@ -18,27 +18,11 @@ import { useSuccessToast } from "../toast/useSuccessToast";
 
 
 
-// Toast imports
-import ErrorToast from "../toast/ErrorToast";
-import { useErrorToast } from "../toast/useErrorToast";
-import SuccessToast from "../toast/SuccessToast";
-import { useSuccessToast } from "../toast/useSuccessToast";
-
-
-
 const EditProfile = () => {
   const { profile, loading } = useContext(ProfileContext);
 
   const [formData, setFormData] = useState(null);
 
-<<<<<<< HEAD
-
-
-
-
-=======
-  // Toast hooks
->>>>>>> 60da658 (fix and resolve issue)
   const {
     message: errorMessage,
     show: showErrorToast,
@@ -128,8 +112,6 @@ const EditProfile = () => {
     }
   }, [loading, profile, allowEditing, navigate]);
 
-  // Remove the error ref and error state
-  // We'll use the toast hooks instead
 
   const handleSave = async (field) => {
 
@@ -164,26 +146,13 @@ const EditProfile = () => {
         {
           headers: { Authorization: `Bearer ${auth?.accessToken}` },
           withCredentials: true
-<<<<<<< HEAD
         })
       if (response?.status === 200) {
-        showSuccess(`${field} updated successfully`);
-        setErrMsg('');
+        showSuccess(" Profile updated successfully");
       }
       else {
-        showError(`${field} update failed`);
+        showError("Update failed");
       }
-=======
-        });
-      // Show success message
-      if (response.status === 200) {
-        showSuccess('Profile updated successfully!');
-      }
-      else {
-        showError('Update Failed');
-      }
-
->>>>>>> 60da658 (fix and resolve issue)
     }
     catch (err) {
       // If no error response
@@ -236,7 +205,6 @@ const EditProfile = () => {
         <FaUserCheck />
       </a>
 
-      {/* Remove the error message div */}
 
       {/* First Name Field */}
       <div className="form-control mt-6">
@@ -739,17 +707,6 @@ const EditProfile = () => {
         )}
       </div>
       {/* End Skills Field */}
-<<<<<<< HEAD
-      {/* Toast components */}
-      <ErrorToast
-        message={errorMessage}
-        show={showErrorToast}
-      />
-      <SuccessToast
-        message={successMessage}
-        show={showSuccessToast}
-=======
-
       {/* Add Toast Components */}
       <SuccessToast
         message={successMessage}
@@ -766,9 +723,8 @@ const EditProfile = () => {
         status="error"
         icon={<FaTimesCircle className="text-red-600 text-4xl" />}
         iconBgColor="bg-red-700"
->>>>>>> 60da658 (fix and resolve issue)
       />
-    </div>
+    </div >
   );
 };
 
