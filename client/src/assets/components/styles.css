@@ -1,0 +1,254 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    background:#F2F3F4 ;
+    color: black;
+}
+.navbar{
+    padding: 5px;
+    background: #F7FCFE;
+    color: black;
+    align-items: center;
+    justify-content: space-between;
+}
+.navbar .left{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.navbar .left .icon img{
+    width: 56px;
+    height: 56px;
+    border-radius: 50px;
+}
+.navbar .right{
+    display: flex;
+    align-items: center;
+}
+.profile{
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 20px;
+}
+.profile img{
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+}
+.right{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.right .search-bar input{
+   background:#F2F3F4;
+}
+
+.first-column{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-left: 5px;
+}
+.main{
+    margin-top: 15px;
+}
+.column-container{
+    border: 12px solid white;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+.data{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.data .image img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+}
+.nav{
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    /* border: 2px solid orange; */
+    border: 12px solid white;
+    background: white;
+}
+
+.nav ul{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    /* border: 2px solid blue; */
+}
+.nav ul li{
+    /* border: 2px solid pink; */
+    padding: 8px;
+    font-size: 20px;
+}
+li{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.selected {
+    background-color: #e0e0e0; /* Light grey background */
+    font-weight: bold;
+    border-radius: 5px;
+    padding: 5px;
+  }
+.footer{
+    margin-top: 15px;
+    border: 2px solid green;
+}
+.second-container{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    border: 2px solid white;
+}
+.second-container h2{
+    font-size: 22px;
+}
+.second-container a{
+    font-size: 17px;
+}
+.image-container{
+    border: 2px solid red;
+    width: 700px;
+    height: 150px;
+}
+.blog-post-container{
+    margin-top: 20px;
+    width: 700px;
+    height: 110px;
+    /* border: 2px solid green;
+     */
+     background: white;
+     border-radius: 15px;
+     padding: 2px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+.input-field{
+    margin: 4px;
+    display: flex;
+    gap: 15px;
+}
+.input-field .image img{
+    width:40px;
+    height: 40px;
+    border-radius: 50px;
+}
+.input-field button{
+    background: #000;
+    padding: 8px 10px;
+}
+.input-field .input{
+    width: 520px;
+    background: #e0e0e0;
+    padding: 4px;
+}
+.attachements{
+    display: flex;
+    gap: 25px;
+}
+.image{
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+.blog-container{
+    padding: 15px;
+    width: 700px;
+    height: 500px;
+    border: 2px solid blue;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.blog-top{
+    display: flex;
+    gap: 10px;
+}
+.blog-top .image img{
+   width: 50px;
+   height: 50px;
+   border-radius: 50px;
+}
+.blog-image{
+    display: flex;
+    justify-content: center;
+}
+.blog-image img{
+    width: 600px;
+    height: 350px;
+}
+.blog-extra{
+    display: flex;
+   gap: 50px;
+}
+.post-btn button{
+    background: #e0e0e0;
+    border-radius: 5px;
+}
+.third-column{
+    width: 260px;
+    height: 500px;
+    border: 2px solid pink;
+}
+
+.third-column{
+    display: flex;
+    flex-direction: column;
+}
+.message-container{
+    display: flex;
+    flex-direction: column;
+   gap: 20px;
+}
+.first-section{
+    display: flex;
+   justify-content: space-between;
+}
+.second-section input{
+   width: 200px;
+   background: white;
+}
+.left{
+    display: flex;
+    gap: 6px;
+    font-size: 16px;
+}
+.headings{
+    display: flex;
+    justify-content: space-between;
+}
+.names{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.first-profile,.view-button{
+    margin-left: 10px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.first-profile img{
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+}
