@@ -15,12 +15,12 @@ const ErrorToast = ({ message, show, icon, iconBgColor, status, onClose }) => {
           <Alert className="alert alert-error shadow-lg relative pr-2 rounded-[8px]">
 
             {icon && (
-             <div className="rounded-full bg-white">
+              <div className="rounded-full bg-white">
                 {icon}
               </div>
-              
+
             )}
-<span className="font-medium text-[19px]">
+            <span className="font-medium text-[19px]">
               {message}
             </span>
           </Alert>
