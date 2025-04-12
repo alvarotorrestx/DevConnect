@@ -54,6 +54,7 @@ function App() {
                 </Route>
                 <Route path='/network' element={<Network />} />
                 <Route path='/tester' element={<TesterComponent />} />
+                <Route path="*" element={<NotFound />} />
               </Route>
             </Route>
           </Route>
