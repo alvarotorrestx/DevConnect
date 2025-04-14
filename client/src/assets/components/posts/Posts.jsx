@@ -10,6 +10,9 @@ const Posts = () => {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    const isImage = url => !isVideo(url); // fallback logic
+    const isVideo = url => /\.(mp4|webm|ogg)$/i.test(url);
+
     useEffect(() => {
         const fetchPosts = async () => {
             setLoading(true);
@@ -60,6 +63,22 @@ const Posts = () => {
 
                             {/* Post Body */}
                             <p className="mb-2 text-base-content">{post.body}</p>
+
+
+                            {/* Media */}
+                            {Array.isArray(post.media) && post.media.map((url, index) => (
+                                <div key={index} className='mb-2'>
+                                    {isVideo(url) ? (
+                                        <video controls className="rounded-md max-w-full">
+                                            <source src={url} />
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    ) : (
+                                        <img src={url} alt={`Post media ${index + 1}`} className="rounded-md max-w-full" />
+                                    )}
+                                </div>
+                            ))}
+
 
                             {/* Tags */}
                             {post.tags.length > 0 && (
