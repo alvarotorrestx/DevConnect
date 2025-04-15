@@ -7,8 +7,8 @@ function ProjectCopo({ project, onEdit }) {
         <FaEdit onClick={onEdit} />
       </div>
       <h1 className="font-medium">{project.title}</h1>
-      <p>{project.duration}</p>
-      <p className="pt-2">{project.description}</p>
+      <h6>{project.duration}</h6>
+      <h3>Description:{project.description}</h3>
       <h3>Skill: {project.skills}</h3>
       {project.image && (
         <img className="h-[100px] mt-2 rounded" src={project.image} alt="project" />

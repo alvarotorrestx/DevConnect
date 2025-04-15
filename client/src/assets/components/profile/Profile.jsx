@@ -7,6 +7,7 @@ import useAuth from '../../../auth/useAuth';
 import About from './About/About';
 import Project from './ProjectsSec/Project';
 import Experiance from './Experience/Experiance'
+import Blogg from './Blog/Blogg';
 
 const Profile = () => {
 
@@ -97,6 +98,7 @@ const Profile = () => {
       <About/>
       <Experiance/>
       <Project/>
+      <Blogg/>
       </div>
 
     )

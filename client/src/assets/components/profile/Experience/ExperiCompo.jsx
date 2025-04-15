@@ -8,7 +8,7 @@ function ExperiCompo({ experience, onEdit }) {
       </div>
       <h2>Role: {experience.role}</h2>
       <h3>Company: {experience.company}</h3>
-      <h3>{experience.duration}</h3>
+      <h3>Duration:{experience.duration}</h3>
       <p>Description: {experience.description}</p>
     </div>
   );
