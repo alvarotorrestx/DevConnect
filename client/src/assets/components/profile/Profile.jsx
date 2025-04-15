@@ -4,6 +4,9 @@ import Loading from '../subcomponents/Loading'
 import ProfileContext from '../../context/ProfileContext';
 import { FaUserEdit } from "react-icons/fa";
 import useAuth from '../../../auth/useAuth';
+import About from './About/About';
+import Project from './ProjectsSec/Project';
+import Experiance from './Experience/Experiance'
 
 const Profile = () => {
 
@@ -20,6 +23,7 @@ const Profile = () => {
   return profile
     ?
     (
+      <div >
       <div className="max-w-[90%] lg:max-w-4xl mx-auto p-6 bg-base-100 rounded-lg shadow-md mt-10 relative">
         {/* Edit Icon - For User, Admin, and Owner */}
         {canEdit && (
@@ -88,6 +92,11 @@ const Profile = () => {
             <p>No skills listed.</p>
           )}
         </div>
+       
+      </div>
+      <About/>
+      <Experiance/>
+      <Project/>
       </div>
 
     )
