@@ -20,6 +20,7 @@ import ThemeContext from './assets/context/ThemeContext';
 import useAuth from './auth/useAuth';
 import { ProfileProvider } from './assets/context/ProfileContext';
 import Network from './assets/components/network/Network';
+import Adminpage from './assets/components/Admin/Adminpage';
 
 function App() {
 
@@ -53,6 +54,7 @@ function App() {
                   <Route path="edit" element={<EditProfile />} />
                 </Route>
                 <Route path='/network' element={<Network />} />
+                <Route path='/adminpage' element={<Adminpage/>}/>
                 <Route path='/tester' element={<TesterComponent />} />
               </Route>
             </Route>
