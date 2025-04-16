@@ -46,7 +46,7 @@ function Experience() {
       <div className="flex items-center justify-between font-semibold">
         <h1>Experience</h1>
         <div
-  className="text-2xl bg-base-300 p-[5px] rounded-3xl flex gap-5 cursor-pointer opacity-75 hover:opacity-100 transition text-primary"
+  className="text-2xl bg-base-300 shadow-lg p-[5px] rounded-3xl flex gap-5 cursor-pointer opacity-75 hover:opacity-100 transition text-primary"
  
 >
   <FaPlus onClick={handleAdd} />

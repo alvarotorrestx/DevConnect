@@ -20,7 +20,7 @@ function About() {
       <div className="flex pb-4 items-center justify-between font-semibold">
         <h1>About</h1>
         <div
-         className="text-2xl bg-base-300 p-[7px] rounded-3xl flex items-center justify-center gap-5 cursor-pointer opacity-75 hover:opacity-100 transition text-primary"
+         className="text-2xl shadow-lg bg-base-300 p-[7px] rounded-3xl flex items-center justify-center gap-5 cursor-pointer opacity-75 hover:opacity-100 transition text-primary"
           onClick={() => setShowModal(true)} style={{
             
           }}
