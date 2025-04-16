@@ -45,9 +45,13 @@ function Experience() {
     <div className="max-w-[90%] lg:max-w-4xl mx-auto p-6 bg-base-100 rounded-lg shadow-md mt-10 relative">
       <div className="flex items-center justify-between font-semibold">
         <h1>Experience</h1>
-        <div className="text-2xl flex gap-5 cursor-pointer opacity-75 hover:opacity-100 transition text-primary">
-          <FaPlus onClick={handleAdd} />
-        </div>
+        <div
+  className="text-2xl bg-base-300 p-[5px] rounded-3xl flex gap-5 cursor-pointer opacity-75 hover:opacity-100 transition text-primary"
+ 
+>
+  <FaPlus onClick={handleAdd} />
+</div>
+
       </div>
 
       <div className="mt-3 flex flex-col gap-4">

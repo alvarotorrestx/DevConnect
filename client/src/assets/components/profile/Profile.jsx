@@ -6,8 +6,8 @@ import { FaUserEdit } from "react-icons/fa";
 import useAuth from '../../../auth/useAuth';
 import About from './About/About';
 import Project from './ProjectsSec/Project';
-import Experiance from './Experience/Experiance'
-import Blogg from './Blog/Blogg';
+import Experiance from './Experience/Experience'
+import Blog from './Blog/Blog';
 
 const Profile = () => {
 
@@ -32,7 +32,7 @@ const Profile = () => {
             to='edit'
             className="absolute top-0 right-0 p-6 text-2xl opacity-75 hover:opacity-100 transition text-primary"
           >
-            <FaUserEdit />
+            < FaUserEdit />
           </Link>
         )}
         {/* Top Section */}
@@ -43,7 +43,8 @@ const Profile = () => {
             {profile.avatar ? (
               <img src={profile.avatar} alt="Profile Avatar" className="object-cover w-full h-full" />
             ) : (
-              <span className="text-sm text-base-content opacity-60">No Avatar</span>
+              <img src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?ga=GA1.1.656611579.1737386998&semt=ais_hybrid&w=740" alt="Profile Avatar" className="object-cover w-full h-full" />
+             
             )}
           </div>
 
@@ -98,7 +99,7 @@ const Profile = () => {
       <About/>
       <Experiance/>
       <Project/>
-      <Blogg/>
+      <Blog/>
       </div>
 
     )

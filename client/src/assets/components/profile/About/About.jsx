@@ -17,16 +17,18 @@ function About() {
 
   return (
     <div className="max-w-[90%] lg:max-w-4xl mx-auto p-6 bg-base-100 rounded-lg shadow-md mt-10 relative">
-      <div className="flex items-center justify-between font-semibold">
+      <div className="flex pb-4 items-center justify-between font-semibold">
         <h1>About</h1>
         <div
-          className="text-2xl cursor-pointer opacity-75 hover:opacity-100 transition text-primary"
-          onClick={() => setShowModal(true)}
+         className="text-2xl bg-base-300 p-[7px] rounded-3xl flex items-center justify-center gap-5 cursor-pointer opacity-75 hover:opacity-100 transition text-primary"
+          onClick={() => setShowModal(true)} style={{
+            
+          }}
         >
           <FaEdit />
         </div>
       </div>
-      <div className="pt-4">
+      <div className="bg-base-300 rounded-lg p-4">
         <h3 className="whitespace-pre-line">
           {showMore
             ? aboutContent
