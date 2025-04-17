@@ -21,7 +21,6 @@ const EditProfile = () => {
 
   const [formData, setFormData] = useState(null);
 
-  // Toast hooks
   const {
     message: errorMessage,
     show: showErrorToast,
@@ -111,8 +110,6 @@ const EditProfile = () => {
     }
   }, [loading, profile, allowEditing, navigate]);
 
-  // Remove the error ref and error state
-  // We'll use the toast hooks instead
 
   const handleSave = async (field) => {
 
@@ -147,15 +144,14 @@ const EditProfile = () => {
         {
           headers: { Authorization: `Bearer ${auth?.accessToken}` },
           withCredentials: true
-        });
-      // Show success message
-      if (response.status === 200) {
-        showSuccess('Profile updated successfully!');
+
+        })
+      if (response?.status === 200) {
+        showSuccess(" Profile updated successfully");
       }
       else {
-        showError('Update Failed');
+        showError("Update failed");
       }
-
     }
     catch (err) {
       // If no error response
@@ -208,7 +204,6 @@ const EditProfile = () => {
         <FaUserCheck />
       </a>
 
-      {/* Remove the error message div */}
 
       {/* First Name Field */}
       <div className="form-control mt-6">
@@ -711,7 +706,6 @@ const EditProfile = () => {
         )}
       </div>
       {/* End Skills Field */}
-
       {/* Add Toast Components */}
       <SuccessToast
         message={successMessage}
@@ -729,7 +723,8 @@ const EditProfile = () => {
         icon={<FaTimesCircle className="text-red-600 text-4xl" />}
         iconBgColor="bg-red-700"
       />
-    </div>
+
+    </div >
   );
 };
 
