@@ -30,6 +30,14 @@ const userSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Post'
         }
+    ],
+
+    // Projects - Reference to Projects model
+    projects: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Project'
+        }
     ]
 }, { timestamps: true });
 
