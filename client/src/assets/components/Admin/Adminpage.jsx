@@ -135,7 +135,7 @@ const Adminpage = () => {
             <div className="flex justify-between mt-6">
               <button
                 onClick={() => setShowModal(false)}
-                className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                className="px-4 py-2 rounded transition-colors bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
               >
                 Cancel
               </button>

@@ -14,36 +14,17 @@ import { RiLogoutBoxLine } from "react-icons/ri";
 // Context Imports
 import ThemeContext from "../../context/ThemeContext";
 import useAuth from "../../../auth/useAuth";
-import { axiosPrivate } from "../../../api/axios";
+
 
 const NavBar = ({ avatar, username }) => {
   const { auth } = useAuth();
 
   const { darkMode, actions } = useContext(ThemeContext);
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
+
   const profileURL = `/profile/${username}`;
 
   const logout = useLogout();
-  useEffect(() => {
-    const fetchUsers = async () => {
-      setLoading(true);
-      try {
-        const response = await axiosPrivate.get("/api/users", {
-          headers: {
-            Authorization: `Bearer ${auth?.accessToken}`,
-          },
-        });
-        setUsers(response.data);
-      } catch (err) {
-        console.log(err);
-      } finally {
-        setLoading(false);
-      }
-    };
 
-    fetchUsers();
-  }, [auth?.accessToken]);
 
   const handleLogout = async () => {
     await logout();
@@ -108,7 +89,7 @@ const NavBar = ({ avatar, username }) => {
                 Jobs
               </NavLink>
             </li>
-            {(auth?.role === "admin" || auth?.role === "user") && (
+            {(auth?.role === "admin" || auth?.role === "owner") && (
               <li>
                 <NavLink to="/adminpage" className="flex items-center">
                   <span className="text-2xl text-primary">

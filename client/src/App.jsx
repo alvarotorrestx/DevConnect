@@ -66,17 +66,15 @@ function App() {
                   <Route path="edit" element={<EditProfile />} />
                 </Route>
                 <Route path="/network" element={<Network />} />
-               
+
                 <Route path="/tester" element={<TesterComponent />} />
               </Route>
             </Route>
 
-            <Route
-              element={
-                <RequireAuth allowedRoles={["owner", "admin"]} />
-              }
-            >
-              <Route path="/adminpage" element={<Adminpage />} />
+            <Route element={<RequireAuth allowedRoles={["owner", "admin"]} />}>
+              <Route element={<Layout />}>
+                <Route path="/adminpage" element={<Adminpage />} />
+              </Route>
             </Route>
           </Route>
           {/* End Protected Routes */}
