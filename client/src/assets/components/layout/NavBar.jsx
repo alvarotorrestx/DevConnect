@@ -27,7 +27,7 @@ const NavBar = ({ avatar, username }) => {
     };
 
     return (
-        <div className="navbar bg-base-100 w-[95%] mx-auto rounded-full shadow-md grid grid-cols-2 lg:grid-cols-4 auto-cols-max relative">
+        <div className="navbar bg-base-100 w-[95%] mx-auto rounded-md shadow-md grid grid-cols-2 lg:grid-cols-4 auto-cols-max relative">
 
             {/* Nav start */}
             <div className="navbar-start w-[unset] lg:col-span-1">
@@ -60,7 +60,7 @@ const NavBar = ({ avatar, username }) => {
                 </div>
 
                 {/* DevConnect Link */}
-                <Link to='/' className="btn btn-ghost text-xl rounded-full">DevConnect</Link>
+                <Link to='/' className="btn btn-ghost text-xl rounded-md">DevConnect</Link>
             </div>
 
             {/* Desktop Nav */}

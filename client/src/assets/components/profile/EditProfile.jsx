@@ -16,8 +16,6 @@ import { useErrorToast } from "../toast/useErrorToast";
 import SuccessToast from "../toast/SuccessToast";
 import { useSuccessToast } from "../toast/useSuccessToast";
 
-
-
 const EditProfile = () => {
   const { profile, loading } = useContext(ProfileContext);
 
@@ -146,6 +144,7 @@ const EditProfile = () => {
         {
           headers: { Authorization: `Bearer ${auth?.accessToken}` },
           withCredentials: true
+
         })
       if (response?.status === 200) {
         showSuccess(" Profile updated successfully");
@@ -724,6 +723,7 @@ const EditProfile = () => {
         icon={<FaTimesCircle className="text-red-600 text-4xl" />}
         iconBgColor="bg-red-700"
       />
+
     </div >
   );
 };
