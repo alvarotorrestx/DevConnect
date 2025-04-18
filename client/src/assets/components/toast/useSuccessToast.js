@@ -7,7 +7,7 @@ export const useSuccessToast = () => {
   const showSuccess = (msg) => {
     setMessage(msg);
     setShow(true);
-    setTimeout(() => setShow(false), 3000); 
+    setTimeout(() => setShow(false), 3000);
   };
 
   return { message, show, showSuccess };
