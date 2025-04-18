@@ -21,6 +21,8 @@ import useAuth from './auth/useAuth';
 import { ProfileProvider } from './assets/context/ProfileContext';
 import Network from './assets/components/network/Network';
 import Adminpage from './assets/components/Admin/Adminpage';
+import Usersprofile from './assets/components/Admin/Usersprofile';
+import EditUsersprofile from './assets/components/Admin/EditUsersprofile';
 
 function App() {
 
@@ -74,6 +76,10 @@ function App() {
             <Route element={<RequireAuth allowedRoles={["owner", "admin"]} />}>
               <Route element={<Layout />}>
                 <Route path="/adminpage" element={<Adminpage />} />
+                <Route path="/admin/profile/:username" element={<ProfileProvider />} >
+                <Route index element={<Usersprofile />} />
+                <Route path="editbyadmin" element={<EditUsersprofile/>}/>
+                </Route>
               </Route>
             </Route>
           </Route>

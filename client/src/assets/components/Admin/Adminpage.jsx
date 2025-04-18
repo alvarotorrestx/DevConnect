@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Loading from "../subcomponents/Loading";
 import useAuth from "../../../auth/useAuth";
 import { axiosPrivate } from "../../../api/axios";
+import { FaTrashAlt, FaUserCircle } from "react-icons/fa";
 
 const Adminpage = () => {
   const { auth } = useAuth();
@@ -90,34 +91,38 @@ const Adminpage = () => {
         <Loading />
       ) : (
         <div className="grid gap-6 md:grid-cols-2">
-          {users.map((user) => (
+        {users.map((user) => (
             <div
               key={user._id}
               className="p-5 bg-base-200 rounded-lg shadow-sm hover:shadow-md transition duration-300 flex flex-col justify-between"
             >
-              <div>
-                <p className="text-lg font-medium mb-1">
+              <div className="mb-4">
+                <p className="text-lg font-medium mb-1 flex items-center gap-2">
+                  <FaUserCircle className="text-primary text-xl" />
                   {user.firstName} {user.lastName}
                 </p>
-
                 <p className="text-sm text-base-content/70 mb-1">
                   <strong>Username:</strong> {user.username}
                 </p>
-
-                <Link
-                  to={`/profile/${user.username}`}
-                  className="inline-block mt-2 text-sm text-primary hover:underline"
-                >
-                  View Profile
-                </Link>
               </div>
 
-              <button
-                onClick={() => confirmDelete(user)}
-                className="mt-4 text-sm text-red-600 hover:text-red-800 self-start"
-              >
-                Delete User
-              </button>
+              <div className="flex items-center gap-4 mt-2">
+                <Link
+                  to={`/admin/profile/${user.username}`}
+                  className="text-primary hover:underline text-sm flex items-center gap-2"
+                >
+                  <FaUserCircle />
+                  View Profile
+                </Link>
+
+                <button
+                  onClick={() => confirmDelete(user)}
+                  className="text-red-600 hover:text-red-800 text-sm flex items-center gap-2"
+                >
+                  <FaTrashAlt />
+                  Delete User
+                </button>
+              </div>
             </div>
           ))}
         </div>
