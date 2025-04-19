@@ -9,7 +9,8 @@ function ProjectCopo({ project, onEdit }) {
     <div className="relative mt-3 p-3 pl-5 bg-base-300 rounded-lg">
       <div 
         className={`absolute shadow-md top-3 p-2 rounded-3xl right-4 cursor-pointer text-xl text-primary hover:opacity-100
-        ${darkMode ? "bg-[rgb(42,48,60)] opacity-60" : "bg-[#ffffffa6] opacity-90"}`}
+        ${darkMode ? "bg-[rgb(42,48,60)] opacity-90" : "bg-[#ffffffa6] opacity-70"}`}
+       
       >        
         <FaEdit onClick={onEdit} />
       </div>
