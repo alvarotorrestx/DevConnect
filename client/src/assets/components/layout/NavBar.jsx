@@ -6,7 +6,8 @@ import useLogout from "../../../auth/useLogout";
 import { IoMdHome } from "react-icons/io";
 import { HiNewspaper } from "react-icons/hi2";
 import { IoMdPeople } from "react-icons/io";
-import { GiAbstract021, GiSuitcase } from "react-icons/gi";
+import {  GiSuitcase } from "react-icons/gi";
+import { TbUserSquareRounded } from "react-icons/tb";
 import { FaUserCircle } from "react-icons/fa";
 import { IoSettingsSharp } from "react-icons/io5";
 import { RiLogoutBoxLine } from "react-icons/ri";
@@ -93,7 +94,7 @@ const NavBar = ({ avatar, username }) => {
               <li>
                 <NavLink to="/adminpage" className="flex items-center">
                   <span className="text-2xl text-primary">
-                    <GiSuitcase />
+                  <TbUserSquareRounded />
                   </span>
                   Adminarea
                 </NavLink>
@@ -149,7 +150,7 @@ const NavBar = ({ avatar, username }) => {
             <li>
               <NavLink to="/adminpage" className="flex items-center">
                 <span className="text-2xl text-primary">
-                  <GiAbstract021 />
+                <TbUserSquareRounded />
                 </span>
                 Adminarea
               </NavLink>

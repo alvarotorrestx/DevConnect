@@ -206,7 +206,7 @@ const Adminpage = () => {
                         </p>
                         <button
                           onClick={() => confirmDelete(user)}
-                          className="text-red-600 hover:text-red-800"
+                          className="text-red-700 hover:text-red-800"
                         >
                           <FaTrashAlt />
                         </button>
