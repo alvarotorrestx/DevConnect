@@ -1,18 +1,16 @@
-
 function Card() {
   return (
-    <div className='h-min-[200px] p-3 flex flex-col justify-between rounded-sm shadow-md w-[250px] bg-base-300'>
-      <h3 className='text-lg text-center text-[#222222e5]'>
-        IT Is Going To Boom 2026
-      </h3>
-      
-      <p className='text-sm  text-center'>
-        The IT sector is expected to witness exponential growth driven by AI, cloud, and automation.
-      </p>
+    <div className="min-h-[200px] p-3 flex flex-col justify-between rounded-sm shadow-md w-[250px] bg-base-300">
+ <h3 className="text-lg text-center text-base-content opacity-70 font-medium">
+  IT Is Going To Boom 2026
+</h3>
 
-      <button className='bg-[#325ce6a7] rounded text-white w-[90px] mx-auto mt-2 text-sm py-[2px]'>
-        Visit Now
-      </button>
+
+      <p className="text-sm text-center text-base-content/80">
+        The IT sector is expected to witness exponential growth driven by AI,
+        cloud, and automation.
+      </p>
+      <button className="btn btn-secondary mx-auto my-2">Visit Now</button>
     </div>
   );
 }

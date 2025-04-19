@@ -1,4 +1,3 @@
-// components/profile/About/AboutModal.jsx
 import { useState } from "react";
 
 function AboutModal({ initialContent, onClose, onSave }) {
@@ -11,14 +10,15 @@ function AboutModal({ initialContent, onClose, onSave }) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-[90%] max-w-lg relative">
-        <h2 className="text-xl font-bold mb-4">Edit About</h2>
+      <div className="bg-base-200 p-8 rounded-xl shadow-xl w-[95%] max-w-2xl relative">
+        <h2 className="text-2xl font-semibold text-base-content mb-4">Edit About</h2>
+
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
-            rows={8}
-            className="textarea textarea-bordered w-full"
+            rows={10}
+            className="textarea textarea-bordered w-full bg-base-100 text-base-content"
             placeholder="Write about yourself..."
           ></textarea>
 
@@ -26,7 +26,7 @@ function AboutModal({ initialContent, onClose, onSave }) {
             <button
               type="button"
               onClick={onClose}
-              className="btn btn-ghost text-red-500"
+              className="btn btn-ghost text-error"
             >
               Cancel
             </button>

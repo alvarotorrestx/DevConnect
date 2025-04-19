@@ -32,7 +32,10 @@ const Profile = () => {
             to='edit'
             className="absolute top-0 right-0 p-6 text-2xl opacity-75 hover:opacity-100 transition text-primary"
           >
+            <div  className="shadow-lg bg-base-300 p-[7px] rounded-3xl flex items-center justify-center cursor-pointer opacity-75 hover:opacity-100 transition">
             < FaUserEdit />
+            </div>
+           
           </Link>
         )}
         {/* Top Section */}
