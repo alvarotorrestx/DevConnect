@@ -59,7 +59,7 @@ const Posts = () => {
                                         <p className="font-semibold">{post.author.firstName} {post.author.lastName}</p>
                                         <Link
                                             to={`/profile/${post.author.username}`}
-                                            className="text-sm text-blue-400 hover:underline"
+                                            className="text-sm link link-primary link-hover"
                                         >
                                             @{post.author.username}
                                         </Link>
@@ -71,18 +71,41 @@ const Posts = () => {
 
 
                                 {/* Media */}
-                                {Array.isArray(post.media) && post.media.map((url, index) => (
-                                    <div key={index} className='mb-2'>
-                                        {isVideo(url) ? (
-                                            <video controls className="rounded-md max-w-full">
-                                                <source src={url} />
-                                                Your browser does not support the video tag.
-                                            </video>
-                                        ) : (
-                                            <img src={url} alt={`Post media ${index + 1}`} className="rounded-md max-w-full" />
+                                {post.media && (
+                                    <div className="mt-4 space-y-4">
+
+                                        {/* Render Images */}
+                                        {Array.isArray(post.media.images) && post.media.images.length > 0 && (
+                                            <div className="space-y-2">
+                                                {post.media.images.map((url, index) => (
+                                                    <img
+                                                        key={`image-${index}`}
+                                                        src={url}
+                                                        alt={`Post image ${index + 1}`}
+                                                        className="rounded-md max-w-full"
+                                                    />
+                                                ))}
+                                            </div>
                                         )}
+
+                                        {/* Render Videos */}
+                                        {Array.isArray(post.media.videos) && post.media.videos.length > 0 && (
+                                            <div className="space-y-2">
+                                                {post.media.videos.map((url, index) => (
+                                                    <video
+                                                        key={`video-${index}`}
+                                                        controls
+                                                        className="rounded-md max-w-full"
+                                                    >
+                                                        <source src={url} />
+                                                        Your browser does not support the video tag.
+                                                    </video>
+                                                ))}
+                                            </div>
+                                        )}
+
                                     </div>
-                                ))}
+                                )}
 
 
                                 {/* Tags */}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { axiosPrivate } from '../../../api/axios';
 
 const POST_URL = '/api/posts'
@@ -7,7 +7,10 @@ const CreatePost = ({ loading, auth }) => {
 
     const [postData, setPostData] = useState({
         body: '',
-        media: [],
+        media: {
+            images: [],
+            videos: []
+        },
         featured: false,
         tags: [],
     });
@@ -17,6 +20,18 @@ const CreatePost = ({ loading, auth }) => {
     const handleChange = (e) => {
         setPostData((prev) => ({ ...prev, [e.target.id]: e.target.value }));
     };
+
+    useEffect(() => {
+        const words = postData.body.split(/\s+/);
+        const foundTags = [...new Set(
+            words.filter(word => word.startsWith('#') && word.length > 1)
+                .map(tag => tag.slice(1).trim().toLowerCase())
+        )];
+
+
+        setPostData(prev => ({ ...prev, tags: foundTags }));
+    }, [postData.body]);
+
 
     const handlePost = async (e) => {
         e.preventDefault();
@@ -29,8 +44,6 @@ const CreatePost = ({ loading, auth }) => {
                 },
                 withCredentials: true,
             })
-
-            console.log(response.status);
         }
         catch (err) {
             console.log(err);
@@ -60,30 +73,50 @@ const CreatePost = ({ loading, auth }) => {
                 />
             </div>
 
-            {/* Media Input */}
-            <div className="my-3">
-                <input
-                    type="url"
-                    placeholder="Paste media URL (image/video)"
-                    className="input input-bordered w-full"
-                    onChange={handleChange}
-                    id="media"
-                    value={postData.media[0] || ''}
-                />
-            </div>
+            {/* Media Inputs */}
+            {/* Image URL Input */}
+            <input
+                type="url"
+                placeholder="Paste image URL"
+                className="input input-bordered w-full my-2"
+                onChange={(e) =>
+                    setPostData(prev => ({
+                        ...prev,
+                        media: {
+                            ...prev.media,
+                            images: [e.target.value]
+                        }
+                    }))
+                }
+                value={postData.media.images[0] || ''}
+            />
+
+            {/* Video URL Input */}
+            <input
+                type="url"
+                placeholder="Paste video URL"
+                className="input input-bordered w-full my-2"
+                onChange={(e) =>
+                    setPostData(prev => ({
+                        ...prev,
+                        media: {
+                            ...prev.media,
+                            videos: [e.target.value]
+                        }
+                    }))
+                }
+                value={postData.media.videos[0] || ''}
+            />
 
             {/* Featured Toggle */}
             <div className="flex items-center gap-2 mb-4">
                 <button
                     type="button"
-                    className={`btn btn-sm ${postData.featured ? 'btn-warning' : 'btn-outline'}`}
+                    className={`btn btn-sm ${postData.featured ? 'btn-active' : 'btn-inactive'}`}
                     onClick={() => setPostData(prev => ({ ...prev, featured: !prev.featured }))}
                 >
                     {postData.featured ? '⭐️ Featured' : '☆ Not Featured'}
                 </button>
-                <span className="text-sm text-base-content/70">
-                    Mark this post as featured?
-                </span>
             </div>
 
             {/* Divider */}

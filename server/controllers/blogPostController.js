@@ -19,7 +19,7 @@ const createPost = async (req, res) => {
     const WEBSITE_REGEX = /^(https?:\/\/)?([\w\d-]+\.)+[\w-]+(\/[\w\-._~:/?#[\]@!$&'()*+,;=.]+)?$/;
 
     try {
-        const { body, media, tags = [], featured = false } = req.body;
+        const { body, media = { images: [], videos: [] }, tags = [], featured = false } = req.body;
         const userId = req.user.id;
 
         if (!body) {
@@ -36,13 +36,11 @@ const createPost = async (req, res) => {
         // Clean tags
         const cleanedTags = tags.map(tag => tag.startsWith('#') ? tag.slice(1).trim().toLowerCase() : tag.trim().toLowerCase());
 
-        if (media && !Array.isArray(media)) return res.status(422).json({ message: "Media must be an array of URLs." });
+        if (!Array.isArray(media.images) || !Array.isArray(media.videos)) return res.status(422).json({ message: "Media must include arrays for images and videos." });
 
-        if (Array.isArray(media)) {
-            for (const url of media) {
-                if (url.trim() !== '' && !WEBSITE_REGEX.test(url)) {
-                    return res.status(422).json({ message: `Invalid media URL: ${url}` });
-                }
+        for (const url of [...media.images, ...media.videos]) {
+            if (url.trim() !== '' && !WEBSITE_REGEX.test(url)) {
+                return res.status(422).json({ message: `Invalid media URL: ${url}` });
             }
         }
 
