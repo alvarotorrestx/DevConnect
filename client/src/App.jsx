@@ -21,6 +21,9 @@ import ThemeContext from './assets/context/ThemeContext';
 import useAuth from './auth/useAuth';
 import { ProfileProvider } from './assets/context/ProfileContext';
 import Network from './assets/components/network/Network';
+import Adminpage from './assets/components/Admin/Adminpage';
+import Usersprofile from './assets/components/Admin/Usersprofile';
+
 
 function App() {
 
@@ -28,42 +31,64 @@ function App() {
   const { auth } = useAuth();
 
   return (
-    <main className='w-full min-h-screen' data-theme={darkMode ? "dim" : "nord"}>
-      <div className='max-w-[2000px] mx-auto min-h-screen px-2 py-6 bg-base-200'>
-        <Routes>
+    <main
+      className="w-full min-h-screen"
+      data-theme={darkMode ? "dim" : "nord"}
+    >
+      <div className="max-w-[2000px] mx-auto min-h-screen px-2 py-6 bg-base-200">
+        <Routes>            
           <Route path="*" element={<NotFound />} />   
           <Route path='*' element={<Navigate to='/' replace />} />
           <Route path='/unauthorized' element={<Unauthorized />} />
 
           <Route element={<PersistLogin />}>
             <Route element={<RedirectIfAuth />}>
-              <Route path='/' element={<Login />} />
-              <Route path='/register' element={<Register />} />
-              <Route path='/login' element={<Login />} />
+              <Route path="/" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/login" element={<Login />} />
             </Route>
           </Route>
 
           {/* Protected Routes */}
           <Route element={<PersistLogin />}>
-            <Route element={<RequireAuth allowedRoles={['owner', 'admin', 'moderator', 'user']} />}>
+            <Route
+              element={
+                <RequireAuth
+                  allowedRoles={["owner", "admin", "moderator", "user"]}
+                />
+              }
+            >
               <Route element={<Layout />}>
-                <Route path='/dashboard' element={<Dashboard />} />
-                <Route path='/profile' element={<Navigate to={`/profile/${auth?.username}`} />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route
+                  path="/profile"
+                  element={<Navigate to={`/profile/${auth?.username}`} />}
+                />
                 <Route path="/profile/:username" element={<ProfileProvider />}>
                   <Route index element={<Profile />} />
                   <Route path="edit" element={<EditProfile />} />
                 </Route>
-                <Route path='/network' element={<Network />} />
-                <Route path='/tester' element={<TesterComponent />} />
+                <Route path="/network" element={<Network />} />
+
+                <Route path="/tester" element={<TesterComponent />} />
+              </Route>
+            </Route>
+
+            <Route element={<RequireAuth allowedRoles={["owner", "admin"]} />}>
+              <Route element={<Layout />}>
+                <Route path="/adminpage" element={<Adminpage />} />
+                <Route path="/admin/profile/:username" element={<ProfileProvider />} >
+                <Route index element={<Usersprofile />} />
+                <Route path="edit" element={<EditProfile />} />
+                </Route>
               </Route>
             </Route>
           </Route>
           {/* End Protected Routes */}
-
         </Routes>
       </div>
     </main>
-  )
+  );
 }
 
 export default App

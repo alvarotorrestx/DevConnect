@@ -3,6 +3,8 @@ const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+
+//getallusers
 const getAllUsers = async (req, res) => {
     try {
         const users = await User.find().select('-password -refreshToken');
@@ -13,6 +15,7 @@ const getAllUsers = async (req, res) => {
     }
 }
 
+//createuser
 const createUser = async (req, res) => {
     try {
         const { email, username, firstName, lastName, password, role } = req.body;
@@ -49,6 +52,7 @@ const createUser = async (req, res) => {
     }
 }
 
+//updateuser
 const updateUser = async (req, res) => {
     try {
         const { id } = req.params;
@@ -103,6 +107,8 @@ const updateUser = async (req, res) => {
     }
 }
 
+
+//deleteuser
 const deleteUser = async (req, res) => {
     try {
         const { id } = req.params;
