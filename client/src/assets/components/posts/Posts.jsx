@@ -5,13 +5,33 @@ import useAuth from '../../../auth/useAuth';
 import Loading from '../subcomponents/Loading';
 import CreatePost from './CreatePost';
 import PostBody from './PostBody';
-import { FaEdit, FaCheck, FaTimes } from 'react-icons/fa';
+import { FaEdit, FaCheck, FaCheckCircle, FaTimesCircle, FaTimes } from 'react-icons/fa';
+
+// Toast imports
+import ErrorToast from "../toast/ErrorToast";
+import { useErrorToast } from "../toast/useErrorToast";
+import SuccessToast from "../toast/SuccessToast";
+import { useSuccessToast } from "../toast/useSuccessToast";
+
+const POST_URL = '/api/posts'
 
 const Posts = () => {
     const { auth } = useAuth();
 
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
+
+    const {
+        message: errorMessage,
+        show: showErrorToast,
+        showError,
+    } = useErrorToast();
+
+    const {
+        message: successMessage,
+        show: showSuccessToast,
+        showSuccess,
+    } = useSuccessToast();
 
     const isImage = url => !isVideo(url); // fallback logic
     const isVideo = url => /\.(mp4|webm|ogg)$/i.test(url);
@@ -20,11 +40,12 @@ const Posts = () => {
         const fetchPosts = async () => {
             setLoading(true);
             try {
-                const response = await axiosPrivate.get('/api/posts', {
+                const response = await axiosPrivate.get(POST_URL, {
                     headers: {
                         Authorization: `Bearer ${auth?.accessToken}`
                     }
                 });
+
                 setPosts(response.data);
             } catch (err) {
                 console.log(err);
@@ -36,14 +57,50 @@ const Posts = () => {
         fetchPosts();
     }, [auth?.accessToken]);
 
-    const deletePost = (postId) => {
-        console.log("Post ID to delete:", postId);
+    const canUserDeletePost = (post, auth) => {
+        if (!auth || !post?.author) return false;
+
+        const currentRole = auth.role;
+        const postAuthorRole = post.author.role;
+
+        if (post.author.username === auth.username) return true;
+
+        const roleHierarchy = {
+            user: 1,
+            moderator: 2,
+            admin: 3,
+            owner: 4
+        };
+
+        return roleHierarchy[currentRole] > roleHierarchy[postAuthorRole];
+    };
+
+
+    const deletePost = async (postId) => {
+        try {
+            const response = await axiosPrivate.delete(`${POST_URL}/${postId}`, {
+                headers: {
+                    Authorization: `Bearer ${auth?.accessToken}`
+                }
+            });
+
+            setPosts(prev => prev.filter(post => post._id !== postId));
+            showSuccess('Post successfully deleted.');
+        }
+        catch (err) {
+            // If no error response
+            if (!err?.response) {
+                showError('No Server Response');
+            } else {
+                showError(`${JSON.stringify(err.response.data.message).slice(1, -1)}` || 'Error deleting post.');
+            }
+        }
     }
 
     return (
         <div className="max-w-[90%] lg:max-w-4xl mx-auto p-6 bg-base-300 rounded-lg shadow-md mt-10">
 
-            <CreatePost loading={loading} auth={auth} />
+            <CreatePost POST_URL={POST_URL} auth={auth} setPosts={setPosts} />
 
             {
                 loading
@@ -54,13 +111,53 @@ const Posts = () => {
                         posts.map((post) => (
                             <div key={post._id} className="relative [&:not(:last-child)]:mb-6 p-5 rounded-md shadow border border-base-300 bg-base-200">
 
-                                <button
-                                    type="button"
-                                    className="btn btn-error btn-sm absolute top-0 right-0 mr-4 mt-4"
-                                    onClick={() => deletePost(post._id)}
-                                >
-                                    <FaTimes />
-                                </button>
+                                {/* Delete Post Button */}
+                                {canUserDeletePost(post, auth) &&
+                                    (
+                                        <>
+                                            <button
+                                                className="btn btn-error btn-sm absolute top-0 right-0 mr-4 mt-4"
+                                                onClick={() => document.getElementById('delete_post_modal').showModal()}
+                                            >
+                                                <FaTimes />
+                                                Delete
+                                            </button>
+
+                                            <dialog id="delete_post_modal" className="modal">
+                                                <div className="modal-box">
+                                                    <h3 className="font-bold text-lg text-error">Are you sure?</h3>
+                                                    <p className="py-4 text-base-content">
+                                                        This action cannot be undone. Do you really want to delete this post?
+                                                    </p>
+
+                                                    <div className="modal-action flex justify-end gap-3">
+                                                        {/* Cancel Button */}
+                                                        <form method="dialog">
+                                                            <button className="btn btn-sm btn-secondary">
+                                                                <FaTimes />
+                                                                Cancel
+                                                            </button>
+                                                        </form>
+
+                                                        {/* Confirm Delete Button */}
+                                                        <button
+                                                            onClick={() => deletePost(post._id)}
+                                                            className="btn btn-error btn-sm"
+                                                        >
+                                                            <FaCheck />
+                                                            Yes, Delete
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                                {/* Close modal by clicking backdrop */}
+                                                <form method="dialog" className="modal-backdrop">
+                                                    <button>close</button>
+                                                </form>
+                                            </dialog>
+                                        </>
+                                    )
+                                }
 
                                 {/* Author Info */}
                                 <div className="flex items-center gap-4 mb-2">
@@ -144,6 +241,24 @@ const Posts = () => {
                         :
                         <p>No posts found.</p>
             }
+
+            {/* Add Toast Components */}
+            <SuccessToast
+                message={successMessage}
+                show={showSuccessToast}
+                status="success"
+                icon={
+                    <FaCheckCircle className="text-green-600 text-4xl bg-transparent p-0 m-0" />
+                }
+                iconBgColor="bg-blue-200"
+            />
+            <ErrorToast
+                message={errorMessage}
+                show={showErrorToast}
+                status="error"
+                icon={<FaTimesCircle className="text-red-600 text-4xl" />}
+                iconBgColor="bg-red-700"
+            />
         </div >
     );
 };

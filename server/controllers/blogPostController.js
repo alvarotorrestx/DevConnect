@@ -5,7 +5,7 @@ const validator = require('validator');
 const getAllPosts = async (req, res) => {
     try {
         const posts = await Post.find()
-            .populate('author', 'username firstName lastName avatar') // populate specific author fields
+            .populate('author', 'username firstName lastName avatar role') // populate specific author fields
             .sort({ createdAt: -1 }); // sort by newest posts
 
         res.status(200).json(posts);
@@ -13,6 +13,18 @@ const getAllPosts = async (req, res) => {
         res.status(500).json({ message: "Error retrieving posts." });
     }
 }
+
+const getPostById = async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id)
+            .populate('author', 'username firstName lastName avatar');
+        if (!post) return res.status(404).json({ message: 'Post not found.' });
+        res.status(200).json(post);
+    } catch (err) {
+        res.status(500).json({ message: 'Error retrieving post.' });
+    }
+};
+
 
 const createPost = async (req, res) => {
 
@@ -164,6 +176,7 @@ const deletePost = async (req, res) => {
 
 module.exports = {
     getAllPosts,
+    getPostById,
     createPost,
     updatePost,
     deletePost

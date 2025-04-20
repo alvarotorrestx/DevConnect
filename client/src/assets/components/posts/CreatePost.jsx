@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { axiosPrivate } from '../../../api/axios';
+import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 
-const POST_URL = '/api/posts'
+// Toast imports
+import ErrorToast from "../toast/ErrorToast";
+import { useErrorToast } from "../toast/useErrorToast";
+import SuccessToast from "../toast/SuccessToast";
+import { useSuccessToast } from "../toast/useSuccessToast";
 
-const CreatePost = ({ loading, auth }) => {
+const CreatePost = ({ POST_URL, auth, setPosts }) => {
 
     const [postData, setPostData] = useState({
         body: '',
@@ -16,6 +21,18 @@ const CreatePost = ({ loading, auth }) => {
     });
 
     const [buttonStatus, setButtonStatus] = useState("Post");
+
+    const {
+        message: errorMessage,
+        show: showErrorToast,
+        showError,
+    } = useErrorToast();
+
+    const {
+        message: successMessage,
+        show: showSuccessToast,
+        showSuccess,
+    } = useSuccessToast();
 
     const handleChange = (e) => {
         setPostData((prev) => ({ ...prev, [e.target.id]: e.target.value }));
@@ -43,10 +60,35 @@ const CreatePost = ({ loading, auth }) => {
                     Authorization: `Bearer ${auth.accessToken}`,
                 },
                 withCredentials: true,
-            })
+            });
+
+            const fullPost = await axiosPrivate.get(`${POST_URL}/${response.data.post._id}`, {
+                headers: {
+                    Authorization: `Bearer ${auth.accessToken}`,
+                },
+                withCredentials: true,
+            });
+
+            setPosts(prev => [fullPost.data, ...prev]);
+            setPostData((prev) => ({
+                ...prev,
+                body: '',
+                media: {
+                    images: [],
+                    videos: []
+                },
+                featured: false,
+                tags: [],
+            }));
+            showSuccess('Post successfully created.');
         }
         catch (err) {
-            console.log(err);
+            // If no error response
+            if (!err?.response) {
+                showError('No Server Response');
+            } else {
+                showError(`${JSON.stringify(err.response.data.message).slice(1, -1)}` || 'Error creating post.');
+            }
         }
         finally {
             setButtonStatus("Post");
@@ -137,8 +179,25 @@ const CreatePost = ({ loading, auth }) => {
                 </div>
                 <button onClick={handlePost} className="btn btn-primary btn-sm" disabled={postData.body == "" || buttonStatus === "Loading..."}>Post</button>
             </div>
-        </div>
 
+            {/* Add Toast Components */}
+            <SuccessToast
+                message={successMessage}
+                show={showSuccessToast}
+                status="success"
+                icon={
+                    <FaCheckCircle className="text-green-600 text-4xl bg-transparent p-0 m-0" />
+                }
+                iconBgColor="bg-blue-200"
+            />
+            <ErrorToast
+                message={errorMessage}
+                show={showErrorToast}
+                status="error"
+                icon={<FaTimesCircle className="text-red-600 text-4xl" />}
+                iconBgColor="bg-red-700"
+            />
+        </div>
     )
 }
 
