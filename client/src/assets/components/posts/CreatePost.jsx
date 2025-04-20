@@ -109,7 +109,7 @@ const CreatePost = ({ POST_URL, auth, setPosts }) => {
                     onChange={handleChange}
                     value={postData.body}
                     autoComplete="off"
-                    className="w-full max-h-[300px] rounded-lg bg-base-200 p-3 text-base focus:outline-none focus:ring focus:ring-primary"
+                    className="w-full min-h-[100px] max-h-[300px] rounded-lg bg-base-200 p-3 text-base focus:outline-none focus:ring focus:ring-primary"
                     rows="3"
                     placeholder="What's on your mind?"
                 />

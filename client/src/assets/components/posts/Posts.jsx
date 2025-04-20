@@ -57,7 +57,7 @@ const Posts = () => {
         fetchPosts();
     }, [auth?.accessToken]);
 
-    const canUserDeletePost = (post, auth) => {
+    const canUserModifyPost = (post, auth) => {
         if (!auth || !post?.author) return false;
 
         const currentRole = auth.role;
@@ -111,17 +111,114 @@ const Posts = () => {
                         posts.map((post) => (
                             <div key={post._id} className="relative [&:not(:last-child)]:mb-6 p-5 rounded-md shadow border border-base-300 bg-base-200">
 
-                                {/* Delete Post Button */}
-                                {canUserDeletePost(post, auth) &&
+                                {canUserModifyPost(post, auth) &&
                                     (
                                         <>
-                                            <button
-                                                className="btn btn-error btn-sm absolute top-0 right-0 mr-4 mt-4"
-                                                onClick={() => document.getElementById('delete_post_modal').showModal()}
-                                            >
-                                                <FaTimes />
-                                                Delete
-                                            </button>
+                                            <div className='absolute top-0 right-0 flex flex-row justify-center items-center gap-2 mt-3 mr-3'>
+                                                {/* Edit Post Button */}
+                                                <button
+                                                    className="btn btn-secondary btn-sm"
+                                                    onClick={() => document.getElementById('edit_post_modal').showModal()}
+                                                >
+                                                    <FaEdit />
+                                                </button>
+
+                                                {/* Delete Post Button */}
+                                                <button
+                                                    className="btn btn-error btn-sm"
+                                                    onClick={() => document.getElementById('delete_post_modal').showModal()}
+                                                >
+                                                    <FaTimes />
+                                                </button>
+                                            </div>
+
+                                            <dialog id="edit_post_modal" className="modal">
+                                                <div className="modal-box max-w-2xl bg-base-100 rounded-lg shadow p-6">
+                                                    <h3 className="font-bold text-xl mb-4">Edit Your Post</h3>
+
+                                                    {/* Avatar + Body Input */}
+                                                    <div className="flex items-start mb-4">
+                                                        <textarea
+                                                            id="body"
+                                                            // onChange={handleChange}
+                                                            value={post.body}
+                                                            autoComplete="off"
+                                                            className="w-full min-h-[100px] max-h-[300px] rounded-lg bg-base-200 p-3 text-base focus:outline-none focus:ring focus:ring-primary"
+                                                            rows="3"
+                                                            placeholder="Update your post..."
+                                                        />
+                                                    </div>
+
+                                                    {/* Media Inputs */}
+                                                    <input
+                                                        type="url"
+                                                        placeholder="Paste image URL"
+                                                        className="input input-bordered w-full my-2"
+                                                        onChange={(e) =>
+                                                            setPostData(prev => ({
+                                                                ...prev,
+                                                                media: {
+                                                                    ...prev.media,
+                                                                    images: [e.target.value]
+                                                                }
+                                                            }))
+                                                        }
+                                                    // value={post.media.images[0] || ''}
+                                                    />
+
+                                                    <input
+                                                        type="url"
+                                                        placeholder="Paste video URL"
+                                                        className="input input-bordered w-full my-2"
+                                                        onChange={(e) =>
+                                                            setPostData(prev => ({
+                                                                ...prev,
+                                                                media: {
+                                                                    ...prev.media,
+                                                                    videos: [e.target.value]
+                                                                }
+                                                            }))
+                                                        }
+                                                    // value={post.media.videos[0] || ''}
+                                                    />
+
+                                                    {/* Featured Toggle */}
+                                                    <div className="flex items-center gap-2 mb-4">
+                                                        <button
+                                                            type="button"
+                                                            className={`btn btn-sm ${post.featured ? 'btn-active' : 'btn-inactive'}`}
+                                                            onClick={() => setPostData(prev => ({ ...prev, featured: !prev.featured }))}
+                                                        >
+                                                            {post.featured ? '⭐️ Featured' : '☆ Not Featured'}
+                                                        </button>
+                                                    </div>
+
+                                                    {/* Footer Buttons */}
+                                                    <div className="modal-action flex justify-end gap-3">
+                                                        <form method="dialog">
+                                                            <button className="btn btn-sm btn-error">
+                                                                <FaTimes className="mr-1" />
+                                                                Cancel
+                                                            </button>
+                                                        </form>
+
+                                                        <button
+                                                            // onClick={() => updatePost(postId)}
+                                                            className="btn btn-secondary btn-sm"
+                                                            disabled={post.body === ""}
+                                                        >
+                                                            <FaCheck className="mr-1" />
+                                                            Update Post
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                                {/* Close modal by clicking backdrop */}
+                                                <form method="dialog" className="modal-backdrop">
+                                                    <button>close</button>
+                                                </form>
+                                            </dialog>
+
 
                                             <dialog id="delete_post_modal" className="modal">
                                                 <div className="modal-box">
