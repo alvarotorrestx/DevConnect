@@ -5,6 +5,7 @@ import useAuth from '../../../auth/useAuth';
 import Loading from '../subcomponents/Loading';
 import CreatePost from './CreatePost';
 import PostBody from './PostBody';
+import { FaEdit, FaCheck, FaTimes } from 'react-icons/fa';
 
 const Posts = () => {
     const { auth } = useAuth();
@@ -35,6 +36,10 @@ const Posts = () => {
         fetchPosts();
     }, [auth?.accessToken]);
 
+    const deletePost = (postId) => {
+        console.log("Post ID to delete:", postId);
+    }
+
     return (
         <div className="max-w-[90%] lg:max-w-4xl mx-auto p-6 bg-base-300 rounded-lg shadow-md mt-10">
 
@@ -47,7 +52,15 @@ const Posts = () => {
                     :
                     posts.length > 0 ? (
                         posts.map((post) => (
-                            <div key={post._id} className="[&:not(:last-child)]:mb-6 p-5 rounded-md shadow border border-base-300 bg-base-200">
+                            <div key={post._id} className="relative [&:not(:last-child)]:mb-6 p-5 rounded-md shadow border border-base-300 bg-base-200">
+
+                                <button
+                                    type="button"
+                                    className="btn btn-error btn-sm absolute top-0 right-0 mr-4 mt-4"
+                                    onClick={() => deletePost(post._id)}
+                                >
+                                    <FaTimes />
+                                </button>
 
                                 {/* Author Info */}
                                 <div className="flex items-center gap-4 mb-2">

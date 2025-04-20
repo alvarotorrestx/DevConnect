@@ -26,7 +26,8 @@ const PostBody = ({ body }) => {
     const shouldTruncate = body.split('\n').length > 3 || body.length > 300;
 
     return (
-        <div className="relative">
+        <div>
+
             <p className={`${expandedPost ? '' : 'line-clamp-3'} whitespace-pre-line`}>
                 {renderBodyWithTags(body)}
             </p>
