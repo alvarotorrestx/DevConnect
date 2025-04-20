@@ -54,7 +54,7 @@ const CreatePost = ({ loading, auth }) => {
     }
 
     return (
-        <div className="mx-auto bg-base-100 p-4 rounded-lg shadow my-6">
+        <div className="mx-auto bg-base-100 p-4 rounded-lg shadow mb-6">
             {/* Top Row: Avatar and Input */}
             <div className="flex items-start gap-4">
                 <img

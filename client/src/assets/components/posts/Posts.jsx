@@ -68,13 +68,6 @@ const Posts = () => {
                                 </div>
 
                                 {/* Post Body */}
-                                {/* {post.body
-                                    .split(/\n{2,}/)
-                                    .filter(p => p.trim() !== '')
-                                    .map((paragraph, i) => (
-                                        <p key={i} className="mb-4 whitespace-pre-line">{paragraph}</p>
-                                    ))
-                                } */}
                                 <PostBody body={post.body} />
 
 
