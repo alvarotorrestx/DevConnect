@@ -19,11 +19,12 @@ function ProjectModal({ onClose, onSave, initialData }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
-      <div className="bg-base-200 p-8 rounded-xl shadow-xl w-[95%] max-w-2xl">
-        <h2 className="text-2xl font-semibold text-base-content mb-4">
-          {initialData ? "Edit Project" : "Add Project"}
-        </h2>
+<div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
+  <div className="bg-base-200 p-4 sm:p-8 rounded-xl shadow-xl w-[95%] max-w-2xl">
+    <h2 className="text-2xl font-semibold text-base-content mb-4">
+      {initialData ? "Edit Project" : "Add Project"}
+    </h2>
+
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input
