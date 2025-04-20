@@ -4,6 +4,7 @@ import { axiosPrivate } from '../../../api/axios';
 import useAuth from '../../../auth/useAuth';
 import Loading from '../subcomponents/Loading';
 import CreatePost from './CreatePost';
+import PostBody from './PostBody';
 
 const Posts = () => {
     const { auth } = useAuth();
@@ -67,7 +68,14 @@ const Posts = () => {
                                 </div>
 
                                 {/* Post Body */}
-                                <p className="mb-2 text-base-content">{post.body}</p>
+                                {/* {post.body
+                                    .split(/\n{2,}/)
+                                    .filter(p => p.trim() !== '')
+                                    .map((paragraph, i) => (
+                                        <p key={i} className="mb-4 whitespace-pre-line">{paragraph}</p>
+                                    ))
+                                } */}
+                                <PostBody body={post.body} />
 
 
                                 {/* Media */}
