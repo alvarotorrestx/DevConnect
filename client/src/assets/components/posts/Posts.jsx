@@ -118,7 +118,7 @@ const Posts = () => {
                                                 {/* Edit Post Button */}
                                                 <button
                                                     className="btn btn-secondary btn-sm"
-                                                    onClick={() => document.getElementById('edit_post_modal').showModal()}
+                                                    onClick={() => document.getElementById(`edit_post_modal_${post._id}`).showModal()}
                                                 >
                                                     <FaEdit />
                                                 </button>
@@ -126,17 +126,17 @@ const Posts = () => {
                                                 {/* Delete Post Button */}
                                                 <button
                                                     className="btn btn-error btn-sm"
-                                                    onClick={() => document.getElementById('delete_post_modal').showModal()}
+                                                    onClick={() => document.getElementById(`delete_post_modal_${post._id}`).showModal()}
                                                 >
                                                     <FaTimes />
                                                 </button>
                                             </div>
 
-                                            <dialog id="edit_post_modal" className="modal">
+                                            <dialog id={`edit_post_modal_${post._id}`} className="modal">
                                                 <div className="modal-box max-w-2xl bg-base-100 rounded-lg shadow p-6">
                                                     <h3 className="font-bold text-xl mb-4">Edit Your Post</h3>
 
-                                                    {/* Avatar + Body Input */}
+                                                    {/* Body Input */}
                                                     <div className="flex items-start mb-4">
                                                         <textarea
                                                             id="body"
@@ -220,7 +220,7 @@ const Posts = () => {
                                             </dialog>
 
 
-                                            <dialog id="delete_post_modal" className="modal">
+                                            <dialog id={`delete_post_modal_${post._id}`} className="modal">
                                                 <div className="modal-box">
                                                     <h3 className="font-bold text-lg text-error">Are you sure?</h3>
                                                     <p className="py-4 text-base-content">
