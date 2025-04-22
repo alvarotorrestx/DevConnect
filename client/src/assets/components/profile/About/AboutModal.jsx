@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function AboutModal({ initialContent, onClose, onSave }) {
+function AboutModal({ initialContent, onClose, onSave, username }) {
   const [text, setText] = useState(initialContent || "");
 
   const handleSubmit = (e) => {
@@ -10,7 +10,7 @@ function AboutModal({ initialContent, onClose, onSave }) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
-    <div className="bg-base-200 p-4 sm:p-8 rounded-xl shadow-xl w-[95%] max-w-2xl relative">
+      <div className="bg-base-200 p-4 sm:p-8 rounded-xl shadow-xl w-[95%] max-w-2xl relative">
         <h2 className="text-2xl font-semibold text-base-content mb-4">Edit About</h2>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">

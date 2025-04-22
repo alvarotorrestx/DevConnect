@@ -1,47 +1,95 @@
-// components/profile/About/About.jsx
-import { useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { FaEdit } from "react-icons/fa";
+import ProfileContext from "../../../context/ProfileContext";
 import AboutModal from "./AboutModal";
+import { axiosPrivate } from "../../../../api/axios";
+import useAuth from "../../../../auth/useAuth";
+import { useNavigate } from "react-router-dom";
 
-function About() {
-  const [showMore, setShowMore] = useState(false);
-  const [aboutContent, setAboutContent] = useState(
-    `Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure quidem voluptatibus sequi odio maiores adipisci nihil quaerat praesentium, ducimus at saepe reiciendis ratione blanditiis voluptatem molestiae dolor...`
-  );
+// Toasts
+import { useErrorToast } from "../../toast/useErrorToast";
+import ErrorToast from "../../toast/ErrorToast";
+import { useSuccessToast } from "../../toast/useSuccessToast";
+import SuccessToast from "../../toast/SuccessToast";
+import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
+
+const About = () => {
+  const { profile, loading } = useContext(ProfileContext);
+  const [aboutContent, setAboutContent] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const { auth } = useAuth();
+  const navigate = useNavigate();
 
-  const handleSave = (newContent) => {
-    setAboutContent(newContent);
-    setShowModal(false);
+  // Success toast
+  const {
+    message: successMessage,
+    show: showSuccessToast,
+    showSuccess,
+  } = useSuccessToast();
+
+  // Error toast
+  const {
+    message: errorMessage,
+    show: showErrorToast,
+    showError,
+  } = useErrorToast();
+
+  useEffect(() => {
+    if (profile) {
+      setAboutContent(profile.bio || "");
+    }
+  }, [profile]);
+
+  const handleSave = async (newContent) => {
+    if (newContent.trim() === profile.bio?.trim()) {
+      setShowModal(false);
+      return;
+    }
+
+    try {
+      const response = await axiosPrivate.put(
+        `/profile/${profile.username}/edit`,
+        { bio: newContent },
+        {
+          headers: { Authorization: `Bearer ${auth?.accessToken}` },
+          withCredentials: true,
+        }
+      );
+
+      if (response?.status === 200) {
+        showSuccess("About section updated successfully");
+        setAboutContent(newContent);
+      } else {
+        showError("Failed to update About section");
+      }
+    } catch (err) {
+      if (!err?.response) {
+        showError("No Server Response");
+      } else {
+        showError(err.response?.data?.message || "Update failed");
+      }
+    } finally {
+      setShowModal(false);
+    }
   };
+
+  if (loading) return <p>Loading...</p>;
+  if (!profile) return <p>Profile not found.</p>;
 
   return (
     <div className="max-w-[90%] lg:max-w-4xl mx-auto p-6 bg-base-100 rounded-lg shadow-md mt-10 relative">
       <div className="flex pb-4 items-center justify-between font-semibold">
         <h1>About</h1>
         <div
-         className="text-2xl shadow-lg bg-base-300 p-[7px] rounded-3xl flex items-center justify-center gap-5 cursor-pointer opacity-75 hover:opacity-100 transition text-primary"
-          onClick={() => setShowModal(true)} style={{
-            
-          }}
+          className="text-2xl shadow-lg bg-base-300 p-[7px] rounded-3xl flex items-center justify-center gap-5 cursor-pointer opacity-75 hover:opacity-100 transition text-primary"
+          onClick={() => setShowModal(true)}
         >
           <FaEdit />
         </div>
       </div>
+
       <div className="bg-base-300 rounded-lg p-4">
-        <h3 className="whitespace-pre-line">
-          {showMore
-            ? aboutContent
-            : aboutContent.split(" ").slice(0, 40).join(" ") + "..."}
-        </h3>
-        {aboutContent.split(" ").length > 40 && (
-          <button
-            className="mt-2 text-sm text-blue-500 hover:underline"
-            onClick={() => setShowMore(!showMore)}
-          >
-            {showMore ? "See less" : "See more"}
-          </button>
-        )}
+        <h3 className="whitespace-pre-line">{aboutContent}</h3>
       </div>
 
       {showModal && (
@@ -49,10 +97,22 @@ function About() {
           initialContent={aboutContent}
           onClose={() => setShowModal(false)}
           onSave={handleSave}
+          username={profile.username}
         />
       )}
+      <SuccessToast
+        message={successMessage}
+        show={showSuccessToast}
+        icon={<FaCheckCircle className="text-green-600 text-4xl" />}
+      />
+      <ErrorToast
+        message={errorMessage}
+        show={showErrorToast}
+        icon={<FaTimesCircle className="text-red-600 text-4xl" />}
+        iconBgColor="bg-red-700"
+      />
     </div>
   );
-}
+};
 
 export default About;
