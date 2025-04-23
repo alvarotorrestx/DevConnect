@@ -4,7 +4,6 @@ import ProfileContext from "../../../context/ProfileContext";
 import AboutModal from "./AboutModal";
 import { axiosPrivate } from "../../../../api/axios";
 import useAuth from "../../../../auth/useAuth";
-import { useNavigate } from "react-router-dom";
 
 // Toasts
 import { useErrorToast } from "../../toast/useErrorToast";
@@ -14,11 +13,11 @@ import SuccessToast from "../../toast/SuccessToast";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 
 const About = () => {
-  const { profile, loading } = useContext(ProfileContext);
+  const { profile, setProfile, loading } = useContext(ProfileContext); // <-- Added setProfile
   const [aboutContent, setAboutContent] = useState("");
   const [showModal, setShowModal] = useState(false);
   const { auth } = useAuth();
-  const navigate = useNavigate();
+const isOwner = auth?.username === profile?.username;
 
   // Success toast
   const {
@@ -59,6 +58,9 @@ const About = () => {
       if (response?.status === 200) {
         showSuccess("About section updated successfully");
         setAboutContent(newContent);
+
+        // Update global profile state to trigger re-render
+        setProfile((prev) => ({ ...prev, bio: newContent }));
       } else {
         showError("Failed to update About section");
       }
@@ -80,12 +82,14 @@ const About = () => {
     <div className="max-w-[90%] lg:max-w-4xl mx-auto p-6 bg-base-100 rounded-lg shadow-md mt-10 relative">
       <div className="flex pb-4 items-center justify-between font-semibold">
         <h1>About</h1>
+        {isOwner && (
         <div
           className="text-2xl shadow-lg bg-base-300 p-[7px] rounded-3xl flex items-center justify-center gap-5 cursor-pointer opacity-75 hover:opacity-100 transition text-primary"
           onClick={() => setShowModal(true)}
         >
           <FaEdit />
         </div>
+        )}
       </div>
 
       <div className="bg-base-300 rounded-lg p-4">
@@ -100,6 +104,7 @@ const About = () => {
           username={profile.username}
         />
       )}
+
       <SuccessToast
         message={successMessage}
         show={showSuccessToast}

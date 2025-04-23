@@ -2,11 +2,12 @@ import { FaEdit } from "react-icons/fa";
 import { useContext } from "react";
 import ThemeContext from "../../../context/ThemeContext";
 
-function ProjectCopo({ project, onEdit }) {
+function ProjectCopo({ project, onEdit, isOwner  }) {
   const { darkMode } = useContext(ThemeContext); // <-- Get darkMode from context
 
   return (
     <div className="relative mt-3 p-3 pl-5 bg-base-300 rounded-lg">
+      {isOwner && (
       <div 
         className={`absolute shadow-md top-3 p-2 rounded-3xl right-4 cursor-pointer text-xl text-primary hover:opacity-100
         ${darkMode ? "bg-[rgb(42,48,60)] opacity-90" : "bg-[#ffffffa6] opacity-70"}`}
@@ -14,6 +15,7 @@ function ProjectCopo({ project, onEdit }) {
       >        
         <FaEdit onClick={onEdit} />
       </div>
+      )}
       <h1 className="font-medium">{project.title}</h1>
       <h6>{project.duration}</h6>
       <h3>Description: {project.description}</h3>

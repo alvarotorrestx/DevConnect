@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { FaEdit, FaPlus } from "react-icons/fa";
 import ExperiCompo from "./ExperiCompo";
 import ExperienceModal from "./AddExperienceModal";
+import useAuth from "../../../../auth/useAuth";
+import ProfileContext from "../../../context/ProfileContext";
 
 function Experience() {
   const [experiences, setExperiences] = useState([
@@ -17,6 +19,10 @@ function Experience() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editExperience, setEditExperience] = useState(null);
 
+  const { auth } = useAuth();
+  const { profile } = useContext(ProfileContext);
+  const isOwner = auth?.username === profile?.username;
+
   const handleAdd = () => {
     setEditExperience(null);
     setIsModalOpen(true);
@@ -31,7 +37,9 @@ function Experience() {
     if (editExperience) {
       // update
       setExperiences((prev) =>
-        prev.map((exp) => (exp.id === editExperience.id ? { ...newExperience, id: exp.id } : exp))
+        prev.map((exp) =>
+          exp.id === editExperience.id ? { ...newExperience, id: exp.id } : exp
+        )
       );
     } else {
       // add
@@ -45,18 +53,21 @@ function Experience() {
     <div className="max-w-[90%] lg:max-w-4xl mx-auto p-6 bg-base-100 rounded-lg shadow-md mt-10 relative">
       <div className="flex items-center justify-between font-semibold">
         <h1>Experience</h1>
-        <div
-  className="text-2xl bg-base-300 shadow-lg p-[5px] rounded-3xl flex gap-5 cursor-pointer opacity-75 hover:opacity-100 transition text-primary"
- 
->
-  <FaPlus onClick={handleAdd} />
-</div>
-
+        {isOwner && (
+          <div className="text-2xl bg-base-300 shadow-lg p-[5px] rounded-3xl flex gap-5 cursor-pointer opacity-75 hover:opacity-100 transition text-primary">
+            <FaPlus onClick={handleAdd} />
+          </div>
+        )}
       </div>
 
       <div className="mt-3 flex flex-col gap-4">
         {experiences.map((exp) => (
-          <ExperiCompo key={exp.id} experience={exp} onEdit={() => handleEdit(exp)} />
+          <ExperiCompo
+            key={exp.id}
+            experience={exp}
+            onEdit={() => handleEdit(exp)}
+            isOwner={isOwner}
+          />
         ))}
       </div>
 
