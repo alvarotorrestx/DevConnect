@@ -18,7 +18,7 @@ const slides = [
                         </div>
                     </div>
                     <div className="right flex flex-col gap-6">
-                        
+
                         <div className="flex gap-10">
                             {[
                                 { label: "Followers", value: "2.3k" },
@@ -119,29 +119,62 @@ const slides = [
 const Carousel = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentIndex((prev) => (prev + 1) % slides.length);
-        }, 5000);
-        return () => clearInterval(interval);
-    }, []);
+    const updateIndex = (newIndex) => {
+        if (newIndex < 0) {
+            newIndex = 0;
+        }
+        else if (newIndex >= slides.length) {
+            newIndex = 0;
+        }
+
+        setCurrentIndex(newIndex);
+    }
 
     return (
         <div className="w-full h-[350px] bg-gray-100 rounded-xl shadow-lg overflow-hidden block lg:hidden ">
-            <div className="h-[310px] px-5 pt-5 overflow-y-auto">{slides[currentIndex].component}
+            <div className="h-[310px] px-5 pt-5 overflow-y-auto"
+            >
+
+                {slides[currentIndex].component}
 
             </div>
 
-            {/* Indicator Dots */}
+
             <div className="flex justify-center mt-3">
-                {slides.map((_, index) => (
-                    <button
-                        key={index}
-                        className={`h-3 w-3 mx-1 rounded-full transition-all ${index === currentIndex ? "bg-blue-600 scale-110" : "bg-gray-400 opacity-50"
-                            }`}
-                        onClick={() => setCurrentIndex(index)}
-                    />
-                ))}
+                <>
+                    <button onClick={() => {
+                        updateIndex(currentIndex - 1)
+                    }}>
+                        <span className='material-symbols-outlined '>
+                            chevron_left
+                        </span>
+                    </button>
+                    <div className="indicators">
+                        {slides.map((item, index) => {
+                            return (
+                                <button className={`indicator-buttonsh-3  mx-1 rounded-full transition-all ${index === currentIndex ? 'text-blue-500' : 'text-red-300'
+                                    }`}
+                                    onClick={() => {
+                                        updateIndex(index)
+                                    }}>
+                                    <span class="material-symbols-outlined">
+                                        radio_button_checked
+                                    </span>
+                                </button>
+                            )
+                        })}
+
+                    </div>
+                    <button onClick={() => {
+                        updateIndex(currentIndex + 1)
+                    }}>
+                        <span className="material-symbols-outlined cursor-pointer">
+                            chevron_right
+                        </span>
+                    </button>
+
+                </>
+
             </div>
         </div>
     );
