@@ -13,11 +13,15 @@ import SuccessToast from "../../toast/SuccessToast";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 
 const About = () => {
-  const { profile, setProfile, loading } = useContext(ProfileContext); // <-- Added setProfile
+  const { profile, setProfile, loading } = useContext(ProfileContext);
   const [aboutContent, setAboutContent] = useState("");
   const [showModal, setShowModal] = useState(false);
   const { auth } = useAuth();
-const isOwner = auth?.username === profile?.username;
+
+  // Updated permission logic
+  const isOwnProfile = profile?.username === auth?.username;
+  const isAdminOrOwner = ['admin', 'owner'].includes(auth?.role);
+  const canEdit = isOwnProfile || isAdminOrOwner;
 
   // Success toast
   const {
@@ -82,13 +86,13 @@ const isOwner = auth?.username === profile?.username;
     <div className="max-w-[90%] lg:max-w-4xl mx-auto p-6 bg-base-100 rounded-lg shadow-md mt-10 relative">
       <div className="flex pb-4 items-center justify-between font-semibold">
         <h1>About</h1>
-        {isOwner && (
-        <div
-          className="text-2xl shadow-lg bg-base-300 p-[7px] rounded-3xl flex items-center justify-center gap-5 cursor-pointer opacity-75 hover:opacity-100 transition text-primary"
-          onClick={() => setShowModal(true)}
-        >
-          <FaEdit />
-        </div>
+        {canEdit && (
+          <div
+            className="text-2xl shadow-lg bg-base-300 p-[7px] rounded-3xl flex items-center justify-center gap-5 cursor-pointer opacity-75 hover:opacity-100 transition text-primary"
+            onClick={() => setShowModal(true)}
+          >
+            <FaEdit />
+          </div>
         )}
       </div>
 

@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { FaEdit, FaPlus } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
 import ExperiCompo from "./ExperiCompo";
 import ExperienceModal from "./AddExperienceModal";
 import useAuth from "../../../../auth/useAuth";
@@ -21,7 +21,10 @@ function Experience() {
 
   const { auth } = useAuth();
   const { profile } = useContext(ProfileContext);
-  const isOwner = auth?.username === profile?.username;
+
+  const isOwnProfile = auth?.username === profile?.username;
+  const isAdminOrOwner = ['admin', 'owner'].includes(auth?.role);
+  const canEdit = isOwnProfile || isAdminOrOwner;
 
   const handleAdd = () => {
     setEditExperience(null);
@@ -53,9 +56,12 @@ function Experience() {
     <div className="max-w-[90%] lg:max-w-4xl mx-auto p-6 bg-base-100 rounded-lg shadow-md mt-10 relative">
       <div className="flex items-center justify-between font-semibold">
         <h1>Experience</h1>
-        {isOwner && (
-          <div className="text-2xl bg-base-300 shadow-lg p-[5px] rounded-3xl flex gap-5 cursor-pointer opacity-75 hover:opacity-100 transition text-primary">
-            <FaPlus onClick={handleAdd} />
+        {canEdit && (
+          <div
+            className="text-2xl bg-base-300 shadow-lg p-[5px] rounded-3xl flex gap-5 cursor-pointer opacity-75 hover:opacity-100 transition text-primary"
+            onClick={handleAdd}
+          >
+            <FaPlus />
           </div>
         )}
       </div>
@@ -66,7 +72,7 @@ function Experience() {
             key={exp.id}
             experience={exp}
             onEdit={() => handleEdit(exp)}
-            isOwner={isOwner}
+            canEdit={canEdit}
           />
         ))}
       </div>

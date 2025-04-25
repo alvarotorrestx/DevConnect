@@ -1,4 +1,4 @@
-import { FaEdit, FaPlus, FaArrowRight } from "react-icons/fa";
+import { FaPlus, FaArrowRight } from "react-icons/fa";
 import ProjectCopo from "./ProjectCopo";
 import ProjectModal from "./ProjectModal";
 import useAuth from "../../../../auth/useAuth";
@@ -22,7 +22,10 @@ function Project() {
 
   const { auth } = useAuth();
   const { profile } = useContext(ProfileContext);
-  const isOwner = auth?.username === profile?.username;
+
+  const isOwnProfile = auth?.username === profile?.username;
+  const isAdminOrOwner = ["admin", "owner"].includes(auth?.role);
+  const canEdit = isOwnProfile || isAdminOrOwner;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editProject, setEditProject] = useState(null);
@@ -39,14 +42,12 @@ function Project() {
 
   const handleSave = (newProject) => {
     if (editProject) {
-      // Editing existing project
       setProjects((prev) =>
         prev.map((p) =>
           p.id === editProject.id ? { ...newProject, id: p.id } : p
         )
       );
     } else {
-      // Adding new project
       const id = Date.now();
       setProjects((prev) => [...prev, { ...newProject, id }]);
     }
@@ -57,9 +58,12 @@ function Project() {
     <div className="max-w-[90%] lg:max-w-4xl mx-auto p-6 bg-base-100 rounded-lg shadow-md mt-10 relative">
       <div className="flex items-center justify-between font-semibold">
         <h1>Projects</h1>
-        {isOwner && (
-          <div className="text-2xl bg-base-300 shadow-lg p-[5px] rounded-3xl flex gap-5 cursor-pointer opacity-75 hover:opacity-100 transition text-primary">
-            <FaPlus onClick={handleAdd} />
+        {canEdit && (
+          <div
+            className="text-2xl bg-base-300 shadow-lg p-[5px] rounded-3xl flex gap-5 cursor-pointer opacity-75 hover:opacity-100 transition text-primary"
+            onClick={handleAdd}
+          >
+            <FaPlus />
           </div>
         )}
       </div>
@@ -70,7 +74,7 @@ function Project() {
             key={project.id}
             project={project}
             onEdit={() => handleEdit(project)}
-            isOwner={isOwner}
+            canEdit={canEdit}
           />
         ))}
 
@@ -90,7 +94,6 @@ function Project() {
           onClose={() => setIsModalOpen(false)}
           onSave={handleSave}
           initialData={editProject}
-
         />
       )}
     </div>
