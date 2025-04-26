@@ -97,7 +97,6 @@ const Posts = () => {
                                         <>
                                             <div className='absolute top-0 right-0 flex flex-row justify-center items-center gap-2 mt-3 mr-3'>
                                                 <EditPost
-                                                    key={`edit-${post._id}`}
                                                     auth={auth}
                                                     post={post}
                                                     POST_URL={POST_URL}
@@ -107,7 +106,6 @@ const Posts = () => {
                                                 />
 
                                                 <DeletePost
-                                                    key={`delete-${post._id}`}
                                                     auth={auth}
                                                     post={post}
                                                     POST_URL={POST_URL}

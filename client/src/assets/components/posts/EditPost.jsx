@@ -57,15 +57,16 @@ const EditPost = ({ auth, post, POST_URL, showError, showSuccess, setPosts }) =>
                 withCredentials: true,
             });
 
-            const fullPost = await axiosPrivate.get(`${POST_URL}/${response.data.post._id}`, {
+
+            // Re-render posts (allows to receive edit/delete buttons again)
+            const allPosts = await axiosPrivate.get(POST_URL, {
                 headers: {
-                    Authorization: `Bearer ${auth.accessToken}`,
+                    Authorization: `Bearer ${auth?.accessToken}`
                 },
                 withCredentials: true,
             });
 
-
-            setPosts(prev => prev.map(newPost => newPost._id === fullPost.data._id ? fullPost.data : newPost));
+            setPosts(allPosts.data);
             setPostData({
                 body: post.body || '',
                 media: {
