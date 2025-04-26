@@ -11,6 +11,8 @@ import Unauthorized from './assets/components/subcomponents/Unauthorized';
 import Register from './assets/components/subcomponents/Register';
 import Login from './assets/components/subcomponents/Login';
 import Dashboard from './assets/components/Dashboard';
+import Posts from './assets/components/posts/Posts';
+import Network from './assets/components/network/Network';
 import TesterComponent from './assets/components/TesterComponent';
 import Profile from './assets/components/profile/Profile';
 import EditProfile from './assets/components/profile/EditProfile'
@@ -20,7 +22,6 @@ import NotFound from './assets/components/subcomponents/NotFound';
 import ThemeContext from './assets/context/ThemeContext';
 import useAuth from './auth/useAuth';
 import { ProfileProvider } from './assets/context/ProfileContext';
-import Network from './assets/components/network/Network';
 
 function App() {
 
@@ -53,6 +54,7 @@ function App() {
                   <Route index element={<Profile />} />
                   <Route path="edit" element={<EditProfile />} />
                 </Route>
+                <Route path='/blogs' element={<Posts />} />
                 <Route path='/network' element={<Network />} />
                 <Route path='/tester' element={<TesterComponent />} />
               </Route>

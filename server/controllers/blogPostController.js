@@ -5,7 +5,7 @@ const validator = require('validator');
 const getAllPosts = async (req, res) => {
     try {
         const posts = await Post.find()
-            .populate('author', 'username firstName lastName avatar') // populate specific author fields
+            .populate('author', 'username firstName lastName avatar role') // populate specific author fields
             .sort({ createdAt: -1 }); // sort by newest posts
 
         res.status(200).json(posts);
@@ -14,9 +14,24 @@ const getAllPosts = async (req, res) => {
     }
 }
 
-const createPost = async (req, res) => {
+const getPostById = async (req, res) => {
     try {
-        const { body, tags = [], featured = false } = req.body;
+        const post = await Post.findById(req.params.id)
+            .populate('author', 'username firstName lastName avatar');
+        if (!post) return res.status(404).json({ message: 'Post not found.' });
+        res.status(200).json(post);
+    } catch (err) {
+        res.status(500).json({ message: 'Error retrieving post.' });
+    }
+};
+
+
+const createPost = async (req, res) => {
+
+    const WEBSITE_REGEX = /^(https?:\/\/)?([\w\d-]+\.)+[\w-]+(\/[\w\-._~:/?#[\]@!$&'()*+,;=.]+)?$/;
+
+    try {
+        const { body, media = { images: [], videos: [] }, tags = [], featured = false } = req.body;
         const userId = req.user.id;
 
         if (!body) {
@@ -33,10 +48,19 @@ const createPost = async (req, res) => {
         // Clean tags
         const cleanedTags = tags.map(tag => tag.startsWith('#') ? tag.slice(1).trim().toLowerCase() : tag.trim().toLowerCase());
 
+        if (!Array.isArray(media.images) || !Array.isArray(media.videos)) return res.status(422).json({ message: "Media must include arrays for images and videos." });
+
+        for (const url of [...media.images, ...media.videos]) {
+            if (url.trim() !== '' && !WEBSITE_REGEX.test(url)) {
+                return res.status(422).json({ message: `Invalid media URL: ${url}` });
+            }
+        }
+
         // Create the post
         const newPost = await Post.create({
             body: sanitizedBody,
             tags: cleanedTags,
+            media,
             featured,
             author: userId
         });
@@ -56,6 +80,9 @@ const createPost = async (req, res) => {
 }
 
 const updatePost = async (req, res) => {
+
+    const WEBSITE_REGEX = /^(https?:\/\/)?([\w\d-]+\.)+[\w-]+(\/[\w\-._~:/?#[\]@!$&'()*+,;=.]+)?$/;
+
     try {
         const postId = req.params.id
         const userRole = req.user.role;
@@ -67,9 +94,9 @@ const updatePost = async (req, res) => {
         // Restrict edit access unless it's your own post or you are an moderator, admin, owner
         if (foundPost.author.toString() !== userId && !['moderator', 'admin', 'owner'].includes(userRole)) return res.status(403).json({ message: "You are not authorized to edit this post." });
 
-        const { body, tags, featured } = req.body;
+        const { body, media, tags, featured } = req.body;
 
-        const allowedUpdates = ['body', 'tags', 'featured'];
+        const allowedUpdates = ['body', 'media', 'tags', 'featured'];
         const hasValidUpdate = allowedUpdates.some(field => req.body[field] !== undefined);
         if (!hasValidUpdate) return res.status(400).json({ message: "At least one valid field must be changed to update the post." });
 
@@ -88,12 +115,15 @@ const updatePost = async (req, res) => {
 
         if (featured !== undefined && typeof featured !== "boolean") return res.status(422).json({ message: "Featured must be a boolean." });
 
+        if (!Array.isArray(media.images) || !Array.isArray(media.videos)) return res.status(422).json({ message: "Media must include arrays for images and videos." });
+
         // Update user with new fields
         const updatedPost = await Post.findByIdAndUpdate(
             postId,
             {
                 body: sanitizedBody,
                 tags: cleanedTags,
+                media,
                 featured: featured !== undefined ? featured : foundPost.featured
             },
             { new: true }
@@ -138,6 +168,7 @@ const deletePost = async (req, res) => {
 
 module.exports = {
     getAllPosts,
+    getPostById,
     createPost,
     updatePost,
     deletePost
