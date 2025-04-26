@@ -64,8 +64,17 @@ const EditPost = ({ auth, post, POST_URL, showError, showSuccess, setPosts }) =>
                 withCredentials: true,
             });
 
-            
+
             setPosts(prev => prev.map(newPost => newPost._id === fullPost.data._id ? fullPost.data : newPost));
+            setPostData({
+                body: post.body || '',
+                media: {
+                    images: post.media.images || [],
+                    videos: post.media.videos || []
+                },
+                featured: post.featured || false,
+                tags: post.tags || [],
+            });
             showSuccess('Post updated successfully.');
             document.getElementById(`edit_post_modal_${postId}`)?.close();
         }
