@@ -115,15 +115,7 @@ const updatePost = async (req, res) => {
 
         if (featured !== undefined && typeof featured !== "boolean") return res.status(422).json({ message: "Featured must be a boolean." });
 
-        if (media && !Array.isArray(media)) return res.status(422).json({ message: "Media must be an array of URLs." });
-
-        if (Array.isArray(media)) {
-            for (const url of media) {
-                if (url.trim() !== '' && !WEBSITE_REGEX.test(url)) {
-                    return res.status(422).json({ message: `Invalid media URL: ${url}` });
-                }
-            }
-        }
+        if (!Array.isArray(media.images) || !Array.isArray(media.videos)) return res.status(422).json({ message: "Media must include arrays for images and videos." });
 
         // Update user with new fields
         const updatedPost = await Post.findByIdAndUpdate(

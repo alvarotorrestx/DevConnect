@@ -5,13 +5,15 @@ import useAuth from '../../../auth/useAuth';
 import Loading from '../subcomponents/Loading';
 import CreatePost from './CreatePost';
 import PostBody from './PostBody';
-import { FaEdit, FaCheck, FaCheckCircle, FaTimesCircle, FaTimes } from 'react-icons/fa';
+import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 
 // Toast imports
 import ErrorToast from "../toast/ErrorToast";
 import { useErrorToast } from "../toast/useErrorToast";
 import SuccessToast from "../toast/SuccessToast";
 import { useSuccessToast } from "../toast/useSuccessToast";
+import DeletePost from './DeletePost';
+import EditPost from './EditPost';
 
 const POST_URL = '/api/posts'
 
@@ -76,27 +78,6 @@ const Posts = () => {
     };
 
 
-    const deletePost = async (postId) => {
-        try {
-            const response = await axiosPrivate.delete(`${POST_URL}/${postId}`, {
-                headers: {
-                    Authorization: `Bearer ${auth?.accessToken}`
-                }
-            });
-
-            setPosts(prev => prev.filter(post => post._id !== postId));
-            showSuccess('Post successfully deleted.');
-        }
-        catch (err) {
-            // If no error response
-            if (!err?.response) {
-                showError('No Server Response');
-            } else {
-                showError(`${JSON.stringify(err.response.data.message).slice(1, -1)}` || 'Error deleting post.');
-            }
-        }
-    }
-
     return (
         <div className="max-w-[90%] lg:max-w-4xl mx-auto p-6 bg-base-300 rounded-lg shadow-md mt-10">
 
@@ -115,143 +96,24 @@ const Posts = () => {
                                     (
                                         <>
                                             <div className='absolute top-0 right-0 flex flex-row justify-center items-center gap-2 mt-3 mr-3'>
-                                                {/* Edit Post Button */}
-                                                <button
-                                                    className="btn btn-secondary btn-sm"
-                                                    onClick={() => document.getElementById(`edit_post_modal_${post._id}`).showModal()}
-                                                >
-                                                    <FaEdit />
-                                                </button>
+                                                <EditPost
+                                                    auth={auth}
+                                                    post={post}
+                                                    POST_URL={POST_URL}
+                                                    showSuccess={showSuccess}
+                                                    showError={showError}
+                                                    setPosts={setPosts}
+                                                />
 
-                                                {/* Delete Post Button */}
-                                                <button
-                                                    className="btn btn-error btn-sm"
-                                                    onClick={() => document.getElementById(`delete_post_modal_${post._id}`).showModal()}
-                                                >
-                                                    <FaTimes />
-                                                </button>
+                                                <DeletePost
+                                                    auth={auth}
+                                                    post={post}
+                                                    POST_URL={POST_URL}
+                                                    showSuccess={showSuccess}
+                                                    showError={showError}
+                                                    setPosts={setPosts}
+                                                />
                                             </div>
-
-                                            <dialog id={`edit_post_modal_${post._id}`} className="modal">
-                                                <div className="modal-box max-w-2xl bg-base-100 rounded-lg shadow p-6">
-                                                    <h3 className="font-bold text-xl mb-4">Edit Your Post</h3>
-
-                                                    {/* Body Input */}
-                                                    <div className="flex items-start mb-4">
-                                                        <textarea
-                                                            id="body"
-                                                            // onChange={handleChange}
-                                                            value={post.body}
-                                                            autoComplete="off"
-                                                            className="w-full min-h-[100px] max-h-[300px] rounded-lg bg-base-200 p-3 text-base focus:outline-none focus:ring focus:ring-primary"
-                                                            rows="3"
-                                                            placeholder="Update your post..."
-                                                        />
-                                                    </div>
-
-                                                    {/* Media Inputs */}
-                                                    <input
-                                                        type="url"
-                                                        placeholder="Paste image URL"
-                                                        className="input input-bordered w-full my-2"
-                                                        onChange={(e) =>
-                                                            setPostData(prev => ({
-                                                                ...prev,
-                                                                media: {
-                                                                    ...prev.media,
-                                                                    images: [e.target.value]
-                                                                }
-                                                            }))
-                                                        }
-                                                    // value={post.media.images[0] || ''}
-                                                    />
-
-                                                    <input
-                                                        type="url"
-                                                        placeholder="Paste video URL"
-                                                        className="input input-bordered w-full my-2"
-                                                        onChange={(e) =>
-                                                            setPostData(prev => ({
-                                                                ...prev,
-                                                                media: {
-                                                                    ...prev.media,
-                                                                    videos: [e.target.value]
-                                                                }
-                                                            }))
-                                                        }
-                                                    // value={post.media.videos[0] || ''}
-                                                    />
-
-                                                    {/* Featured Toggle */}
-                                                    <div className="flex items-center gap-2 mb-4">
-                                                        <button
-                                                            type="button"
-                                                            className={`btn btn-sm ${post.featured ? 'btn-active' : 'btn-inactive'}`}
-                                                            onClick={() => setPostData(prev => ({ ...prev, featured: !prev.featured }))}
-                                                        >
-                                                            {post.featured ? '⭐️ Featured' : '☆ Not Featured'}
-                                                        </button>
-                                                    </div>
-
-                                                    {/* Footer Buttons */}
-                                                    <div className="modal-action flex justify-end gap-3">
-                                                        <form method="dialog">
-                                                            <button className="btn btn-sm btn-error">
-                                                                <FaTimes className="mr-1" />
-                                                                Cancel
-                                                            </button>
-                                                        </form>
-
-                                                        <button
-                                                            // onClick={() => updatePost(postId)}
-                                                            className="btn btn-secondary btn-sm"
-                                                            disabled={post.body === ""}
-                                                        >
-                                                            <FaCheck className="mr-1" />
-                                                            Update Post
-                                                        </button>
-                                                    </div>
-                                                </div>
-
-                                                {/* Close modal by clicking backdrop */}
-                                                <form method="dialog" className="modal-backdrop">
-                                                    <button>close</button>
-                                                </form>
-                                            </dialog>
-
-
-                                            <dialog id={`delete_post_modal_${post._id}`} className="modal">
-                                                <div className="modal-box">
-                                                    <h3 className="font-bold text-lg text-error">Are you sure?</h3>
-                                                    <p className="py-4 text-base-content">
-                                                        This action cannot be undone. Do you really want to delete this post?
-                                                    </p>
-
-                                                    <div className="modal-action flex justify-end gap-3">
-                                                        {/* Cancel Button */}
-                                                        <form method="dialog">
-                                                            <button className="btn btn-sm btn-secondary">
-                                                                <FaTimes />
-                                                                Cancel
-                                                            </button>
-                                                        </form>
-
-                                                        {/* Confirm Delete Button */}
-                                                        <button
-                                                            onClick={() => deletePost(post._id)}
-                                                            className="btn btn-error btn-sm"
-                                                        >
-                                                            <FaCheck />
-                                                            Yes, Delete
-                                                        </button>
-                                                    </div>
-                                                </div>
-
-                                                {/* Close modal by clicking backdrop */}
-                                                <form method="dialog" className="modal-backdrop">
-                                                    <button>close</button>
-                                                </form>
-                                            </dialog>
                                         </>
                                     )
                                 }
@@ -318,7 +180,7 @@ const Posts = () => {
 
                                 {/* Tags */}
                                 {post.tags.length > 0 && (
-                                    <p className="text-sm text-base-content/70 mb-1">
+                                    <p className="text-sm text-base-content/70 my-2">
                                         <strong>Tags:</strong> {post.tags.map(tag => `#${tag}`).join(' ')}
                                     </p>
                                 )}
