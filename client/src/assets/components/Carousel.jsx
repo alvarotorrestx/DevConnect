@@ -132,23 +132,29 @@ const Carousel = () => {
 
     return (
         <div className="w-full h-[350px] bg-gray-100 rounded-xl shadow-lg overflow-hidden block lg:hidden ">
-            <div className="h-[310px] px-5 pt-5 overflow-y-auto"
-            >
-
-                {slides[currentIndex].component}
-
-            </div>
-
-
-            <div className="flex justify-center mt-3">
-                <>
-                    <button onClick={() => {
+            <div className="flex ">
+            <button onClick={() => {
                         updateIndex(currentIndex - 1)
                     }}>
                         <span className='material-symbols-outlined '>
                             chevron_left
                         </span>
                     </button>
+            <div className="h-[310px] px-5 pt-5 overflow-y-auto w-full">
+               {slides[currentIndex].component}
+            </div>
+            <button onClick={() => {
+                        updateIndex(currentIndex + 1)
+                    }}>
+                        <span className="material-symbols-outlined cursor-pointer">
+                            chevron_right
+                        </span>
+                    </button>
+            </div>
+           
+            <div className="flex justify-center mt-3">
+                <>
+                    
                     <div className="indicators">
                         {slides.map((item, index) => {
                             return (
@@ -165,13 +171,7 @@ const Carousel = () => {
                         })}
 
                     </div>
-                    <button onClick={() => {
-                        updateIndex(currentIndex + 1)
-                    }}>
-                        <span className="material-symbols-outlined cursor-pointer">
-                            chevron_right
-                        </span>
-                    </button>
+                    
 
                 </>
 

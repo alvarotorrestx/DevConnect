@@ -14,8 +14,8 @@ const Dashboard = () => {
         <div className="col-span-1 ">
           <div className="md:flex md:flex-col md:gap-3  rounded-md hidden">
             {/* profile container */}
-            <div className="flex flex-col gap-2 border-[15px] border-primary  rounded-xl h-auto align-center">
-              <div className="flex align-center text-align w-auto gap-3 p-2 ml-5">
+            <div className="flex  flex-col gap-2   rounded-xl h-auto align-center   shadow-md bg-base-200 border-[2px]">
+              <div className="flex align-center text-align w-auto gap-5 p-2 ml-5">
                 <div className="image">
                   <img
                     className="w-[60px] h-[60px] rounded-[50px]"
@@ -29,7 +29,7 @@ const Dashboard = () => {
                 </div>
               </div>
 
-              <div className="flex lg:flex-row gap-2  align-center  mb-2 w-auto ml-5  md:flex-wrap ">
+              <div className="flex lg:flex-row gap-5  align-center  mb-2 w-auto ml-5  md:flex-wrap  ">
                 <div className="flex flex-col text-center">
                   <div className="font-extrabold">2.3k</div>
                   <div className="">Followers</div>
@@ -46,7 +46,7 @@ const Dashboard = () => {
             </div>
 
             {/* activity container */}
-            <div className="md:display  md:flex flex-col bg-white border-[12px] rounded-md border-white ">
+            <div className="md:display bg-base-200 md:flex flex-col   p-2 rounded-xl shadow-md border-[2px] ">
               <div className="flex gap-2 justify-between w-full items-center mb-3">
                 <div className="flex gap-3 items-center">
                   <span className="material-symbols-outlined text-blue-800">
@@ -57,7 +57,7 @@ const Dashboard = () => {
                 <div className="text-blue-800">see All</div>
               </div>
               <div className="md:flex hidden md:display flex-col gap-2">
-                <div className="flex gap-2 border border-gray-100 shadow-md p-2">
+                <div className="flex gap-2  shadow-md p-2">
                   <div className="left">
                     <img
                       src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTgD14vQ6I-UBiHTcwxZYnpSfLFJ2fclwS2A&s"
@@ -113,7 +113,7 @@ const Dashboard = () => {
             </div>
 
             {/* forums container*/}
-            <div className=" md:display  md:flex flex-col bg-[#fff] border-[12px]  border-white rounded-md">
+            <div className="  md:display  md:flex flex-col  rounded-xl bg-base-200 shadow-md p-2 border-[2px]">
               <div className="flex gap-2 justify-between w-full items-center mb-3">
                 <div className="flex gap-3 items-center">
                   <span className="material-symbols-outlined   text-blue-800">
@@ -125,7 +125,7 @@ const Dashboard = () => {
                 <div className="text-blue-800">see All</div>
               </div>
               <div className="md:flex hidden md:display flex-col  gap-2">
-                <div className="flex gap-2 border border-gray-100 shadow-md p-2">
+                <div className="flex gap-2  shadow-md p-2">
                   <div className="left">
                     <img
                       src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTgD14vQ6I-UBiHTcwxZYnpSfLFJ2fclwS2A&s"
@@ -193,7 +193,7 @@ const Dashboard = () => {
           </div>
 
           {/* welcome banner */}
-          <div className="w-full h-40 rounded-md">
+          <div className="w-full h-40 rounded-xl">
             <img
               src="https://i.pinimg.com/736x/bd/da/fc/bddafc029d86df72bef91bba70973c71.jpg"
               alt="welcome"
@@ -202,10 +202,10 @@ const Dashboard = () => {
           </div>
 
           {/* blog-post-container  */}
-          <div className="flex  flex-col md:w-full  rounded-[15px]  bg-white bg-[100px] pt-3 text-center ">
+          <div className="flex flex-col md:w-full bg-base-200 rounded-xl  shadow-md  bg-[100px] pt-3 text-center border-[2px]  ">
 
             {/* input field */}
-            <div className="w-[90%] grid grid-cols-[0.5fr_4.5fr_1fr] gap-1  mx-5">
+            <div className="w-[90%] grid grid-cols-[0.5fr_4.5fr_1fr] gap-1 mx-5 ">
               <div className="image col-span-0.5">
                 <img
                   src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTgD14vQ6I-UBiHTcwxZYnpSfLFJ2fclwS2A&s"
@@ -217,15 +217,13 @@ const Dashboard = () => {
                 <input
                   type="text"
                   placeholder="Whats on your mind?"
-                  className="rounded-md  w-[100%] bg-[#e0e0e0]  text-center"
+                  className="rounded-md  w-[100%] bg-[#e0e0e0]"
                 />
               </div>
-              <div className="btn btn-primary 
-              md:h-[40px]  col-span-1">
-                <button className="font-semibold text-[13px] text-black h-[35px]">
+        
+                <button className="font-semibold text-black bg-primary h-[35px] p-1 col-span-1 text-[12px]  md:h-[40px]   hover:bg-secondary transition duration-300 rounded-md">
                   Share Post
                 </button>
-              </div>
             </div>
 
             {/* attachments */}
@@ -259,7 +257,7 @@ const Dashboard = () => {
           </div>
 
           {/* blog feed  */}
-          <div className="m-1 p-4 bg-white rounded-[20px] h-auto">
+          <div className="m-1 p-4 rounded-xl h-auto shadow-md bg-base-800 border-[2px] text-content-200 mb-5">
             <div className="blog-container h-auto  flex flex-col gap-[16px] justify-center">
               <div className="blog-top flex gap-[10px] ">
                 <div className="image">
@@ -302,33 +300,33 @@ const Dashboard = () => {
         </div>
 
         {/* third column */}
-        <div className="md:col-span-1 rounded-md border-2 gap-5">
+        <div className="md:col-span-1 rounded-md gap-5">
         
 
-            <div className="message-container md:flex flex-col gap-4  bg-white p-3 mb-3 rounded-xl hidden md:display">
-              <div className="first-section flex px-2 justify-between">
-                <div className="heading flex justify-between items-center w-full">
-                  <h2 className="font-bold text-[27px]">Messages</h2>
+            <div className="message-container md:flex flex-col gap-4 p-3 mb-3 rounded-xl hidden md:display shadow-md bg-base-800 border-[2px] text-content-200 ">
+              <div className="first-section flex md:px-2 justify-between">
+                <div className="heading flex justify-between items-center w-full text-center">
+                  <h2 className="font-bold md:text-[27px] text-[20px]">Messages</h2>
                   <span class="material-symbols-outlined">edit_square</span>
                 </div>
               </div>
-              <div className="second-section mx-2 ">
+              <div className="second-section mx-1 ">
                 <input
                   type="text"
                   placeholder="search"
-                  className="h-[30px] w-[200px] rounded-sm font-semibold bg-white"
+                  className="h-[30px] w-full rounded-sm font-semibold bg-white p-2"
                 />
               </div>
 
               <div className="names flex flex-col">
-                <div className="headings flex justify-between  w-full mb-3">
-                  <div className="left flex text-[16px] gap-4">
+                <div className="headings flex justify-between w-full sm:flex-wrap  mb-3">
+                  <div className="left flex text-[16px] gap-3 ">
                     <div className="text-[16px] font-bold border-b-2 border-black cursor-pointer ">
                       Primary
                     </div>
-                    <div className="text-[16px] cursor-pointer">General</div>
+                    <div className="text-[16px] cursor-pointer ">General</div>
                   </div>
-                  <div className="right text-[16px] text-blue-500 font-semibold cursor-pointer">
+                  <div className="right text-[16px] text-blue-500 font-bold cursor-pointer">
                     FriendReq(4)
                   </div>
                 </div>
@@ -390,7 +388,7 @@ const Dashboard = () => {
   
               {/* Events */}
 
-            <div className="md:flex flex-col bg-white  rounded-xl p-4 w-full">
+            <div className="md:flex flex-col   rounded-xl p-4 w-full shadow-md bg-base-800 border-[2px] text-content-200">
               <div className="flex gap-2 mb-5 justify-between items-center ">
                 <div className="flex gap-3 items-center">
                   <span className="material-symbols-outlined text-blue-800">
@@ -403,7 +401,7 @@ const Dashboard = () => {
 
             
               <div className="md:flex md:display flex-col gap-2 w-full">
-                <div className="flex gap-2 border border-gray-100 shadow-md p-2">
+                <div className="flex gap-2 shadow-md p-2">
                   
                   <div className="flex flex-col">
                     <span className="name font-semibold">Job Interview</span>
