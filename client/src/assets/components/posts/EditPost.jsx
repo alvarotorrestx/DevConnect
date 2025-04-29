@@ -17,10 +17,7 @@ const EditPost = ({ auth, post, POST_URL, showError, showSuccess, setPosts }) =>
     useEffect(() => {
         if (post) {
             setPostData({
-                body: post.body
-                .replace(/(?<!\s)\n/g, " \n")
-                .replace(/(?<!\s)#/g, " #")
-                .replace(/\n#/g, "\n #") || '',
+                body: post.body || '',
                 media: {
                     images: post.media.images || [],
                     videos: post.media.videos || []

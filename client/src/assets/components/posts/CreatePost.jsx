@@ -34,8 +34,8 @@ const CreatePost = ({ POST_URL, auth, setPosts }) => {
         showSuccess,
     } = useSuccessToast();
 
-    const handleChange = (e) => {
-        setPostData((prev) => ({ ...prev, [e.target.id]: e.target.value }));
+    const handleChange = (e) => {	    const handleChange = (e) => {
+        setPostData((prev) => ({ ...prev, [e.target.id]: e.target.value }));	      setPostData((prev) => ({ ...prev, [e.target.id]: e.target.value }));
     };
     
     useEffect(() => {
