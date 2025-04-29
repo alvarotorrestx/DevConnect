@@ -22,6 +22,8 @@ const Posts = () => {
 
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
 
     const {
         message: errorMessage,
@@ -39,25 +41,27 @@ const Posts = () => {
     const isVideo = url => /\.(mp4|webm|ogg)$/i.test(url);
 
     useEffect(() => {
-        const fetchPosts = async () => {
+        const fetchPosts = async (page = 1) => {
             setLoading(true);
             try {
-                const response = await axiosPrivate.get(POST_URL, {
+                const response = await axiosPrivate.get(`${POST_URL}?page=${page}&limit=10`, {
                     headers: {
                         Authorization: `Bearer ${auth?.accessToken}`
                     }
                 });
 
-                setPosts(response.data);
+                setPosts(response.data.posts);
+                setTotalPages(response.data.totalPages);
             } catch (err) {
                 console.log(err);
             } finally {
                 setLoading(false);
             }
         };
-
-        fetchPosts();
-    }, [auth?.accessToken]);
+        // scrollY = window.scrollY;
+        window.scrollTo(0, 0);
+        fetchPosts(currentPage);
+    }, [auth?.accessToken, currentPage]);
 
     const canUserModifyPost = (post, auth) => {
         if (!auth || !post?.author) return false;
@@ -200,6 +204,25 @@ const Posts = () => {
                         :
                         <p>No posts found.</p>
             }
+
+            {/* Pagination Controls */}
+            <div className="flex justify-center mt-6">
+                <button
+                    className="btn btn-primary btn-sm"
+                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                >
+                    Previous
+                </button>
+                <span className="mx-4">Page {currentPage} of {totalPages}</span>
+                <button
+                    className="btn btn-primary btn-sm"
+                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                >
+                    Next
+                </button>
+            </div>
 
             {/* Add Toast Components */}
             <SuccessToast
