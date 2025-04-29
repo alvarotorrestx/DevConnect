@@ -44,8 +44,6 @@ const CreatePost = ({ POST_URL, auth, setPosts }) => {
         }));
     };
 
-    console.log(postData.body)
-
     useEffect(() => {
         const words = postData.body.split(/\s+/);
         const foundTags = [...new Set(
