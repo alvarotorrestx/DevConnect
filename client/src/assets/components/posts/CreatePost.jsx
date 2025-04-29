@@ -54,8 +54,18 @@ const CreatePost = ({ POST_URL, auth, setPosts }) => {
         e.preventDefault();
         setButtonStatus("Loading...");
 
+        const formattedBody = postData.body
+        .replace(/(?<!\s)\n/g, " \n")
+        .replace(/(?<!\s)#/g, " #")
+        .replace(/\n#/g, "\n #");
+
+        const postToSend = {
+            ...postData,
+            body: formattedBody
+        };
+
         try {
-            const response = await axiosPrivate.post(POST_URL, postData, {
+            const response = await axiosPrivate.post(POST_URL, postToSend, {
                 headers: {
                     Authorization: `Bearer ${auth.accessToken}`,
                 },
