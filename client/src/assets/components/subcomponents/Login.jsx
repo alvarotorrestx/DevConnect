@@ -75,17 +75,20 @@ const Login = () => {
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
-        });
+        }
+      );
 
       const accessToken = response?.data?.accessToken;
       const username = response?.data?.user.username;
       const role = response?.data?.user.role;
 
-      setAuth({ login: formData.login, username, role, accessToken });
-
-      await refresh();
-
-      navigate(from, { replace: true });
+      
+      showSuccess("Login Successful");
+      setTimeout(async () => {
+        setAuth({ login: formData.login, username, role, accessToken });
+        await refresh();
+        navigate(from, { replace: true });
+      }, 1500);
     } catch (err) {
       if (!err?.response) {
         showError("No Server Response");
@@ -204,11 +207,9 @@ const Login = () => {
       <SuccessToast
         message={successMessage}
         show={showSuccessToast}
-        status="error"
-        icon={
-          <FaCheckCircle className="text-green-600 text-4xl bg-transparent p-0 m-0" />
-        }
-        iconBgColor="bg-blue-200"
+        status="success"
+        icon={<FaCheckCircle className="text-green-600 text-4xl" />}
+        iconBgColor="bg-green-700"
       />
       <ErrorToast
         message={errorMessage}
