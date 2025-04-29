@@ -55,9 +55,9 @@ const CreatePost = ({ POST_URL, auth, setPosts }) => {
         setButtonStatus("Loading...");
 
         const formattedBody = postData.body
-        .replace(/(?<!\s)\n/g, " \n")
-        .replace(/(?<!\s)#/g, " #")
-        .replace(/\n#/g, "\n #");
+        .replace(/(?<!\s)\n/g, " \n") // Add spaces before newlines
+        .replace(/(?<!\s)#/g, " #") // Add spaces before hashtags
+        .replace(/\n#/g, "\n #"); // Add spaces before hashtags after newlines
 
         const postToSend = {
             ...postData,
