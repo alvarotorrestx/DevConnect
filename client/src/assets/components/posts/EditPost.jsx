@@ -34,13 +34,7 @@ const EditPost = ({ auth, post, POST_URL, showError, showSuccess, setPosts }) =>
     const [buttonStatus, setButtonStatus] = useState("Update");
 
     const handleChange = (e) => {
-        setPostData((prev) => ({
-        ...prev,
-        [e.target.id]: e.target.value
-        .replace(/(?<!\s)\n/g, " \n") // Add spaces before newlines
-        .replace(/(?<!\s)#/g, " #") // Add spaces before hashtags
-        .replace(/\n#/g, "\n #"), // Add spaces before hashtags after newlines
-        }));
+        setPostData((prev) => ({ ...prev, [e.target.id]: e.target.value }));
     };
 
     useEffect(() => {
@@ -58,8 +52,18 @@ const EditPost = ({ auth, post, POST_URL, showError, showSuccess, setPosts }) =>
 
         setButtonStatus("Loading...");
 
+        const formattedBody = postData.body
+        .replace(/(?<!\s)\n/g, " \n")
+        .replace(/(?<!\s)#/g, " #")
+        .replace(/\n#/g, "\n #");
+
+        const postToSend = {
+            ...postData,
+            body: formattedBody
+        };
+
         try {
-            const response = await axiosPrivate.put(`${POST_URL}/${postId}`, postData, {
+            const response = await axiosPrivate.put(`${POST_URL}/${postId}`, postToSend, {
                 headers: {
                     Authorization: `Bearer ${auth?.accessToken}`
                 },
