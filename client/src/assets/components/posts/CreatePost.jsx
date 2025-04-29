@@ -34,9 +34,17 @@ const CreatePost = ({ POST_URL, auth, setPosts }) => {
         showSuccess,
     } = useSuccessToast();
 
-    const handleChange = (e) => {
-        setPostData((prev) => ({ ...prev, [e.target.id]: e.target.value }));
+    const handleChange = (e) => { 
+       setPostData((prev) => ({
+            ...prev,
+            [e.target.id]: e.target.value
+            .replace(/(?<!\s)\n/g, " \n") // Add spaces before newlines
+            .replace(/(?<!\s)#/g, " #") // Add spaces before hashtags
+            .replace(/\n#/g, "\n #"), // Add spaces before hashtags after newlines
+        }));
     };
+
+    console.log(postData.body)
 
     useEffect(() => {
         const words = postData.body.split(/\s+/);

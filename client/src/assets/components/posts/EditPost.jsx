@@ -17,7 +17,10 @@ const EditPost = ({ auth, post, POST_URL, showError, showSuccess, setPosts }) =>
     useEffect(() => {
         if (post) {
             setPostData({
-                body: post.body || '',
+                body: post.body
+                .replace(/(?<!\s)\n/g, " \n")
+                .replace(/(?<!\s)#/g, " #")
+                .replace(/\n#/g, "\n #") || '',
                 media: {
                     images: post.media.images || [],
                     videos: post.media.videos || []
@@ -31,7 +34,13 @@ const EditPost = ({ auth, post, POST_URL, showError, showSuccess, setPosts }) =>
     const [buttonStatus, setButtonStatus] = useState("Update");
 
     const handleChange = (e) => {
-        setPostData((prev) => ({ ...prev, [e.target.id]: e.target.value }));
+        setPostData((prev) => ({
+        ...prev,
+        [e.target.id]: e.target.value
+        .replace(/(?<!\s)\n/g, " \n") // Add spaces before newlines
+        .replace(/(?<!\s)#/g, " #") // Add spaces before hashtags
+        .replace(/\n#/g, "\n #"), // Add spaces before hashtags after newlines
+        }));
     };
 
     useEffect(() => {
