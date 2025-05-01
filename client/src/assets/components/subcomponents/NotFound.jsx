@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const NotFound = () => {
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-slate-50 overflow-hidden">
+    <div className="fixed inset-0 flex items-center justify-center bg-base-300 overflow-hidden">
 
       <div className="absolute inset-0 overflow-hidden">
         <svg 
@@ -36,7 +36,7 @@ const NotFound = () => {
       <div className="relative z-10 w-full max-w-sm bg-white rounded-xl shadow-lg p-8 mx-4 text-center">
     
         <div className="flex justify-center mb-6">
-          <div className="bg-slate-100 rounded-full p-6">
+          <div className="bg-base-300 rounded-full p-6">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 9h.01M9 9h.01M12 20c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8z" />
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 14.5c-1.333-1-2.667-1-4 0" />

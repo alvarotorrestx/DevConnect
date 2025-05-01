@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Unauthorized = () => {
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-slate-50 overflow-hidden">
+    <div className="fixed inset-0 flex items-center justify-center bg-base-300 overflow-hidden">
       {/* Wave background */}
       <div className="absolute inset-0 overflow-hidden">
         <svg 
@@ -36,7 +36,7 @@ const Unauthorized = () => {
       <div className="relative z-10 w-full max-w-sm bg-white rounded-xl shadow-lg p-8 mx-4 text-center">
         {/* Lock icon */}
         <div className="flex justify-center mb-6">
-          <div className="bg-slate-100 rounded-full p-6">
+          <div className="bg-base-300 rounded-full p-6">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
@@ -55,7 +55,7 @@ const Unauthorized = () => {
           to="/"
           className="block w-full py-3 bg-[#6D84A4] text-white text-center font-medium rounded hover:bg-[#5D7494] transition-colors"
         >
-          Back to home
+          Back to Home
         </Link>
       </div>
     </div>
