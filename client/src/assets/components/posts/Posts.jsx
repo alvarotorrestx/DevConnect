@@ -14,6 +14,7 @@ import SuccessToast from "../toast/SuccessToast";
 import { useSuccessToast } from "../toast/useSuccessToast";
 import DeletePost from './DeletePost';
 import EditPost from './EditPost';
+import { scroll } from 'framer-motion';
 
 const POST_URL = '/api/posts'
 
@@ -51,6 +52,7 @@ const Posts = () => {
                 });
 
                 setPosts(response.data.posts);
+                (posts.length <=0) && setCurrentPage(1);
                 setTotalPages(response.data.totalPages);
             } catch (err) {
                 console.log(err);
@@ -59,9 +61,13 @@ const Posts = () => {
             }
         };
         // scrollY = window.scrollY;
-        window.scrollTo(0, 0);
+        window.scrollTo({
+            top:0,
+            behavior:'smooth'
+        })
+        
         fetchPosts(currentPage);
-    }, [auth?.accessToken, currentPage]);
+    }, [auth?.accessToken, currentPage, posts.length]);
 
     const canUserModifyPost = (post, auth) => {
         if (!auth || !post?.author) return false;
@@ -205,24 +211,41 @@ const Posts = () => {
                         <p>No posts found.</p>
             }
 
-            {/* Pagination Controls */}
-            <div className="flex justify-center mt-6">
-                <button
-                    className="btn btn-primary btn-sm"
-                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                    disabled={currentPage === 1}
-                >
-                    Previous
-                </button>
-                <span className="mx-4">Page {currentPage} of {totalPages}</span>
-                <button
-                    className="btn btn-primary btn-sm"
-                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                    disabled={currentPage === totalPages}
-                >
-                    Next
-                </button>
-            </div>
+
+            {totalPages > 1 && totalPages <= 4 ? (
+                <div className="flex justify-center mt-6">
+                    <div className="join">
+                        {Array.from({ length: totalPages }, (_, index) => (
+                            <button
+                                key={index + 1}
+                                className={`join-item btn ${currentPage === index + 1 ? 'btn-active' : ''}`}
+                                onClick={() => setCurrentPage(index + 1)}
+                            >
+                                {index + 1}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            ) : (totalPages > 4 && (
+                <div className="flex justify-center mt-6">
+                    <div className="join">
+                        <button className={`join-item btn `} onClick={() => setCurrentPage(currentPage- 2)}>
+                            {currentPage - 2}
+                        </button>
+                        <button className={`join-item btn`} onClick={() => setCurrentPage(currentPage - 1)}>
+                            {currentPage - 1}
+                        </button>
+                        <button className={`join-item btn 'btn-active'`} >{currentPage}</button>
+                        <button className={`join-item btn`} onClick={() => setCurrentPage(currentPage + 1)}>
+                            {currentPage + 1}
+                        </button>
+                        <button className={`join-item btn`} onClick={() => setCurrentPage(currentPage + 2)}>
+                            {currentPage + 2}
+                        </button>
+                    </div>
+                </div>
+                )
+            )}
 
             {/* Add Toast Components */}
             <SuccessToast
