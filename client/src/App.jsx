@@ -10,7 +10,7 @@ import Layout from './assets/components/layout/Layout';
 import Unauthorized from './assets/components/subcomponents/Unauthorized';
 import Register from './assets/components/subcomponents/Register';
 import Login from './assets/components/subcomponents/Login';
-import Dashboard from './assets/components/Dashboard';
+import Dashboard from './assets/components/Dashboard/Dashboard';
 import TesterComponent from './assets/components/TesterComponent';
 import Profile from './assets/components/profile/Profile';
 import EditProfile from './assets/components/profile/EditProfile'

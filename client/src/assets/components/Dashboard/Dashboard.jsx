@@ -1,4 +1,7 @@
 import Carousel from "./Carousel";
+import Activity from "./Activity";
+import Messages from "./Messages";
+import Events from "./Events";
 // import "./styles.css";
 
 const Dashboard = () => {
@@ -15,16 +18,24 @@ const Dashboard = () => {
           <div className="md:flex md:flex-col md:gap-3  rounded-md hidden">
             {/* profile container */}
             <div className="flex  flex-col gap-2   rounded-xl h-auto align-center   shadow-md bg-base-200 border-[2px]">
-              <div className="flex align-center text-align w-auto gap-5 p-2 ml-5">
-                <div className="image">
+              <div className="flex align-center text-align w-auto gap-2 pt-2 ml-5">
+                <div className="image w-[45px] h-[45px] flex align-center">
                   <img
-                    className="w-[60px] h-[60px] rounded-[50px]"
+                    className="w-full h-full  rounded-full object-cover"
                     src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
                     alt="profile-img"
                   />
                 </div>
                 <div className="username">
-                  <h2 className="text-black-900 font-extrabold text-xl">John David</h2>
+                  <div className="flex gap-1">
+                    <h2 className="text-black-900 font-extrabold text-xl">John David</h2>
+                    <p>
+                      <span className="material-symbols-outlined text-blue-700">
+                        verified
+                      </span>
+                    </p>
+                  </div>
+
                   <h2>@justin098</h2>
                 </div>
               </div>
@@ -46,71 +57,7 @@ const Dashboard = () => {
             </div>
 
             {/* activity container */}
-            <div className="md:display bg-base-200 md:flex flex-col   p-2 rounded-xl shadow-md border-[2px] ">
-              <div className="flex gap-2 justify-between w-full items-center mb-3">
-                <div className="flex gap-3 items-center">
-                  <span className="material-symbols-outlined text-blue-800">
-                    timeline
-                  </span>
-                  <div className="font-bold">Activity</div>
-                </div>
-                <div className="text-blue-800">see All</div>
-              </div>
-              <div className="md:flex hidden md:display flex-col gap-2">
-                <div className="flex gap-2  shadow-md p-2">
-                  <div className="left">
-                    <img
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTgD14vQ6I-UBiHTcwxZYnpSfLFJ2fclwS2A&s"
-                      alt=""
-                      className="w-[40px] h-[40px] rounded-[40px]"
-                    />
-                  </div>
-                  <div className="rights flex flex-col">
-                    <span className="name font-semibold">Cipta</span>
-                    <span className="time text-[12px]">33 seconds ago</span>
-                  </div>
-                </div>
-                <div className="flex gap-2 border-gray-100 shadow-md p-2">
-                  <div className="left">
-                    <img
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTgD14vQ6I-UBiHTcwxZYnpSfLFJ2fclwS2A&s"
-                      alt=""
-                      className="w-[40px] h-[40px] rounded-[40px]"
-                    />
-                  </div>
-                  <div className="rights flex flex-col">
-                    <span className="name font-semibold">Cipta</span>
-                    <span className="time text-[12px]">33 seconds ago</span>
-                  </div>
-                </div>
-                <div className="flex gap-2 border-gray-100 shadow-md p-2">
-                  <div className="left">
-                    <img
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTgD14vQ6I-UBiHTcwxZYnpSfLFJ2fclwS2A&s"
-                      alt=""
-                      className="w-[40px] h-[40px] rounded-[40px]"
-                    />
-                  </div>
-                  <div className="rights flex flex-col">
-                    <span className="name font-semibold">Cipta</span>
-                    <span className="time text-[12px]">33 seconds ago</span>
-                  </div>
-                </div>
-                <div className="flex gap-2 border-gray-100 shadow-md p-2">
-                  <div className="left">
-                    <img
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTgD14vQ6I-UBiHTcwxZYnpSfLFJ2fclwS2A&s"
-                      alt=""
-                      className="w-[40px] h-[40px] rounded-[40px]"
-                    />
-                  </div>
-                  <div className="rights flex flex-col">
-                    <span className="name font-semibold">Cipta</span>
-                    <span className="time text-[12px]">33 seconds ago</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <Activity />
 
             {/* forums container*/}
             <div className="  md:display  md:flex flex-col  rounded-xl bg-base-200 shadow-md p-2 border-[2px]">
@@ -220,10 +167,10 @@ const Dashboard = () => {
                   className="rounded-md  w-[100%] bg-[#e0e0e0]"
                 />
               </div>
-        
-                <button className="font-semibold text-black bg-primary h-[35px] p-1 col-span-1 text-[12px]  md:h-[40px]   hover:bg-secondary transition duration-300 rounded-md">
-                  Share Post
-                </button>
+
+              <button className="font-semibold text-black bg-primary h-[35px] p-1 col-span-1 text-[12px]  md:h-[40px]   hover:bg-secondary transition duration-300 rounded-md">
+                Share Post
+              </button>
             </div>
 
             {/* attachments */}
@@ -301,136 +248,18 @@ const Dashboard = () => {
 
         {/* third column */}
         <div className="md:col-span-1 rounded-md gap-5">
-        
 
-            <div className="message-container md:flex flex-col gap-4 p-3 mb-3 rounded-xl hidden md:display shadow-md bg-base-800 border-[2px] text-content-200 ">
-              <div className="first-section flex md:px-2 justify-between">
-                <div className="heading flex justify-between items-center w-full text-center">
-                  <h2 className="font-bold md:text-[27px] text-[20px]">Messages</h2>
-                  <span class="material-symbols-outlined">edit_square</span>
-                </div>
-              </div>
-              <div className="second-section mx-1 ">
-                <input
-                  type="text"
-                  placeholder="search"
-                  className="h-[30px] w-full rounded-sm font-semibold bg-white p-2"
-                />
-              </div>
+          {/* message container */}
+          <div className="md:block hidden">
+            <Messages />
+          </div>
 
-              <div className="names flex flex-col">
-                <div className="headings flex justify-between w-full sm:flex-wrap  mb-3">
-                  <div className="left flex text-[16px] gap-3 ">
-                    <div className="text-[16px] font-bold border-b-2 border-black cursor-pointer ">
-                      Primary
-                    </div>
-                    <div className="text-[16px] cursor-pointer ">General</div>
-                  </div>
-                  <div className="right text-[16px] text-blue-500 font-bold cursor-pointer">
-                    FriendReq(4)
-                  </div>
-                </div>
-                <div className="names flex flex-col gap-5">
-                  <div className="first-profile ml-2 flex gap-5 items-center">
-                    <img
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTgD14vQ6I-UBiHTcwxZYnpSfLFJ2fclwS2A&s"
-                      alt=""
-                      className="w-[40px] h-[40px] rounded-[50px]"
-                    />
-                    <div className="name">Bob</div>
-                  </div>
-                  <div className="first-profile ml-2 flex gap-5 items-center">
-                    <img
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTgD14vQ6I-UBiHTcwxZYnpSfLFJ2fclwS2A&s"
-                      alt=""
-                      className="w-[40px] h-[40px] rounded-[50px]"
-                    />
-                    <div className="name">Bob</div>
-                  </div>
-                  <div className="first-profile ml-2 flex gap-5 items-center">
-                    <img
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTgD14vQ6I-UBiHTcwxZYnpSfLFJ2fclwS2A&s"
-                      alt=""
-                      className="w-[40px] h-[40px] rounded-[50px]"
-                    />
-                    <div className="name">Bob</div>
-                  </div>
-                  <div className="first-profile ml-2 flex gap-5 items-center">
-                    <img
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTgD14vQ6I-UBiHTcwxZYnpSfLFJ2fclwS2A&s"
-                      alt=""
-                      className="w-[40px] h-[40px] rounded-[50px]"
-                    />
-                    <div className="name">Bob</div>
-                  </div>
-                  <div className="first-profile ml-2 flex gap-5 items-center">
-                    <img
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTgD14vQ6I-UBiHTcwxZYnpSfLFJ2fclwS2A&s"
-                      alt=""
-                      className="w-[40px] h-[40px] rounded-[50px]"
-                    />
-                    <div className="name">Bob</div>
-                  </div>
-                  <div className="first-profile ml-2 flex gap-5 items-center">
-                    <img
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTgD14vQ6I-UBiHTcwxZYnpSfLFJ2fclwS2A&s"
-                      alt=""
-                      className="w-[40px] h-[40px] rounded-[50px]"
-                    />
-                    <div className="name">Bob</div>
-                  </div>
-                  <div className="view-button ml-2 flex gap-10">
-                    View All
-                  </div>
-                </div>
-              </div>
-            </div>
-  
-              {/* Events */}
 
-            <div className="md:flex flex-col   rounded-xl p-4 w-full shadow-md bg-base-800 border-[2px] text-content-200">
-              <div className="flex gap-2 mb-5 justify-between items-center ">
-                <div className="flex gap-3 items-center">
-                  <span className="material-symbols-outlined text-blue-800">
-                  calendar_month
-                  </span>
-                  <div className="font-bold">Events</div>
-                </div>
-                <div className="text-blue-800">see All</div>
-              </div>
+          {/* Events */}
+          <div className="md:block hidden">
+            <Events />
+          </div>
 
-            
-              <div className="md:flex md:display flex-col gap-2 w-full">
-                <div className="flex gap-2 shadow-md p-2">
-                  
-                  <div className="flex flex-col">
-                    <span className="name font-semibold">Job Interview</span>
-                    <span className="time text-[12px]">30 -1-25</span>
-                  </div>
-                </div>
-                <div className=" border-gray-100 shadow-md p-2">
-                 
-                  <div className="rights flex flex-col">
-                    <span className="name font-semibold">Attend Meeting</span>
-                    <span className="time text-[12px]">15-02-25</span>
-                  </div>
-                </div>
-                <div className=" border-gray-100 shadow-md p-2">
-                  
-                  <div className="flex flex-col">
-                    <span className="name font-semibold">Interview XYZ Company</span>
-                    <span className="time text-[12px]">20-02-25</span>
-                  </div>
-                </div>
-                <div className=" border-gray-100 shadow-md p-2">                 
-                  <div className=" flex flex-col">
-                    <span className="name font-semibold">Application Deadline XYZ Company</span>
-                    <span className="time text-[12px]">30-02-25</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-         
 
         </div>
 
