@@ -54,8 +54,18 @@ const CreatePost = ({ POST_URL, auth, setPosts }) => {
         e.preventDefault();
         setButtonStatus("Loading...");
 
+        const formattedBody = postData.body
+        .replace(/(?<!\s)\n/g, " \n") // Add spaces before newlines
+        .replace(/(?<!\s)#/g, " #") // Add spaces before hashtags
+        .replace(/\n#/g, "\n #"); // Add spaces before hashtags after newlines
+
+        const postToSend = {
+            ...postData,
+            body: formattedBody
+        };
+
         try {
-            const response = await axiosPrivate.post(POST_URL, postData, {
+            const response = await axiosPrivate.post(POST_URL, postToSend, {
                 headers: {
                     Authorization: `Bearer ${auth.accessToken}`,
                 },
