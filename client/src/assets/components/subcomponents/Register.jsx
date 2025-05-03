@@ -116,11 +116,10 @@ const Register = () => {
 
   useEffect(() => {
     if (!usernameFocus || !username) return;
-    console.log("formData.username", username, formData.username);
     const handler = setTimeout(() => {
       const checkUsername = async () => {
         try {
-          const response = await axios.get(`${process.env.NEXT_BACKEND_URL}/api/users/username/${formData.username}`);
+          const response = await axios.get(`/api/users/username/${formData.username}`);
           if (response.data) {
             // Username exists -> not available
             setUsernameAvailable(false);
@@ -138,7 +137,7 @@ const Register = () => {
     }, 300); // wait 300ms after last typing
 
     return () => clearTimeout(handler); // cleanup timer if user keeps typing
-  }, [usernameFocus, formData.username]);
+  }, [formData.username]);
 
   useEffect(() => {
     if (!emailFocus || !formData.email) return; // Ensure emailFocus and email are valid
@@ -146,7 +145,7 @@ const Register = () => {
     const handler = setTimeout(() => {
       const checkEmail = async () => {
         try {
-          const response = await axios.get(`${process.env.NEXT_BACKEND_URL}/api/users/email/${formData.email}`);
+          const response = await axios.get(`/api/users/email/${formData.email}`);
           if (response.data) {
             // Email exists -> not available
             setEmailAvailable(false);
@@ -166,7 +165,7 @@ const Register = () => {
   
     // Clean up the timeout on unmount or before next execution
     return () => clearTimeout(handler);
-  }, [emailFocus, formData.email]); // Dependency array
+  }, [ formData.email]); // Dependency array
 
       
 
