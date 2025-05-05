@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import he from 'he';
 
 const PostBody = ({ body }) => {
     const [expandedPost, setExpandedPost] = useState(false);
@@ -29,7 +30,7 @@ const PostBody = ({ body }) => {
         <div>
 
             <p className={`${expandedPost ? '' : 'line-clamp-3'} whitespace-pre-line`}>
-                {renderBodyWithTags(body)}
+                {renderBodyWithTags(he.decode(body))}
             </p>
 
             {shouldTruncate && (
