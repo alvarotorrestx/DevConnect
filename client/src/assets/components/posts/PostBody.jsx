@@ -27,7 +27,7 @@ const PostBody = ({ body }) => {
     const renderBodyWithTags = (text) => {
       return text.replace(/(^|\s)(#\w+)/g, (_, space, tag) => {
         const tagText = tag.replace(/[^\w#]/g, '').slice(1).toLowerCase();
-        return `${space}[${tag}](#/tags/${tagText})`;
+        return `${space}[${tag}](/tags/${tagText})`;
       });
     };
 
