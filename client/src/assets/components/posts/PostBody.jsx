@@ -23,6 +23,13 @@ const PostBody = ({ body }) => {
     //         return <span key={i}>{word + ' '}</span>;
     //     });
     // };
+    
+    const renderBodyWithTags = (text) => {
+      return text.replace(/(^|\s)(#\w+)/g, (_, space, tag) => {
+        const tagText = tag.replace(/[^\w#]/g, '').slice(1).toLowerCase();
+        return `${space}[${tag}](#/tags/${tagText})`;
+      });
+    };
 
     const shouldTruncate = body.split('\n').length > 3 || body.length > 300;
 
