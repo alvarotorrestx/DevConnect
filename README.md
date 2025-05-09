@@ -57,8 +57,6 @@ cd client
 npm install
 ```
 
-3. Create a `.env` file in the `client` directory and add any necessary environment variables.
-
 __Installation for Server__
 
 1. Navigate to the server directory:
