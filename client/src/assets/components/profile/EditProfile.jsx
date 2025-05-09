@@ -7,11 +7,31 @@ import { axiosPrivate } from '../../../api/axios';
 import useAuth from '../../../auth/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { FaUserCheck } from "react-icons/fa";
+import { FaTimesCircle } from "react-icons/fa";
+import { FaCheckCircle } from "react-icons/fa";
+
+// Toast imports
+import ErrorToast from "../toast/ErrorToast";
+import { useErrorToast } from "../toast/useErrorToast";
+import SuccessToast from "../toast/SuccessToast";
+import { useSuccessToast } from "../toast/useSuccessToast";
 
 const EditProfile = () => {
   const { profile, loading } = useContext(ProfileContext);
 
   const [formData, setFormData] = useState(null);
+
+  const {
+    message: errorMessage,
+    show: showErrorToast,
+    showError,
+  } = useErrorToast();
+
+  const {
+    message: successMessage,
+    show: showSuccessToast,
+    showSuccess,
+  } = useSuccessToast();
 
   useEffect(() => {
     if (profile) {
@@ -68,7 +88,6 @@ const EditProfile = () => {
     inputRefs[field]?.current?.focus();
   };
 
-
   const handleChange = (e) => {
     setFormData(prev => ({ ...prev, [e.target.id]: e.target.value }));
   };
@@ -77,7 +96,6 @@ const EditProfile = () => {
     setFormData(prev => ({ ...prev, [field]: profile[field] }));
     handleIsEditing(field);
   };
-
 
   const { auth } = useAuth();
 
@@ -92,13 +110,6 @@ const EditProfile = () => {
     }
   }, [loading, profile, allowEditing, navigate]);
 
-  const errRef = useRef();
-  const [errMsg, setErrMsg] = useState('');
-
-  useEffect(() => {
-    const hasEdits = Object.values(isEditing).some(Boolean);
-    if (hasEdits) setErrMsg('');
-  }, [formData, isEditing]);
 
   const handleSave = async (field) => {
 
@@ -116,14 +127,12 @@ const EditProfile = () => {
 
     const username = formData.username?.trim();
     if (!username) {
-      setErrMsg("Username is required.");
-      errRef.current.focus();
+      showError("Username is required.");
       return;
     }
 
     if (field === 'username' && !USERNAME_REGEX.test(formData.username)) {
-      setErrMsg("Invalid username.\n5 to 30 characters.\nLetters, numbers, and hyphens (-) allowed.\nLowercase only.");
-      errRef.current.focus();
+      showError("Invalid username. 5 to 30 characters. Letters, numbers, and hyphens (-) allowed. Lowercase only.");
       return;
     }
 
@@ -135,17 +144,22 @@ const EditProfile = () => {
         {
           headers: { Authorization: `Bearer ${auth?.accessToken}` },
           withCredentials: true
+
         })
+      if (response?.status === 200) {
+        showSuccess(" Profile updated successfully");
+      }
+      else {
+        showError("Update failed");
+      }
     }
     catch (err) {
       // If no error response
       if (!err?.response) {
-        setErrMsg('No Server Response');
+        showError('No Server Response');
       } else {
-        setErrMsg(`${JSON.stringify(err.response.data.message).slice(1, -1)}` || 'Update Failed');
+        showError(`${JSON.stringify(err.response.data.message).slice(1, -1)}` || 'Update Failed');
       }
-
-      errRef.current.focus();
     }
     finally {
       handleIsEditing(field);
@@ -190,14 +204,6 @@ const EditProfile = () => {
         <FaUserCheck />
       </a>
 
-      <div className={errMsg ? "alert alert-error animate-fade flex mt-6" : "offscreen"} tabIndex="-1" ref={errRef} aria-live='assertive'>
-        <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-        <span>
-          {errMsg.replaceAll('\\n', '\n').split('\n').map((line, i) => (
-            <p key={i}>{line}</p>
-          ))}
-        </span>
-      </div>
 
       {/* First Name Field */}
       <div className="form-control mt-6">
@@ -700,8 +706,25 @@ const EditProfile = () => {
         )}
       </div>
       {/* End Skills Field */}
+      {/* Add Toast Components */}
+      <SuccessToast
+        message={successMessage}
+        show={showSuccessToast}
+        status="success"
+        icon={
+          <FaCheckCircle className="text-green-600 text-4xl bg-transparent p-0 m-0" />
+        }
+        iconBgColor="bg-blue-200"
+      />
+      <ErrorToast
+        message={errorMessage}
+        show={showErrorToast}
+        status="error"
+        icon={<FaTimesCircle className="text-red-600 text-4xl" />}
+        iconBgColor="bg-red-700"
+      />
 
-    </div>
+    </div >
   );
 };
 

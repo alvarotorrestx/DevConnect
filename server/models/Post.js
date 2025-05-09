@@ -9,6 +9,10 @@ const commentSchema = new mongoose.Schema({
 // Post Schema
 const postSchema = new mongoose.Schema({
     body: { type: String, required: true },
+    media: {
+        images: [String],
+        videos: [String]
+    },
     tags: { type: [String], default: [] },
     featured: { type: Boolean, default: false },
 

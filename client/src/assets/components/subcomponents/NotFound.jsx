@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Unauthorized = () => {
+const NotFound = () => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-base-300 overflow-hidden">
-      {/* Wave background */}
+
       <div className="absolute inset-0 overflow-hidden">
         <svg 
           xmlns="http://www.w3.org/2000/svg" 
@@ -32,23 +32,22 @@ const Unauthorized = () => {
         </svg>
       </div>
       
-      {/* Content card */}
+
       <div className="relative z-10 w-full max-w-sm bg-white rounded-xl shadow-lg p-8 mx-4 text-center">
-        {/* Lock icon */}
+    
         <div className="flex justify-center mb-6">
           <div className="bg-base-300 rounded-full p-6">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 9h.01M9 9h.01M12 20c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 14.5c-1.333-1-2.667-1-4 0" />
             </svg>
           </div>
         </div>
         
-        <h1 className="text-2xl font-bold text-slate-600 mb-3">403 - Unauthorized</h1>
+        <h1 className="text-2xl font-bold text-slate-800 mb-3">Page Not Found</h1>
         
         <p className="text-slate-600 mb-6 text-sm">
-          You do not have permission to view this page.
-          <br/>
-          Please contact an administrator if you believe this is an error.
+          We can't find the page you're looking for.
         </p>
         
         <Link
@@ -62,4 +61,4 @@ const Unauthorized = () => {
   );
 };
 
-export default Unauthorized;
+export default NotFound;

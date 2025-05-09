@@ -35,7 +35,7 @@ export const ProfileProvider = () => {
   }, [auth?.accessToken, username]);
 
   return (
-    <ProfileContext.Provider value={{ profile, loading, setLoading }}>
+<ProfileContext.Provider value={{ profile, setProfile, loading, setLoading }}>
       <Outlet />
     </ProfileContext.Provider>
   );

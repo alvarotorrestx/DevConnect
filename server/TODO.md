@@ -42,11 +42,11 @@ This file tracks the backend development of DevConnect, with user-focused featur
 
 **Persona: Developer sharing a technical blog post**
 
-- [ ] User should be able to create and publish a blog post  
-- [ ] User should be able to edit their own blog posts  
-- [ ] User should be able to delete their own blog posts  
-- [ ] Anyone should be able to read blog posts  
-- [ ] Posts should support basic metadata (tags, created date, author, etc.)
+- [x] User should be able to create and publish a blog post  
+- [x] User should be able to edit their own blog posts  
+- [x] User should be able to delete their own blog posts  
+- [x] Anyone should be able to read blog posts  
+- [x] Posts should support basic metadata (tags, created date, author, etc.)
 
 ---
 
@@ -100,8 +100,8 @@ This file tracks the backend development of DevConnect, with user-focused featur
 
 - [x] Admin should be able to view all users and posts  
 - [x] Admin should be able to delete users  
-- [ ] Admin should be able to delete inappropriate posts
-- [ ] Admin should be able to promote users to moderators  
+- [x] Admin should be able to delete inappropriate posts
+- [x] Admin should be able to promote users to moderators  
 - [ ] Admin dashboard endpoint with analytics overview  
 
 ---
