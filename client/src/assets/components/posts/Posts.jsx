@@ -14,6 +14,7 @@ import SuccessToast from "../toast/SuccessToast";
 import { useSuccessToast } from "../toast/useSuccessToast";
 import DeletePost from './DeletePost';
 import EditPost from './EditPost';
+import { scroll } from 'framer-motion';
 
 const POST_URL = '/api/posts'
 
@@ -22,6 +23,8 @@ const Posts = () => {
 
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
 
     const {
         message: errorMessage,
@@ -39,25 +42,32 @@ const Posts = () => {
     const isVideo = url => /\.(mp4|webm|ogg)$/i.test(url);
 
     useEffect(() => {
-        const fetchPosts = async () => {
+        const fetchPosts = async (page = 1) => {
             setLoading(true);
             try {
-                const response = await axiosPrivate.get(POST_URL, {
+                const response = await axiosPrivate.get(`${POST_URL}?page=${page}&limit=10`, {
                     headers: {
                         Authorization: `Bearer ${auth?.accessToken}`
                     }
                 });
 
-                setPosts(response.data);
+                setPosts(response.data.posts);
+                (posts.length <=0) && setCurrentPage(1);
+                setTotalPages(response.data.totalPages);
             } catch (err) {
                 console.log(err);
             } finally {
                 setLoading(false);
             }
         };
-
-        fetchPosts();
-    }, [auth?.accessToken]);
+        // scrollY = window.scrollY;
+        window.scrollTo({
+            top:0,
+            behavior:'smooth'
+        })
+        
+        fetchPosts(currentPage);
+    }, [auth?.accessToken, currentPage, posts.length]);
 
     const canUserModifyPost = (post, auth) => {
         if (!auth || !post?.author) return false;
@@ -200,6 +210,42 @@ const Posts = () => {
                         :
                         <p>No posts found.</p>
             }
+
+
+            {totalPages > 1 && totalPages <= 4 ? (
+                <div className="flex justify-center mt-6">
+                    <div className="join">
+                        {Array.from({ length: totalPages }, (_, index) => (
+                            <button
+                                key={index + 1}
+                                className={`join-item btn ${currentPage === index + 1 ? 'btn-active' : ''}`}
+                                onClick={() => setCurrentPage(index + 1)}
+                            >
+                                {index + 1}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            ) : (totalPages > 4 && (
+                <div className="flex justify-center mt-6">
+                    <div className="join">
+                        <button className={`join-item btn `} onClick={() => setCurrentPage(currentPage- 2)}>
+                            {currentPage - 2}
+                        </button>
+                        <button className={`join-item btn`} onClick={() => setCurrentPage(currentPage - 1)}>
+                            {currentPage - 1}
+                        </button>
+                        <button className={`join-item btn 'btn-active'`} >{currentPage}</button>
+                        <button className={`join-item btn`} onClick={() => setCurrentPage(currentPage + 1)}>
+                            {currentPage + 1}
+                        </button>
+                        <button className={`join-item btn`} onClick={() => setCurrentPage(currentPage + 2)}>
+                            {currentPage + 2}
+                        </button>
+                    </div>
+                </div>
+                )
+            )}
 
             {/* Add Toast Components */}
             <SuccessToast
