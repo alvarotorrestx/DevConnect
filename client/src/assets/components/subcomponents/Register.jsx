@@ -634,11 +634,11 @@ const Register = () => {
                       <p>Checking availability...</p>
                     ) : emailAvailable ? (
                       <p className="flex gap-2 items-center mt-2">
-                        <FaCheckCircle className="text-green-500" />{" Username Available"}
+                        <FaCheckCircle className="text-green-500" />{" Email Available"}
                       </p>
                     ) : (
                       <p className="flex gap-2 items-center mt-2">
-                        <FaExclamationTriangle className="text-red-500" />{" Email already exists"}
+                        <FaExclamationTriangle className="text-red-500" />{"Email already exists"}
                       </p>
                     )
                   )
