@@ -39,7 +39,7 @@ const CreatePost = ({ POST_URL, auth, setPosts }) => {
     };
 
     useEffect(() => {
-        const words = postData.body.split(/\s+/);
+        const words = postData.body.split(/\s+/).map(word => word.replace(/[^\w#].*$/g, ''));
         const foundTags = [...new Set(
             words.filter(word => word.startsWith('#') && word.length > 1)
                 .map(tag => tag.slice(1).trim().toLowerCase())
@@ -59,9 +59,19 @@ const CreatePost = ({ POST_URL, auth, setPosts }) => {
         .replace(/(?<!\s)#/g, " #") // Add spaces before hashtags
         .replace(/\n#/g, "\n #"); // Add spaces before hashtags after newlines
 
+        const words = formattedBody.split(/\s+/).map(word => word.replace(/[^\w#].*$/g, ''));
+        const tagsAfterFormatting = [
+          ...new Set(
+            words
+              .filter((word) => word.startsWith("#") && word.length > 1)
+              .map((tag) => tag.slice(1).trim().toLowerCase())
+          ),
+        ];
+
         const postToSend = {
             ...postData,
-            body: formattedBody
+            body: formattedBody,
+            tags:tagsAfterFormatting,
         };
 
         try {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { FaEdit, FaTimes, FaCheck } from 'react-icons/fa';
 import { axiosPrivate } from '../../../api/axios';
+import he from 'he';
 
 const EditPost = ({ auth, post, POST_URL, showError, showSuccess, setPosts }) => {
 
@@ -17,7 +18,7 @@ const EditPost = ({ auth, post, POST_URL, showError, showSuccess, setPosts }) =>
     useEffect(() => {
         if (post) {
             setPostData({
-                body: post.body || '',
+                body: he.decode(post.body) || '',
                 media: {
                     images: post.media.images || [],
                     videos: post.media.videos || []
@@ -35,7 +36,7 @@ const EditPost = ({ auth, post, POST_URL, showError, showSuccess, setPosts }) =>
     };
 
     useEffect(() => {
-        const words = postData.body.split(/\s+/);
+        const words = postData.body.split(/\s+/).map(word => word.replace(/[^\w#].*$/g, ''));
         const foundTags = [...new Set(
             words.filter(word => word.startsWith('#') && word.length > 1)
                 .map(tag => tag.slice(1).trim().toLowerCase())
@@ -54,9 +55,19 @@ const EditPost = ({ auth, post, POST_URL, showError, showSuccess, setPosts }) =>
         .replace(/(?<!\s)#/g, " #") // Add spaces before hashtags
         .replace(/\n#/g, "\n #"); // Add spaces before hashtags after newlines
 
+        const words = formattedBody.split(/\s+/).map(word => word.replace(/[^\w#].*$/g, ''));
+        const tagsAfterFormatting = [
+          ...new Set(
+            words
+              .filter((word) => word.startsWith("#") && word.length > 1)
+              .map((tag) => tag.slice(1).trim().toLowerCase())
+          ),
+        ];
+
         const postToSend = {
-            ...postData,
-            body: formattedBody
+          ...postData,
+          body: formattedBody,
+          tags: tagsAfterFormatting,
         };
 
         try {
