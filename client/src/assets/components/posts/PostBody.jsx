@@ -4,7 +4,7 @@ import ReactMarkdown from 'react-markdown';
 
 const PostBody = ({ body }) => {
     const [expandedPost, setExpandedPost] = useState(false);
-    
+
     const renderBodyWithTags = (text) => {
       return text.replace(/(^|\s)(#\w+)/g, (_, space, tag) => {
         const tagText = tag.replace(/[^\w#]/g, '').slice(1).toLowerCase();
