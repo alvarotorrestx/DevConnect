@@ -48,6 +48,32 @@ const createUser = async (req, res) => {
         res.status(400).json({ error: err.message });
     }
 }
+const getUserByUsername = async (req, res) => {
+    try {
+        const { username } = req.params;
+        const user = await User.findOne({ username }).select('-password -refreshToken');
+        if (!user) return res.status(404).json({ message: "User not found." });
+
+        res.status(200).json(user);
+    }
+    catch (err) {
+        res.status(500).json({ message: 'Failed to fetch user.' });
+    }
+}
+
+const getUserByEmail = async (req, res) => {
+    
+    try {
+        const { email } = req.params;
+        const user = await User.findOne({ email }).select('-password -refreshToken');
+        if (!user) return res.status(404).json({ message: "User not found." });
+        
+        res.status(200).json(user);
+    }
+    catch (err) {
+        res.status(500).json({ message: 'Failed to fetch user.' });
+    }
+}
 
 const updateUser = async (req, res) => {
     try {
@@ -128,6 +154,8 @@ const deleteUser = async (req, res) => {
 }
 
 module.exports = {
+    getUserByEmail,
+    getUserByUsername,
     getAllUsers,
     createUser,
     updateUser,

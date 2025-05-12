@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import axios from "../../../api/axios";
 import { IoMdEyeOff, IoMdEye } from "react-icons/io";
 import { FaTimesCircle } from "react-icons/fa";
-import { FaCheckCircle } from "react-icons/fa";
+import { FaCheckCircle, FaExclamationTriangle } from "react-icons/fa";
+
 // Toast imports
 import ErrorToast from "../toast/ErrorToast";
 import { useErrorToast } from "../toast/useErrorToast";
@@ -18,7 +19,6 @@ const EMAIL_REGEX =
 const PASSWORD_REGEX =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
-// Register url for post
 const REGISTER_URL = "/register";
 
 const Register = () => {
@@ -71,6 +71,9 @@ const Register = () => {
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
 
+  const [usernameAvailable, setUsernameAvailable] = useState(null);
+  const [emailAvailable, setEmailAvailable] = useState(null);
+
   const [buttonStatus, setButtonStatus] = useState("Sign Up");
 
   useEffect(() => {
@@ -111,8 +114,64 @@ const Register = () => {
     formData.matchingPassword,
   ]);
 
+  useEffect(() => {
+    if (!usernameFocus || !username) return;
+    const handler = setTimeout(() => {
+      const checkUsername = async () => {
+        try {
+          const response = await axios.get(`/api/users/username/${formData.username}`);
+          if (response.data) {
+            // Username exists -> not available
+            setUsernameAvailable(false);
+          }
+        } catch (error) {
+          if (error.response && error.response.status === 404) {
+            setUsernameAvailable(true);
+          } else {
+            console.error('Error checking username:', error);
+          }
+        }
+      };
+
+      checkUsername();
+    }, 300); // wait 300ms after last typing
+
+    return () => clearTimeout(handler); // cleanup timer if user keeps typing
+  }, [formData.username]);
+
+  useEffect(() => {
+    if (!emailFocus || !formData.email) return; // Ensure emailFocus and email are valid
+    
+    const handler = setTimeout(() => {
+      const checkEmail = async () => {
+        try {
+          const response = await axios.get(`/api/users/email/${formData.email}`);
+          if (response.data) {
+            // Email exists -> not available
+            setEmailAvailable(false);
+          }
+        } catch (error) {
+          if (error.response && error.response.status === 404) {
+            // Email not found -> available
+            setEmailAvailable(true);
+          } else {
+            console.error('Error checking email:', error);
+          }
+        }
+      };
+  
+      checkEmail();
+    }, 300); // wait 300ms after last typing
+  
+    // Clean up the timeout on unmount or before next execution
+    return () => clearTimeout(handler);
+  }, [ formData.email]); // Dependency array
+
+      
+
+
   const handleChange = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.id]: e.target.value }));
+    setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
   const handleRegister = async (e) => {
@@ -464,6 +523,24 @@ const Register = () => {
                   onFocus={() => setUsernameFocus(true)}
                   onBlur={() => setUsernameFocus(false)}
                 />
+                {
+                 validUsername && formData.username.length > 1 && (
+                    usernameFocus && formData.username && usernameAvailable === null ? (
+                      <p>Checking availability...</p>
+                    ) : usernameAvailable ? (
+                      <p className="flex gap-2 items-center mt-2">
+                        <FaCheckCircle className="text-green-500" />{" Username Available"}
+                      </p>
+                    ) : (
+                      <p className="flex gap-2 items-center mt-2">
+                        <FaExclamationTriangle className="text-red-500" />{" Username already taken"}
+                      </p>
+                    )
+                  )
+                }
+
+
+
               </div>
 
               <div
@@ -551,6 +628,21 @@ const Register = () => {
                   onFocus={() => setEmailFocus(true)}
                   onBlur={() => setEmailFocus(false)}
                 />
+                 {
+                 validEmail && formData.email.length > 1 && (
+                    emailFocus && formData.email && emailAvailable === null ? (
+                      <p>Checking availability...</p>
+                    ) : emailAvailable ? (
+                      <p className="flex gap-2 items-center mt-2">
+                        <FaCheckCircle className="text-green-500" />{" Email Available"}
+                      </p>
+                    ) : (
+                      <p className="flex gap-2 items-center mt-2">
+                        <FaExclamationTriangle className="text-red-500" />{"Email already exists"}
+                      </p>
+                    )
+                  )
+                }
               </div>
 
               <div
@@ -703,8 +795,8 @@ const Register = () => {
                   <span
                     className={
                       validMatchingPassword &&
-                      formData.passwordMatch &&
-                      validPassword
+                        formData.passwordMatch &&
+                        validPassword
                         ? "valid ml-1"
                         : "hide"
                     }
@@ -726,7 +818,7 @@ const Register = () => {
                   <span
                     className={
                       (validMatchingPassword && validPassword) ||
-                      !formData.passwordMatch
+                        !formData.passwordMatch
                         ? "hide"
                         : "invalid ml-1"
                     }
