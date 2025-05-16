@@ -124,7 +124,7 @@ if (bio !== undefined) {
   const trimmedBio = bio.trim();
   sanitizedBio = trimmedBio === "" ? null : validator.escape(trimmedBio);
 
-  if (sanitizedBio !== undefined && sanitizedBio.length > 500) {
+  if (sanitizedBio  && sanitizedBio.length > 500) {
     return res.status(422).json({ message: "Bio must be 500 characters or less." });
   }
 } else {
