@@ -70,7 +70,7 @@ const NavBar = ({ avatar, username }) => {
                     {/* <li><NavLink to='/tester' className="flex items-center"><span className="text-2xl text-primary"><HiNewspaper /></span>Tester</NavLink></li> */}
                     <li><NavLink to='/blogs' className="flex items-center"><span className="text-2xl text-primary"><HiNewspaper /></span>Blogs</NavLink></li>
                     <li><NavLink to='/network' className="flex items-center"><span className="text-2xl text-primary"><IoMdPeople /></span>Network</NavLink></li>
-                    <li><NavLink to='' className="flex items-center"><span className="text-2xl text-primary"><GiSuitcase /></span>Jobs</NavLink></li>
+                    <li><NavLink to='/jobs' className="flex items-center"><span className="text-2xl text-primary"><GiSuitcase /></span>Jobs</NavLink></li>
                 </ul>
             </div>
 

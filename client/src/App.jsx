@@ -22,6 +22,7 @@ import NotFound from './assets/components/subcomponents/NotFound';
 import ThemeContext from './assets/context/ThemeContext';
 import useAuth from './auth/useAuth';
 import { ProfileProvider } from './assets/context/ProfileContext';
+import JobsMain from './assets/components/Jobs/JobsMain';
 
 function App() {
 
@@ -57,6 +58,7 @@ function App() {
                 <Route path='/blogs' element={<Posts />} />
                 <Route path='/network' element={<Network />} />
                 <Route path='/tester' element={<TesterComponent />} />
+                <Route path='/jobs' element={<JobsMain />} />
               </Route>
             </Route>
           </Route>
