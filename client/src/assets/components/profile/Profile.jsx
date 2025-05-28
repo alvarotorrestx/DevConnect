@@ -8,6 +8,7 @@ import About from './About/About';
 import Project from './ProjectsSec/Project';
 import Experiance from './Experience/Experience'
 import Blog from './Blog/Blog';
+import Footer from '../layout/Footer';
 
 const Profile = () => {
 
@@ -103,6 +104,7 @@ const Profile = () => {
       <Experiance/>
       <Project/>
       <Blog/>
+      <Footer/>
       </div>
 
     )
