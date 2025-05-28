@@ -118,13 +118,18 @@ const updateProfile = async (req, res) => {
                 return res.status(422).json({ message: `Invalid ${label}.` });
             }
         }
+        
+        let sanitizedBio;
+if (bio !== undefined) {
+  const trimmedBio = bio.trim();
+  sanitizedBio = trimmedBio === "" ? null : validator.escape(trimmedBio);
 
-        const sanitizedBio = bio ? validator.escape(bio.trim()) : foundUser.bio;
-        if (bio !== undefined) {
-            if (sanitizedBio.length > 500) {
-                return res.status(422).json({ message: "Bio must be 500 characters or less." });
-            }
-        }
+  if (sanitizedBio  && sanitizedBio.length > 500) {
+    return res.status(422).json({ message: "Bio must be 500 characters or less." });
+  }
+} else {
+  sanitizedBio = foundUser.bio;
+}
 
         if (location !== undefined && location.trim() !== '' && !LOCATION_REGEX.test(location.trim())) {
             return res.status(422).json({

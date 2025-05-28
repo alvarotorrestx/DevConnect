@@ -39,7 +39,7 @@ const About = () => {
 
   useEffect(() => {
     if (profile) {
-      setAboutContent(profile.bio || "");
+      setAboutContent(profile.bio || "No bio provided.");
     }
   }, [profile]);
 
