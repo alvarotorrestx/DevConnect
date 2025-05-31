@@ -1,45 +1,52 @@
 import React from 'react'
+import useAuth from '../../../auth/useAuth'
+import { Link } from 'react-router-dom';
 
 const UserInfo = () => {
+
+    const { auth } = useAuth();
+
     return (
-        <div className="flex  flex-col gap-2   rounded-xl h-auto align-center   shadow-md bg-base-200 border-[2px]">
-            <div className="flex align-center text-align w-auto gap-2 pt-2 ml-5">
-                <div className="image w-[45px] h-[45px] flex align-center">
-                    <img
-                        className="w-full h-full  rounded-full object-cover"
-                        src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-                        alt="profile-img"
-                    />
+        <div className="flex  flex-col gap-2 rounded-xl h-auto align-center shadow-md bg-base-100 p-4">
+            <div className="flex align-center text-align w-auto gap-2">
+                <div className="w-[45px] h-[45px] flex align-center">
+                    <Link to={'/profile/' + auth?.username}>
+                        <img
+                            className="w-full h-full rounded-full object-scale-down lg:object-cover"
+                            src={auth?.avatar}
+                            alt="profile-img"
+                        />
+                    </Link>
                 </div>
-                <div className="username">
+                <div className="ml-2">
                     <div className="flex gap-1">
-                        <h2 className="text-black-900 font-extrabold text-xl">John David</h2>
-                        <p>
+                        <h2 className="text-black-900 font-extrabold text-xl">{`${auth?.firstName} ${auth?.lastName}`}</h2>
+                        {/* <p>
                             <span className="material-symbols-outlined text-blue-700">
                                 verified
                             </span>
-                        </p>
+                        </p> */}
                     </div>
 
-                    <h2>@justin098</h2>
+                    <h2><Link to={'/profile/' + auth?.username} className="link link-primary link-hover">@{auth?.username}</Link></h2>
                 </div>
             </div>
 
-            <div className="flex lg:flex-row gap-5  align-center  mb-2 w-auto ml-5  md:flex-wrap  ">
+            <div className="flex lg:flex-row justify-around gap-5 align-center w-auto md:flex-wrap">
                 <div className="flex flex-col text-center">
-                    <div className="font-extrabold">2.3k</div>
+                    <div className="font-extrabold">{auth?.totalFollowers ?? 0}</div>
                     <div className="">Followers</div>
                 </div>
                 <div className="flex flex-col text-center">
-                    <div className="font-extrabold">890</div>
+                    <div className="font-extrabold">{auth?.totalFollowing ?? 0}</div>
                     <div>Following</div>
                 </div>
                 <div className="flex flex-col text-center">
-                    <div className="font-extrabold">80</div>
-                    <div>Post</div>
+                    <div className="font-extrabold">{auth?.totalPosts?.length ?? 0}</div>
+                    <div>Posts</div>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 

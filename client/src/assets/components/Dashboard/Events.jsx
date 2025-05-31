@@ -3,7 +3,7 @@ import React from 'react'
 function Events() {
   return (
     <div>
-      <div className="md:flex flex-col rounded-xl p-4 w-full md:shadow-md bg-base-800 md:border-[2px] text-content-200">
+      <div className="md:flex flex-col rounded-xl p-4 w-full shadow-md bg-base-100 text-content-200">
             <div className="flex gap-2 mb-5 justify-between items-center ">
               <div className="flex gap-3 items-center">
                 <span className="material-symbols-outlined text-blue-800">
