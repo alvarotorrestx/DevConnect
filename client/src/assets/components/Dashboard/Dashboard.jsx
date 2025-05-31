@@ -5,6 +5,7 @@ import Events from "./Events";
 import UserInfo from "./UserInfo";
 import Forums from "./Forums";
 import Posts from "../posts/Posts";
+import WelcomeBanner from "./WelcomeBanner";
 
 const Dashboard = () => {
   return (
@@ -34,13 +35,7 @@ const Dashboard = () => {
           </div>
 
           {/* welcome banner */}
-          <div className="w-full h-40 rounded-xl">
-            <img
-              src="https://i.pinimg.com/736x/bd/da/fc/bddafc029d86df72bef91bba70973c71.jpg"
-              alt="welcome"
-              className="h-full w-full object-cover rounded-md"
-            />
-          </div>
+          <WelcomeBanner />
 
           {/* blog-post-container  */}
           <Posts />

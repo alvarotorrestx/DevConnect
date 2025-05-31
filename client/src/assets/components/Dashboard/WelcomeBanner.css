@@ -1,0 +1,25 @@
+.welcome-banner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    flex-wrap: wrap;
+    background: radial-gradient(circle at top, #131927, #0c0e1a);
+    border-radius: 0.75rem;
+    box-shadow: 0 0 25px #00c3ff2a;
+    padding: .75rem;
+}
+
+.typing-text {
+    font-family: 'Fira Code', monospace;
+    font-weight: 600;
+    color: #00c3ffc5;
+    white-space: wrap;
+    overflow: hidden;
+    border-right: 3px solid #00c3ffc5;
+    text-shadow:
+        0 0 3px #00c3ffc5,
+        0 0 5px #00c3ffc5,
+        0 0 10px #00c3ffc5;
+    animation: blink-caret 0.7s step-end infinite;
+}
