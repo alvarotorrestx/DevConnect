@@ -55,7 +55,7 @@ function Project() {
   };
 
   return (
-    <div className="max-w-[90%] lg:max-w-4xl mx-auto p-6 bg-base-100 rounded-lg shadow-md mt-10 relative">
+    <div className="max-w-[90%] lg:max-w-4xl mx-auto p-6 bg-base-100 rounded-lg shadow-md mt-5 relative">
       <div className="flex items-center justify-between font-semibold">
         <h1>Projects</h1>
         {canEdit && (

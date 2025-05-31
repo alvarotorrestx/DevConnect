@@ -89,7 +89,7 @@ const Posts = () => {
 
 
     return (
-        <div className="max-w-[90%] lg:max-w-4xl mx-auto p-6 bg-base-300 rounded-lg shadow-md mt-10">
+        <div className="mx-auto rounded-lg">
 
             <CreatePost POST_URL={POST_URL} auth={auth} setPosts={setPosts} />
 
@@ -100,7 +100,7 @@ const Posts = () => {
                     :
                     posts.length > 0 ? (
                         posts.map((post) => (
-                            <div key={post._id} className="relative [&:not(:last-child)]:mb-6 p-5 rounded-md shadow border border-base-300 bg-base-200">
+                            <div key={post._id} className="relative [&:not(:last-child)]:mb-6 p-5 rounded-md shadow-md border border-base-300 bg-base-100">
 
                                 {canUserModifyPost(post, auth) &&
                                     (

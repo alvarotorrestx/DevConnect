@@ -54,9 +54,8 @@ function App() {
                   <Route index element={<Profile />} />
                   <Route path="edit" element={<EditProfile />} />
                 </Route>
-                <Route path='/blogs' element={<Posts />} />
+                {/* <Route path='/blogs' element={<Posts />} /> ~~ To be updated with a new feature ~~*/}
                 <Route path='/network' element={<Network />} />
-                <Route path='/tester' element={<TesterComponent />} />
               </Route>
             </Route>
           </Route>

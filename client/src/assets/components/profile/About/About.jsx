@@ -83,7 +83,7 @@ const About = () => {
   if (!profile) return <p>Profile not found.</p>;
 
   return (
-    <div className="max-w-[90%] lg:max-w-4xl mx-auto p-6 bg-base-100 rounded-lg shadow-md mt-10 relative">
+    <div className="max-w-[90%] lg:max-w-4xl mx-auto p-6 bg-base-100 rounded-lg shadow-md mt-5 relative">
       <div className="flex pb-4 items-center justify-between font-semibold">
         <h1>About</h1>
         {canEdit && (
