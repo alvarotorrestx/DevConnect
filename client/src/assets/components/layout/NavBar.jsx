@@ -27,7 +27,7 @@ const NavBar = ({ avatar, username }) => {
     };
 
     return (
-        <div className="navbar bg-base-100 w-[95%] mx-auto rounded-md shadow-md grid grid-cols-2 lg:grid-cols-4 auto-cols-max relative">
+        <div className="navbar bg-base-100 w-[95%] mx-auto rounded-md shadow-md grid grid-cols-2 lg:grid-cols-4 auto-cols-max relative mb-5">
 
             {/* Nav start */}
             <div className="navbar-start w-[unset] lg:col-span-1">
@@ -52,8 +52,7 @@ const NavBar = ({ avatar, username }) => {
                         tabIndex={0}
                         className="menu menu-sm dropdown-content bg-base-200 rounded-box z-[1] mt-3 p-2 shadow w-[95%]">
                         <li><NavLink to='/dashboard' className='py-4 flex items-center'><span className="text-2xl text-primary"><IoMdHome /></span>Home</NavLink></li>
-                        {/* <li><NavLink to='/tester' className='py-4 flex items-center'><span className="text-2xl text-primary"><IoMdHome /></span>Tester</NavLink></li> */}
-                        <li><NavLink to='/blogs' className='py-4 flex items-center'><span className="text-2xl text-primary"><HiNewspaper /></span>Blogs</NavLink></li>
+                        <li><NavLink to='' className='py-4 flex items-center'><span className="text-2xl text-primary"><HiNewspaper /></span>Blogs</NavLink></li>
                         <li><NavLink to='/network' className='py-4 flex items-center'><span className="text-2xl text-primary"><IoMdPeople /></span>Network</NavLink></li>
                         <li><NavLink to='' className='py-4 flex items-center'><span className="text-2xl text-primary"><GiSuitcase /></span>Jobs</NavLink></li>
                     </ul>
@@ -67,8 +66,7 @@ const NavBar = ({ avatar, username }) => {
             <div className="navbar-center hidden lg:flex w-[unset] justify-center lg:col-span-2">
                 <ul className="menu menu-horizontal px-1">
                     <li><NavLink to='/dashboard' className="flex items-center"><span className="text-2xl text-primary"><IoMdHome /></span>Home</NavLink></li>
-                    {/* <li><NavLink to='/tester' className="flex items-center"><span className="text-2xl text-primary"><HiNewspaper /></span>Tester</NavLink></li> */}
-                    <li><NavLink to='/blogs' className="flex items-center"><span className="text-2xl text-primary"><HiNewspaper /></span>Blogs</NavLink></li>
+                    <li><NavLink to='' className="flex items-center"><span className="text-2xl text-primary"><HiNewspaper /></span>Blogs</NavLink></li>
                     <li><NavLink to='/network' className="flex items-center"><span className="text-2xl text-primary"><IoMdPeople /></span>Network</NavLink></li>
                     <li><NavLink to='' className="flex items-center"><span className="text-2xl text-primary"><GiSuitcase /></span>Jobs</NavLink></li>
                 </ul>

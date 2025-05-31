@@ -191,7 +191,7 @@ const EditProfile = () => {
   if (!profile) return <p>Profile not found.</p>;
 
   return (
-    <div className="max-w-[90%] md:max-w-2xl mx-auto p-6 bg-base-100 rounded-lg shadow-md mt-10 relative">
+    <div className="max-w-[90%] md:max-w-2xl mx-auto p-6 bg-base-100 rounded-lg shadow-md relative">
       <h1 className="text-2xl font-bold">Edit Profile - {profile.username}</h1>
       <p className="text-sm">
         Edit your details to help others connect with you better.
