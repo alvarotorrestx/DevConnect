@@ -3,7 +3,7 @@ import React from 'react'
 function Activity() {
   return (
     <div>
-      <div className="bg-base-200 md:flex flex-col   p-4 rounded-xl md:shadow-md md:border-[2px] sm:w-full ">
+      <div className="bg-base-100 md:flex flex-col p-4 rounded-xl shadow-md sm:w-full">
               <div className="flex gap-2 justify-between w-full items-center mb-3 sm:w-full">
                 <div className="flex gap-3 items-center">
                   <span className="material-symbols-outlined text-blue-800">

@@ -22,8 +22,6 @@ const Dashboard = () => {
 
             {/* forums container*/}
             <Forums />
-
-
           </div>
         </div>
 

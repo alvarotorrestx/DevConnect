@@ -3,7 +3,7 @@ import React from 'react'
 function Messages() {
   return (
     <div>
-      <div className="message-container md:flex flex-col md:gap-4 p-3 mb-3 rounded-xl  md:shadow-md bg-base-800 md:border-[2px] text-content-200 ">
+      <div className="md:flex flex-col md:gap-4 p-3 mb-3 rounded-xl shadow-md bg-base-100 text-content-200 ">
               <div className="first-section flex md:px-2 justify-between mb-3">
                 <div className="heading flex justify-between items-center w-full text-center">
                   <h2 className="font-bold md:text-[27px] text-[20px]">Messages</h2>

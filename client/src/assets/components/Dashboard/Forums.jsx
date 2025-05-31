@@ -2,7 +2,7 @@ import React from 'react'
 
 const Forums = () => {
     return (
-        <div className="  md:display  md:flex flex-col  rounded-xl bg-base-200 shadow-md p-2 border-[2px]">
+        <div className="md:display md:flex flex-col rounded-xl bg-base-100 shadow-md p-2">
             <div className="flex gap-2 justify-between w-full items-center mb-3">
                 <div className="flex gap-3 items-center">
                     <span className="material-symbols-outlined   text-blue-800">
