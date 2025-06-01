@@ -19,7 +19,7 @@ import { scroll } from 'framer-motion';
 const POST_URL = '/api/posts'
 
 const Posts = () => {
-    const { auth } = useAuth();
+    const { auth, setAuth } = useAuth();
 
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -97,7 +97,7 @@ const Posts = () => {
                     :
                     (
                         <>
-                            <CreatePost POST_URL={POST_URL} auth={auth} setPosts={setPosts} />
+                            <CreatePost POST_URL={POST_URL} auth={auth} setAuth={setAuth} setPosts={setPosts} />
 
                             {posts.length > 0 ? (
                                 posts.map((post) => (
@@ -118,6 +118,7 @@ const Posts = () => {
 
                                                         <DeletePost
                                                             auth={auth}
+                                                            setAuth={setAuth}
                                                             post={post}
                                                             POST_URL={POST_URL}
                                                             showSuccess={showSuccess}

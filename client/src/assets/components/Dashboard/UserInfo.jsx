@@ -21,11 +21,6 @@ const UserInfo = () => {
                 <div className="ml-2">
                     <div className="flex gap-1">
                         <h2 className="text-black-900 font-extrabold text-xl">{`${auth?.firstName} ${auth?.lastName}`}</h2>
-                        {/* <p>
-                            <span className="material-symbols-outlined text-blue-700">
-                                verified
-                            </span>
-                        </p> */}
                     </div>
 
                     <h2><Link to={'/profile/' + auth?.username} className="link link-primary link-hover">@{auth?.username}</Link></h2>

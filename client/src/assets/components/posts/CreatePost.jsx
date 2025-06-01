@@ -8,7 +8,7 @@ import { useErrorToast } from "../toast/useErrorToast";
 import SuccessToast from "../toast/SuccessToast";
 import { useSuccessToast } from "../toast/useSuccessToast";
 
-const CreatePost = ({ POST_URL, auth, setPosts }) => {
+const CreatePost = ({ POST_URL, auth, setAuth, setPosts }) => {
 
     const [postData, setPostData] = useState({
         body: '',
@@ -55,23 +55,23 @@ const CreatePost = ({ POST_URL, auth, setPosts }) => {
         setButtonStatus("Loading...");
 
         const formattedBody = postData.body
-        .replace(/(?<!\s)\n/g, " \n") // Add spaces before newlines
-        .replace(/(?<!\s)#/g, " #") // Add spaces before hashtags
-        .replace(/\n#/g, "\n #"); // Add spaces before hashtags after newlines
+            .replace(/(?<!\s)\n/g, " \n") // Add spaces before newlines
+            .replace(/(?<!\s)#/g, " #") // Add spaces before hashtags
+            .replace(/\n#/g, "\n #"); // Add spaces before hashtags after newlines
 
         const words = formattedBody.split(/\s+/).map(word => word.replace(/[^\w#].*$/g, ''));
         const tagsAfterFormatting = [
-          ...new Set(
-            words
-              .filter((word) => word.startsWith("#") && word.length > 1)
-              .map((tag) => tag.slice(1).trim().toLowerCase())
-          ),
+            ...new Set(
+                words
+                    .filter((word) => word.startsWith("#") && word.length > 1)
+                    .map((tag) => tag.slice(1).trim().toLowerCase())
+            ),
         ];
 
         const postToSend = {
             ...postData,
             body: formattedBody,
-            tags:tagsAfterFormatting,
+            tags: tagsAfterFormatting,
         };
 
         try {
@@ -101,6 +101,13 @@ const CreatePost = ({ POST_URL, auth, setPosts }) => {
                 tags: [],
             }));
             showSuccess('Post successfully created.');
+
+            // Helper to update Dashboard total posts counter
+            setAuth(prev => ({
+                ...prev,
+                totalPosts: [...prev.totalPosts, fullPost.data._id]
+            }));
+
         }
         catch (err) {
             // If no error response

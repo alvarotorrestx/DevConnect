@@ -1,11 +1,10 @@
-import Carousel from "./Carousel";
 import Activity from "./Activity";
-import Messages from "./Messages";
 import Events from "./Events";
 import UserInfo from "./UserInfo";
-import Forums from "./Forums";
+import Blogs from "./Blogs";
 import Posts from "../posts/Posts";
 import WelcomeBanner from "./WelcomeBanner";
+import MutualPeople from './MutualPeople';
 
 const Dashboard = () => {
   return (
@@ -14,25 +13,16 @@ const Dashboard = () => {
       <div className="md:grid w-[95%] h-auto md:grid-cols-4 gap-3 mx-auto">
         {/* first column */}
         <div className="col-span-1 ">
-          <div className="md:flex md:flex-col md:gap-3  rounded-md hidden">
+          <div className="md:flex md:flex-col md:gap-3 rounded-md hidden">
             {/* profile container */}
             <UserInfo />
 
-            {/* activity container */}
-            <Activity />
-
-            {/* forums container*/}
-            <Forums />
+            <MutualPeople />
           </div>
         </div>
 
         {/* second column */}
-        <div className="md:col-span-2  flex flex-col gap-3 sm:w-full ">
-
-          {/* moblie carousel */}
-          <div className="md:hidden block">
-            <Carousel />
-          </div>
+        <div className="md:col-span-2 flex flex-col gap-6 sm:w-full">
 
           {/* welcome banner */}
           <WelcomeBanner />
@@ -42,19 +32,15 @@ const Dashboard = () => {
         </div>
 
         {/* third column */}
-        <div className="md:col-span-1 rounded-md gap-5">
+        <div className="hidden md:flex flex-col rounded-md gap-3">
+          {/* activity container */}
+          <Activity />
 
-          {/* message container */}
-          <div className="md:block hidden">
-            <Messages />
-          </div>
-
+          {/* Blogs container*/}
+          <Blogs />
 
           {/* Events */}
-          <div className="md:block hidden">
-            <Events />
-          </div>
-
+          <Events />
 
         </div>
 
