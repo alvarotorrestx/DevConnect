@@ -2,7 +2,7 @@ import React from 'react'
 import { FaTimes, FaCheck } from 'react-icons/fa';
 import { axiosPrivate } from '../../../api/axios';
 
-const DeletePost = ({ auth, post, POST_URL, showError, showSuccess, setPosts }) => {
+const DeletePost = ({ auth, post, setAuth, POST_URL, showError, showSuccess, setPosts }) => {
 
     const deletePost = async (postId) => {
         try {
@@ -14,6 +14,12 @@ const DeletePost = ({ auth, post, POST_URL, showError, showSuccess, setPosts }) 
 
             setPosts(prev => prev.filter(post => post._id !== postId));
             showSuccess('Post successfully deleted.');
+
+            // Helper to update Dashboard total posts counter
+            setAuth(prev => ({
+                ...prev,
+                totalPosts: prev.totalPosts.filter(id => id !== postId)
+            }));
         }
         catch (err) {
             // If no error response
