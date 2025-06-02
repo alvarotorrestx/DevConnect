@@ -24,6 +24,30 @@ const userSchema = new mongoose.Schema({
     linkedin: { type: String, default: '' },
     otherWebsite: { type: String, default: '' },
 
+    // User following other users
+    following: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    ],
+
+    // User's followers - other users
+    followers: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    ],
+
+    // User's network - similar to becoming friends or connecting
+    network: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    ],
+
     // Posts - Reference to Posts model
     posts: [
         {
