@@ -2,12 +2,13 @@ import React, { useState, useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { FaUserFriends } from "react-icons/fa";
 import { IoPersonAddSharp } from "react-icons/io5";
+import { FaUserCheck } from "react-icons/fa6";
 import useAuth from '../../../auth/useAuth';
 import Loading from '../subcomponents/Loading';
 import { axiosPrivate } from '../../../api/axios';
 
 function Activity() {
-  const { auth } = useAuth();
+  const { auth, setAuth } = useAuth();
 
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -38,13 +39,13 @@ function Activity() {
     // Filter out users that is the current user and the user's following
     return [...users]
       .filter(user =>
-        user._id !== auth.id && 
+        user._id !== auth.id &&
         !auth.following.includes(user._id)
       )
       // Randomizes filtered list and limits to 5 return
       .sort(() => 0.5 - Math.random())
       .slice(0, 5);
-  }, [auth, users]);
+  }, [users]);
 
 
   return (
@@ -65,24 +66,61 @@ function Activity() {
             <Loading />
             :
             (
-              suggestedUsers.map((user, i) => (
-                <div className="flex gap-2 shadow-md p-2" key={i}>
-                  <div className="flex flex-row justify-between items-center w-full flex-wrap">
-                    <Link to={`/profile/${user.username}`} className='flex flex-row justify-start items-center flex-wrap'>
-                      <img
-                        src={user.avatar || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTgD14vQ6I-UBiHTcwxZYnpSfLFJ2fclwS2A&s"}
-                        alt=""
-                        className="w-[45px] rounded-full"
-                      />
-                      <div className='flex flex-col ml-2'>
-                        <span className="font-semibold">{`${user.firstName} ${user.lastName}`}</span>
-                        <span className="text-[12px]">@{user.username}</span>
-                      </div>
-                    </Link>
-                    <span className='link link-secondary link-hover text-lg p-2'><IoPersonAddSharp /></span>
+              suggestedUsers.map((user, i) => {
+                const isFollowing = auth?.following.includes(user._id);
+
+                const handleFollow = async () => {
+
+                  try {
+                    const response = await axiosPrivate.post(`/api/users/follow/${user._id}`, {}, {
+                      headers: {
+                        Authorization: `Bearer ${auth?.accessToken}`
+                      }
+                    });
+
+                    // Follow user
+                    if (!isFollowing) {
+                      setAuth(prev => ({
+                        ...prev,
+                        following: [...prev.following, user._id]
+                      }));
+                    } else { // Unfollow user
+                      setAuth(prev => ({
+                        ...prev,
+                        following: prev.following.filter(id => id !== user._id)
+                      }));
+                    }
+                  }
+                  catch (err) {
+                    console.log(err);
+                  }
+                };
+
+                return (
+                  <div className="flex gap-2 shadow-md p-2" key={i}>
+                    <div className="flex flex-row justify-between items-center w-full flex-wrap">
+                      <Link to={`/profile/${user.username}`} className='flex flex-row justify-start items-center flex-wrap'>
+                        <img
+                          src={user.avatar || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTgD14vQ6I-UBiHTcwxZYnpSfLFJ2fclwS2A&s"}
+                          alt=""
+                          className="w-[45px] rounded-full"
+                        />
+                        <div className='flex flex-col ml-2'>
+                          <span className="font-semibold">{`${user.firstName} ${user.lastName}`}</span>
+                          <span className="text-[12px]">@{user.username}</span>
+                        </div>
+                      </Link>
+                      <span className='link link-secondary link-hover text-lg p-2' onClick={() => handleFollow()}>
+                        {isFollowing ?
+                          <FaUserCheck />
+                          :
+                          <IoPersonAddSharp />
+                        }
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ))
+                )
+              })
             )
           }
 
