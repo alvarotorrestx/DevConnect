@@ -3,23 +3,57 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import Loading from '../subcomponents/Loading'
 import ProfileContext from '../../context/ProfileContext';
 import { FaUserEdit } from "react-icons/fa";
+import { IoPersonAddSharp } from "react-icons/io5";
+import { FaUserCheck } from "react-icons/fa6";
 import useAuth from '../../../auth/useAuth';
 import About from './About/About';
 import Project from './ProjectsSec/Project';
 import Experiance from './Experience/Experience'
 import Blog from './Blog/Blog';
+import { axiosPrivate } from '../../../api/axios';
 
 const Profile = () => {
 
-  const { auth } = useAuth();
+  const { auth, setAuth } = useAuth();
 
   const { profile, loading } = useContext(ProfileContext);
   if (loading) return <Loading />;
   if (!profile) return <div className="max-w-4xl mx-auto p-6 bg-base-100 rounded shadow-md"><p className="text-center">Profile not found.</p></div>;
 
+  // Logic for showing edit feature on profile visits
   const isOwnProfile = profile.username === auth?.username;
   const isAdminOrOwner = ['admin', 'owner'].includes(auth?.role);
   const canEdit = isOwnProfile || isAdminOrOwner;
+
+  // Logic for allowing follow/unfollow on profile visits
+  const canFollow = !isOwnProfile && auth?.id !== profile.id;
+  const isFollowing = auth?.following.includes(profile.id);
+
+  const handleFollow = async () => {
+    try {
+      const response = await axiosPrivate.post(`/api/users/follow/${profile.id}`, {}, {
+        headers: {
+          Authorization: `Bearer ${auth?.accessToken}`
+        }
+      });
+
+      // Follow user
+      if (!isFollowing) {
+        setAuth(prev => ({
+          ...prev,
+          following: [...prev.following, profile.id]
+        }));
+      } else { // Unfollow user
+        setAuth(prev => ({
+          ...prev,
+          following: prev.following.filter(id => id !== profile.id)
+        }));
+      }
+    }
+    catch (err) {
+      console.log(err);
+    }
+  };
 
   return profile
     ?
@@ -27,17 +61,34 @@ const Profile = () => {
       <div >
         <div className="max-w-[90%] lg:max-w-4xl mx-auto p-6 bg-base-100 rounded-lg shadow-md relative">
           {/* Edit Icon - For User, Admin, and Owner */}
-          {canEdit && (
+          {/* {canEdit && (
             <Link
               to='edit'
               className="absolute top-0 right-0 p-6 text-2xl opacity-75 hover:opacity-100 transition text-primary"
             >
               <div className="shadow-lg bg-base-300 p-[7px] rounded-3xl flex items-center justify-center cursor-pointer opacity-75 hover:opacity-100 transition">
-                < FaUserEdit />
+                <FaUserEdit />
               </div>
 
             </Link>
-          )}
+          )} */}
+          {canFollow ?
+            (
+              <button className='shadow-lg opacity-75 hover:opacity-100 transition text-lg absolute top-0 right-0 m-6 py-2 px-6 bg-base-300 rounded-md' onClick={() => handleFollow()}>
+                {isFollowing ?
+                  <span className='flex flex-wrap flex-row justify-center items-center'>
+                    <FaUserCheck />&nbsp;&nbsp;Following
+                  </span>
+                  :
+                  <span className='flex flex-wrap flex-row justify-center items-center'>
+                    <IoPersonAddSharp />&nbsp;&nbsp;Follow
+                  </span>
+                }
+              </button>
+            )
+            :
+            ""
+          }
           {/* Top Section */}
           {/* <div className="flex flex-col md:flex-row items-center md:items-start gap-6 mb-6"> */}
           <div className="grid grid-cols-1 justify-items-center md:justify-items-start md:items-start md:grid-cols-[25%_75%] gap-6 mb-6">
