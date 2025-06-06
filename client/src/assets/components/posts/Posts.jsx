@@ -43,9 +43,12 @@ const Posts = () => {
 
     useEffect(() => {
         const fetchPosts = async (page = 1) => {
+            if (!auth?.id || !auth?.following) return;
             setLoading(true);
             try {
-                const response = await axiosPrivate.get(`${POST_URL}?page=${page}&limit=10`, {
+                const userIds = [auth.id, ...auth.following].join(',');
+
+                const response = await axiosPrivate.get(`${POST_URL}?page=${page}&limit=10&userIds=${userIds}`, {
                     headers: {
                         Authorization: `Bearer ${auth?.accessToken}`
                     }

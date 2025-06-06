@@ -8,10 +8,17 @@ const getAllPosts = async (req, res) => {
         const limit = parseInt(req.query.limit) || 10; // Default to 10 posts per page
         const skip = (page - 1) * limit;
 
-        const totalPosts = await Post.countDocuments(); // Total number of posts
+        // Expected list of followed users
+        const userIds = req.query.userIds
+            ? req.query.userIds.split(',')
+            : [];
+
+        if (!userIds.length) return res.status(400).json({ message: 'No user IDs provided' });
+
+        const totalPosts = await Post.countDocuments({ author: { $in: userIds } });
         const totalPages = Math.ceil(totalPosts / limit);
 
-        const posts = await Post.find()
+        const posts = await Post.find({ author: { $in: userIds } })
             .populate('author', 'username firstName lastName avatar role') // populate specific author fields
             .sort({ createdAt: -1 }) // Sort by newest first
             .skip(skip)
