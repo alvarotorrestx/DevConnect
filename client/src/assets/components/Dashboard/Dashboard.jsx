@@ -53,7 +53,7 @@ const Dashboard = () => {
       <div className="md:grid w-[95%] h-auto md:grid-cols-4 gap-3 mx-auto">
         {/* first column */}
         <div className="col-span-1 ">
-          <div className="md:flex md:flex-col md:gap-3 rounded-md hidden">
+          <div className="md:flex md:flex-col md:gap-3 rounded-lg hidden">
             {/* profile container */}
             <UserInfo />
 
@@ -87,7 +87,7 @@ const Dashboard = () => {
         </div>
 
         {/* third column */}
-        <div className="hidden md:flex flex-col rounded-md gap-3">
+        <div className="hidden md:flex flex-col rounded-lg gap-3">
           {/* activity container */}
           <Activity />
 

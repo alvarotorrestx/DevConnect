@@ -80,7 +80,7 @@ function Project() {
 
         {projects.length > 2 && (
           <button
-            className="mt-4 px-4 py-2 text-[15px] border-[2px] flex items-center justify-center gap-2 border-[#918282] text-black rounded-md hover:text-primary-focus hover:border-primary-focus transition duration-200"
+            className="mt-4 px-4 py-2 text-[15px] border-[2px] flex items-center justify-center gap-2 border-[#918282] text-black rounded-lg hover:text-primary-focus hover:border-primary-focus transition duration-200"
             onClick={() => setShowAll(!showAll)}
           >
             {showAll ? "Show Less Projects" : "Show More Projects"}{" "}

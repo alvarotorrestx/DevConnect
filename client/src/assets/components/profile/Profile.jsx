@@ -94,7 +94,7 @@ const Profile = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.2 }}
-                  className='absolute top-0 right-0 mt-8 mr-2 md:mr-4 bg-base-300 rounded-md shadow-lg z-50'
+                  className='absolute top-0 right-0 mt-8 mr-2 md:mr-4 bg-base-300 rounded-lg shadow-lg z-50'
                 >
                   <ul>
                     {/* Edit Button */}

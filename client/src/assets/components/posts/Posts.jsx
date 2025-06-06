@@ -67,7 +67,7 @@ const Posts = ({ auth, POST_URL, setAuth, loading, currentPage, setCurrentPage, 
 
                             {posts.length > 0 ? (
                                 posts.map((post) => (
-                                    <div key={post._id} className="relative [&:not(:last-child)]:mb-6 p-5 rounded-md shadow-md border border-base-300 bg-base-100">
+                                    <div key={post._id} className="relative [&:not(:last-child)]:mb-6 p-5 rounded-lg shadow-md border border-base-300 bg-base-100">
 
                                         {canUserModifyPost(post, auth) &&
                                             (
@@ -131,7 +131,7 @@ const Posts = ({ auth, POST_URL, setAuth, loading, currentPage, setCurrentPage, 
                                                                 key={`image-${index}`}
                                                                 src={url}
                                                                 alt={`Post image ${index + 1}`}
-                                                                className="rounded-md max-w-full"
+                                                                className="rounded-lg max-w-full"
                                                             />
                                                         ))}
                                                     </div>
@@ -144,7 +144,7 @@ const Posts = ({ auth, POST_URL, setAuth, loading, currentPage, setCurrentPage, 
                                                             <video
                                                                 key={`video-${index}`}
                                                                 controls
-                                                                className="rounded-md max-w-full"
+                                                                className="rounded-lg max-w-full"
                                                             >
                                                                 <source src={url} />
                                                                 Your browser does not support the video tag.
