@@ -1,10 +1,10 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect, useRef } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import Loading from '../subcomponents/Loading'
 import ProfileContext from '../../context/ProfileContext';
-import { FaUserEdit } from "react-icons/fa";
-import { IoPersonAddSharp } from "react-icons/io5";
-import { FaUserCheck } from "react-icons/fa6";
+import { MdModeEdit, MdBlock } from "react-icons/md";
+import { IoPersonAddSharp, IoFlag } from "react-icons/io5";
+import { RiUserUnfollowFill } from "react-icons/ri";
 import useAuth from '../../../auth/useAuth';
 import About from './About/About';
 import Project from './ProjectsSec/Project';
@@ -15,6 +15,24 @@ import { axiosPrivate } from '../../../api/axios';
 const Profile = () => {
 
   const { auth, setAuth } = useAuth();
+
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
 
   const { profile, loading } = useContext(ProfileContext);
   if (loading) return <Loading />;
@@ -28,6 +46,7 @@ const Profile = () => {
   // Logic for allowing follow/unfollow on profile visits
   const canFollow = !isOwnProfile && auth?.id !== profile.id;
   const isFollowing = auth?.following.includes(profile.id);
+
 
   const handleFollow = async () => {
     try {
@@ -60,35 +79,72 @@ const Profile = () => {
     (
       <div >
         <div className="max-w-[90%] lg:max-w-4xl mx-auto p-6 bg-base-100 rounded-lg shadow-md relative">
-          {/* Edit Icon - For User, Admin, and Owner */}
-          {/* {canEdit && (
-            <Link
-              to='edit'
-              className="absolute top-0 right-0 p-6 text-2xl opacity-75 hover:opacity-100 transition text-primary"
-            >
-              <div className="shadow-lg bg-base-300 p-[7px] rounded-3xl flex items-center justify-center cursor-pointer opacity-75 hover:opacity-100 transition">
-                <FaUserEdit />
-              </div>
+          <div
+            className='absolute top-0 right-0 m-6 flex flex-wrap flex-row-reverse justify-between items-center'
+            ref={dropdownRef}
+          >
+            <div className='px-2 md:px-4 cursor-pointer relative' onClick={() => setShowDropdown(prev => !prev)}>
+              <span className="text-xl">⋮</span>
+            </div>
+            {showDropdown && (
+              <div className='absolute top-0 right-0 mt-8 mr-2 md:mr-4 bg-base-300 rounded-md shadow-lg'>
+                <ul>
+                  {canEdit &&
+                    <li>
+                      <Link
+                        to='edit'
+                        className="opacity-75 hover:opacity-100 transition text-md py-4 px-6 flex"
+                      >
+                        <div className="flex flex-row justify-center items-center">
+                          <MdModeEdit />&nbsp;&nbsp;Edit
+                        </div>
 
-            </Link>
-          )} */}
-          {canFollow ?
-            (
-              <button className='shadow-lg opacity-75 hover:opacity-100 transition text-lg absolute top-0 right-0 m-6 py-2 px-6 bg-base-300 rounded-md' onClick={() => handleFollow()}>
-                {isFollowing ?
-                  <span className='flex flex-wrap flex-row justify-center items-center'>
-                    <FaUserCheck />&nbsp;&nbsp;Following
-                  </span>
-                  :
-                  <span className='flex flex-wrap flex-row justify-center items-center'>
-                    <IoPersonAddSharp />&nbsp;&nbsp;Follow
-                  </span>
-                }
-              </button>
-            )
-            :
-            ""
-          }
+                      </Link>
+                    </li>
+                  }
+                  {canFollow &&
+                    <>
+                      <li>
+                        <button className='opacity-75 hover:opacity-100 transition text-md py-4 px-6 flex' onClick={() => handleFollow()}>
+                          {isFollowing ?
+                            <div className='flex flex-row justify-center items-center'>
+                              <RiUserUnfollowFill />&nbsp;&nbsp;Unfollow
+                            </div>
+                            :
+                            <div className='flex flex-row justify-center items-center'>
+                              <IoPersonAddSharp />&nbsp;&nbsp;Follow
+                            </div>
+                          }
+                        </button>
+                      </li>
+
+                      <li>
+                        <button
+                          className="opacity-75 hover:opacity-100 transition text-md py-4 px-6 flex"
+                        >
+                          <div className="flex flex-row justify-center items-center">
+                            <MdBlock />&nbsp;&nbsp;Block
+                          </div>
+
+                        </button>
+                      </li>
+
+                      <li>
+                        <button
+                          className="opacity-75 hover:opacity-100 transition text-md py-4 px-6 flex"
+                        >
+                          <div className="flex flex-row justify-center items-center">
+                            <IoFlag />&nbsp;&nbsp;Report
+                          </div>
+
+                        </button>
+                      </li>
+                    </>
+                  }
+                </ul>
+              </div>
+            )}
+          </div>
           {/* Top Section */}
           {/* <div className="flex flex-col md:flex-row items-center md:items-start gap-6 mb-6"> */}
           <div className="grid grid-cols-1 justify-items-center md:justify-items-start md:items-start md:grid-cols-[25%_75%] gap-6 mb-6">
