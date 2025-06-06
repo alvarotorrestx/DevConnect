@@ -29,11 +29,11 @@ const UserInfo = () => {
 
             <div className="flex lg:flex-row justify-around gap-5 align-center w-auto md:flex-wrap">
                 <div className="flex flex-col text-center">
-                    <div className="font-extrabold">{auth?.totalFollowers ?? 0}</div>
+                    <div className="font-extrabold">{auth?.followers?.length ?? 0}</div>
                     <div className="">Followers</div>
                 </div>
                 <div className="flex flex-col text-center">
-                    <div className="font-extrabold">{auth?.totalFollowing ?? 0}</div>
+                    <div className="font-extrabold">{auth?.following?.length ?? 0}</div>
                     <div>Following</div>
                 </div>
                 <div className="flex flex-col text-center">

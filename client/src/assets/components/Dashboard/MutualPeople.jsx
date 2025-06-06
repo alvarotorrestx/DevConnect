@@ -1,8 +1,53 @@
-import React from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
+import { Link } from 'react-router-dom'
 import { FaUserFriends } from "react-icons/fa";
 import { IoPersonAddSharp } from "react-icons/io5";
+import { FaUserCheck } from "react-icons/fa6";
+import useAuth from '../../../auth/useAuth';
+import Loading from '../subcomponents/Loading';
+import { axiosPrivate } from '../../../api/axios';
 
 function Activity() {
+  const { auth, setAuth } = useAuth();
+
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      setLoading(true);
+      try {
+        const response = await axiosPrivate.get('/api/users', {
+          headers: {
+            Authorization: `Bearer ${auth?.accessToken}`
+          }
+        });
+        setUsers(response.data);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, [auth?.accessToken]);
+
+  const suggestedUsers = useMemo(() => {
+    if (!auth || !auth.following || !users.length) return [];
+
+    // Filter out users that is the current user and the user's following
+    return [...users]
+      .filter(user =>
+        user._id !== auth.id &&
+        !auth.following.includes(user._id)
+      )
+      // Randomizes filtered list and limits to 5 return
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 5);
+  }, [users]);
+
+
   return (
     <div>
       <div className="bg-base-100 md:flex flex-col p-4 rounded-xl shadow-md sm:w-full">
@@ -16,73 +61,68 @@ function Activity() {
         </div>
         <div className="md:flex flex-col gap-2">
 
-          <div className="flex gap-2 shadow-md p-2">
-            <div>
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTgD14vQ6I-UBiHTcwxZYnpSfLFJ2fclwS2A&s"
-                alt=""
-                className="w-[45px] rounded-full"
-              />
-            </div>
-            <div className="flex flex-row justify-between items-center w-full flex-wrap">
-              <div className='flex flex-col'>
-                <span className="name font-semibold">Alvaro Torres</span>
-                <span className="time text-[12px]">Software Engineer</span>
-              </div>
-              <span className='link link-secondary link-hover text-lg p-2'><IoPersonAddSharp /></span>
-            </div>
-          </div>
+          {loading
+            ?
+            <Loading />
+            :
+            (
+              suggestedUsers.map((user, i) => {
+                const isFollowing = auth?.following.includes(user._id);
 
-          <div className="flex gap-2 shadow-md p-2">
-            <div>
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTgD14vQ6I-UBiHTcwxZYnpSfLFJ2fclwS2A&s"
-                alt=""
-                className="w-[45px] rounded-full"
-              />
-            </div>
-            <div className="flex flex-row justify-between items-center w-full flex-wrap">
-              <div className='flex flex-col'>
-                <span className="name font-semibold">Kami Garces</span>
-                <span className="time text-[12px]">Data Analyst</span>
-              </div>
-              <span className='link link-secondary link-hover text-lg p-2'><IoPersonAddSharp /></span>
-            </div>
-          </div>
+                const handleFollow = async () => {
 
-          <div className="flex gap-2 shadow-md p-2">
-            <div>
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTgD14vQ6I-UBiHTcwxZYnpSfLFJ2fclwS2A&s"
-                alt=""
-                className="w-[45px] rounded-full"
-              />
-            </div>
-            <div className="flex flex-row justify-between items-center w-full flex-wrap">
-              <div className='flex flex-col'>
-                <span className="name font-semibold">Yasmin Garces</span>
-                <span className="time text-[12px]">Lead Software Engineer</span>
-              </div>
-              <span className='link link-secondary link-hover text-lg p-2'><IoPersonAddSharp /></span>
-            </div>
-          </div>
+                  try {
+                    const response = await axiosPrivate.post(`/api/users/follow/${user._id}`, {}, {
+                      headers: {
+                        Authorization: `Bearer ${auth?.accessToken}`
+                      }
+                    });
 
-          <div className="flex gap-2 shadow-md p-2">
-            <div>
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTgD14vQ6I-UBiHTcwxZYnpSfLFJ2fclwS2A&s"
-                alt=""
-                className="w-[45px] rounded-full"
-              />
-            </div>
-            <div className="flex flex-row justify-between items-center w-full flex-wrap">
-              <div className='flex flex-col'>
-                <span className="name font-semibold">Roy Campa</span>
-                <span className="time text-[12px]">API Genius</span>
-              </div>
-              <span className='link link-secondary link-hover text-lg p-2'><IoPersonAddSharp /></span>
-            </div>
-          </div>
+                    // Follow user
+                    if (!isFollowing) {
+                      setAuth(prev => ({
+                        ...prev,
+                        following: [...prev.following, user._id]
+                      }));
+                    } else { // Unfollow user
+                      setAuth(prev => ({
+                        ...prev,
+                        following: prev.following.filter(id => id !== user._id)
+                      }));
+                    }
+                  }
+                  catch (err) {
+                    console.log(err);
+                  }
+                };
+
+                return (
+                  <div className="flex gap-2 shadow-md p-2" key={i}>
+                    <div className="flex flex-row justify-between items-center w-full flex-wrap">
+                      <Link to={`/profile/${user.username}`} className='flex flex-row justify-start items-center flex-wrap'>
+                        <img
+                          src={user.avatar || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTgD14vQ6I-UBiHTcwxZYnpSfLFJ2fclwS2A&s"}
+                          alt=""
+                          className="w-[45px] rounded-full"
+                        />
+                        <div className='flex flex-col ml-2'>
+                          <span className="font-semibold">{`${user.firstName} ${user.lastName}`}</span>
+                          <span className="text-[12px]">@{user.username}</span>
+                        </div>
+                      </Link>
+                      <span className='link link-secondary link-hover text-lg p-2' onClick={() => handleFollow()}>
+                        {isFollowing ?
+                          <FaUserCheck />
+                          :
+                          <IoPersonAddSharp />
+                        }
+                      </span>
+                    </div>
+                  </div>
+                )
+              })
+            )
+          }
 
         </div>
       </div>

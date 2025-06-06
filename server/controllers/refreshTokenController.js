@@ -31,19 +31,24 @@ const handleRefreshToken = async (req, res) => {
                     email: foundUser.email,
                     role: foundUser.role,
                     avatar: foundUser.avatar,
-                    totalPosts: foundUser.posts
+                    totalPosts: foundUser.posts,
+                    following: foundUser.following,
+                    followers: foundUser.followers
                 },
                 process.env.ACCESS_TOKEN_SECRET,
                 { expiresIn: '60m' }
             );
 
             res.json({
+                id: foundUser._id,
                 firstName: foundUser.firstName,
                 lastName: foundUser.lastName,
                 username: foundUser.username,
                 avatar: foundUser.avatar,
                 role: foundUser.role,
                 totalPosts: foundUser.posts,
+                following: foundUser.following,
+                followers: foundUser.followers,
                 accessToken
             });
         });
