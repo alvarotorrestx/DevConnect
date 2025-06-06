@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { axiosPrivate } from '../../../api/axios';
-import useAuth from '../../../auth/useAuth';
 import Loading from '../subcomponents/Loading';
 import CreatePost from './CreatePost';
 import PostBody from './PostBody';
@@ -16,16 +14,7 @@ import DeletePost from './DeletePost';
 import EditPost from './EditPost';
 import { scroll } from 'framer-motion';
 
-const POST_URL = '/api/posts'
-
-const Posts = () => {
-    const { auth, setAuth } = useAuth();
-
-    const [posts, setPosts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
-
+const Posts = ({ auth, POST_URL, setAuth, loading, currentPage, setCurrentPage, totalPages, fetchPosts, posts, setPosts }) => {
     const {
         message: errorMessage,
         show: showErrorToast,
@@ -42,32 +31,9 @@ const Posts = () => {
     const isVideo = url => /\.(mp4|webm|ogg)$/i.test(url);
 
     useEffect(() => {
-        const fetchPosts = async (page = 1) => {
-            setLoading(true);
-            try {
-                const response = await axiosPrivate.get(`${POST_URL}?page=${page}&limit=10`, {
-                    headers: {
-                        Authorization: `Bearer ${auth?.accessToken}`
-                    }
-                });
-
-                setPosts(response.data.posts);
-                (posts.length <= 0) && setCurrentPage(1);
-                setTotalPages(response.data.totalPages);
-            } catch (err) {
-                console.log(err);
-            } finally {
-                setLoading(false);
-            }
-        };
-        // scrollY = window.scrollY;
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        })
-
         fetchPosts(currentPage);
-    }, [auth?.accessToken, currentPage, posts.length]);
+    }, [auth?.accessToken, auth?.id, auth?.following, currentPage]);
+
 
     const canUserModifyPost = (post, auth) => {
         if (!auth || !post?.author) return false;
@@ -89,7 +55,7 @@ const Posts = () => {
 
 
     return (
-        <div className="mx-auto rounded-lg">
+        <div className="mx-auto rounded-lg w-full">
             {
                 loading
                     ?
@@ -101,7 +67,7 @@ const Posts = () => {
 
                             {posts.length > 0 ? (
                                 posts.map((post) => (
-                                    <div key={post._id} className="relative [&:not(:last-child)]:mb-6 p-5 rounded-md shadow-md border border-base-300 bg-base-100">
+                                    <div key={post._id} className="relative [&:not(:last-child)]:mb-6 p-5 rounded-lg shadow-md border border-base-300 bg-base-100">
 
                                         {canUserModifyPost(post, auth) &&
                                             (
@@ -114,6 +80,7 @@ const Posts = () => {
                                                             showSuccess={showSuccess}
                                                             showError={showError}
                                                             setPosts={setPosts}
+                                                            fetchPosts={fetchPosts}
                                                         />
 
                                                         <DeletePost
@@ -164,7 +131,7 @@ const Posts = () => {
                                                                 key={`image-${index}`}
                                                                 src={url}
                                                                 alt={`Post image ${index + 1}`}
-                                                                className="rounded-md max-w-full"
+                                                                className="rounded-lg max-w-full"
                                                             />
                                                         ))}
                                                     </div>
@@ -177,7 +144,7 @@ const Posts = () => {
                                                             <video
                                                                 key={`video-${index}`}
                                                                 controls
-                                                                className="rounded-md max-w-full"
+                                                                className="rounded-lg max-w-full"
                                                             >
                                                                 <source src={url} />
                                                                 Your browser does not support the video tag.
