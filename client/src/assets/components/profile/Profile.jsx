@@ -11,6 +11,7 @@ import Project from './ProjectsSec/Project';
 import Experiance from './Experience/Experience'
 import Blog from './Blog/Blog';
 import { axiosPrivate } from '../../../api/axios';
+import { motion, AnimatePresence } from 'framer-motion'
 
 const Profile = () => {
 
@@ -86,64 +87,78 @@ const Profile = () => {
             <div className='px-2 md:px-4 cursor-pointer relative' onClick={() => setShowDropdown(prev => !prev)}>
               <span className="text-xl">⋮</span>
             </div>
-            {showDropdown && (
-              <div className='absolute top-0 right-0 mt-8 mr-2 md:mr-4 bg-base-300 rounded-md shadow-lg'>
-                <ul>
-                  {canEdit &&
-                    <li>
-                      <Link
-                        to='edit'
-                        className="opacity-75 hover:opacity-100 transition text-md py-4 px-6 flex"
-                      >
-                        <div className="flex flex-row justify-center items-center">
-                          <MdModeEdit />&nbsp;&nbsp;Edit
-                        </div>
-
-                      </Link>
-                    </li>
-                  }
-                  {canFollow &&
-                    <>
+            <AnimatePresence>
+              {showDropdown && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.2 }}
+                  className='absolute top-0 right-0 mt-8 mr-2 md:mr-4 bg-base-300 rounded-md shadow-lg z-50'
+                >
+                  <ul>
+                    {/* Edit Button */}
+                    {canEdit &&
                       <li>
-                        <button className='opacity-75 hover:opacity-100 transition text-md py-4 px-6 flex' onClick={() => handleFollow()}>
-                          {isFollowing ?
-                            <div className='flex flex-row justify-center items-center'>
-                              <RiUserUnfollowFill />&nbsp;&nbsp;Unfollow
-                            </div>
-                            :
-                            <div className='flex flex-row justify-center items-center'>
-                              <IoPersonAddSharp />&nbsp;&nbsp;Follow
-                            </div>
-                          }
-                        </button>
-                      </li>
-
-                      <li>
-                        <button
+                        <Link
+                          to='edit'
                           className="opacity-75 hover:opacity-100 transition text-md py-4 px-6 flex"
                         >
                           <div className="flex flex-row justify-center items-center">
-                            <MdBlock />&nbsp;&nbsp;Block
+                            <MdModeEdit />&nbsp;&nbsp;Edit
                           </div>
 
-                        </button>
+                        </Link>
                       </li>
+                    }
+                    {canFollow &&
+                      <>
 
-                      <li>
-                        <button
-                          className="opacity-75 hover:opacity-100 transition text-md py-4 px-6 flex"
-                        >
-                          <div className="flex flex-row justify-center items-center">
-                            <IoFlag />&nbsp;&nbsp;Report
-                          </div>
+                        {/* Follow/Unfollow button */}
+                        <li>
+                          <button className='opacity-75 hover:opacity-100 transition text-md py-4 px-6 flex' onClick={() => handleFollow()}>
+                            {isFollowing ?
+                              <div className='flex flex-row justify-center items-center'>
+                                <RiUserUnfollowFill />&nbsp;&nbsp;Unfollow
+                              </div>
+                              :
+                              <div className='flex flex-row justify-center items-center'>
+                                <IoPersonAddSharp />&nbsp;&nbsp;Follow
+                              </div>
+                            }
+                          </button>
+                        </li>
 
-                        </button>
-                      </li>
-                    </>
-                  }
-                </ul>
-              </div>
-            )}
+                        {/* Block button */}
+                        <li>
+                          <button
+                            className="opacity-75 hover:opacity-100 transition text-md py-4 px-6 flex"
+                          >
+                            <div className="flex flex-row justify-center items-center">
+                              <MdBlock />&nbsp;&nbsp;Block
+                            </div>
+
+                          </button>
+                        </li>
+
+                        {/* Report button */}
+                        <li>
+                          <button
+                            className="opacity-75 hover:opacity-100 transition text-md py-4 px-6 flex"
+                          >
+                            <div className="flex flex-row justify-center items-center">
+                              <IoFlag />&nbsp;&nbsp;Report
+                            </div>
+
+                          </button>
+                        </li>
+
+                      </>
+                    }
+                  </ul>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
           {/* Top Section */}
           {/* <div className="flex flex-col md:flex-row items-center md:items-start gap-6 mb-6"> */}
