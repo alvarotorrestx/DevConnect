@@ -3,7 +3,7 @@ import { FaEdit, FaTimes, FaCheck } from 'react-icons/fa';
 import { axiosPrivate } from '../../../api/axios';
 import he from 'he';
 
-const EditPost = ({ auth, post, POST_URL, showError, showSuccess, setPosts }) => {
+const EditPost = ({ auth, post, POST_URL, showError, showSuccess, setPosts, fetchPosts }) => {
 
     const [postData, setPostData] = useState({
         body: '',
@@ -80,14 +80,7 @@ const EditPost = ({ auth, post, POST_URL, showError, showSuccess, setPosts }) =>
 
 
             // Re-render posts (allows to receive edit/delete buttons again)
-            const allPosts = await axiosPrivate.get(POST_URL, {
-                headers: {
-                    Authorization: `Bearer ${auth?.accessToken}`
-                },
-                withCredentials: true,
-            });
-
-            setPosts(allPosts.data);
+            fetchPosts();
             setPostData({
                 body: post.body || '',
                 media: {

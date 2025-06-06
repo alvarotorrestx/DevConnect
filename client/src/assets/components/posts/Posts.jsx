@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { axiosPrivate } from '../../../api/axios';
-import useAuth from '../../../auth/useAuth';
 import Loading from '../subcomponents/Loading';
 import CreatePost from './CreatePost';
 import PostBody from './PostBody';
@@ -16,16 +14,7 @@ import DeletePost from './DeletePost';
 import EditPost from './EditPost';
 import { scroll } from 'framer-motion';
 
-const POST_URL = '/api/posts'
-
-const Posts = () => {
-    const { auth, setAuth } = useAuth();
-
-    const [posts, setPosts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
-
+const Posts = ({ auth, POST_URL, setAuth, loading, currentPage, setCurrentPage, totalPages, fetchPosts, posts, setPosts }) => {
     const {
         message: errorMessage,
         show: showErrorToast,
@@ -42,35 +31,9 @@ const Posts = () => {
     const isVideo = url => /\.(mp4|webm|ogg)$/i.test(url);
 
     useEffect(() => {
-        const fetchPosts = async (page = 1) => {
-            if (!auth?.id || !auth?.following) return;
-            setLoading(true);
-            try {
-                const userIds = [auth.id, ...auth.following].join(',');
-
-                const response = await axiosPrivate.get(`${POST_URL}?page=${page}&limit=10&userIds=${userIds}`, {
-                    headers: {
-                        Authorization: `Bearer ${auth?.accessToken}`
-                    }
-                });
-
-                setPosts(response.data.posts);
-                (posts.length <= 0) && setCurrentPage(1);
-                setTotalPages(response.data.totalPages);
-            } catch (err) {
-                console.log(err);
-            } finally {
-                setLoading(false);
-            }
-        };
-        // scrollY = window.scrollY;
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        })
-
         fetchPosts(currentPage);
-    }, [auth?.accessToken, currentPage, posts.length]);
+    }, [auth?.accessToken, auth?.id, auth?.following, currentPage]);
+
 
     const canUserModifyPost = (post, auth) => {
         if (!auth || !post?.author) return false;
@@ -117,6 +80,7 @@ const Posts = () => {
                                                             showSuccess={showSuccess}
                                                             showError={showError}
                                                             setPosts={setPosts}
+                                                            fetchPosts={fetchPosts}
                                                         />
 
                                                         <DeletePost

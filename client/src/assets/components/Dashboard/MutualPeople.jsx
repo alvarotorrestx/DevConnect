@@ -3,12 +3,10 @@ import { Link } from 'react-router-dom'
 import { FaUserFriends } from "react-icons/fa";
 import { IoPersonAddSharp } from "react-icons/io5";
 import { FaUserCheck } from "react-icons/fa6";
-import useAuth from '../../../auth/useAuth';
 import Loading from '../subcomponents/Loading';
 import { axiosPrivate } from '../../../api/axios';
 
-function Activity() {
-  const { auth, setAuth } = useAuth();
+function Activity({ refreshPosts, auth, setAuth }) {
 
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -84,11 +82,13 @@ function Activity() {
                         ...prev,
                         following: [...prev.following, user._id]
                       }));
+                      refreshPosts();
                     } else { // Unfollow user
                       setAuth(prev => ({
                         ...prev,
                         following: prev.following.filter(id => id !== user._id)
                       }));
+                      refreshPosts();
                     }
                   }
                   catch (err) {
