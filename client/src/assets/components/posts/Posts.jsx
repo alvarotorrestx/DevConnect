@@ -92,7 +92,7 @@ const Posts = () => {
 
 
     return (
-        <div className="mx-auto rounded-lg">
+        <div className="mx-auto rounded-lg w-full">
             {
                 loading
                     ?
