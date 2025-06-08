@@ -2,23 +2,42 @@ const User = require('../models/User');
 const Notification = require('../models/Notification');
 
 const createNotification = async (req, res) => {
-    const userId = req.user.id;
-    const { id, type, from, to, message, data } = req.params;
+    const { type, from, to, message } = req.body;
 
-    if (userId === id) return res.status(400).json({ message: 'Invalid notification creation.' });
+    // Optional data for related important data - Profile url, post url, etc.
+    const data = req.body.data || {};
+
+    if (!type || !from || !to || !message) {
+        return res.status(400).json({ message: 'Type, from, to, and message fields are required.' });
+    }
+
+    if (data && typeof data !== 'object') {
+        return res.status(400).json({ message: 'Data must be an object.' });
+    }
 
     try {
-        const user = await User.findById(userId);
-        const targetUser = await User.findById(id);
+        const targetUser = await User.findById(to);
 
         if (!targetUser) return res.status(404).json({ message: 'User not found.' });
 
-        const newNotification = Notification.create({
-
+        const newNotification = await Notification.create({
+            type,
+            from,
+            to,
+            message,
+            data,
         });
-    }
-    catch (err) {
 
+        targetUser.notifications.unshift(newNotification._id);
+        await targetUser.save();
+
+        res.status(201).json({
+            message: `Notification sent to ${targetUser.username}`,
+            notification: newNotification,
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Failed to create notification.', error: err.message });
     }
 };
 

@@ -9,7 +9,7 @@ const notificationSchema = new mongoose.Schema({
     from: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     to: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     message: { type: String, required: true },
-    data: {
+    data: { // Related important data - Profile url, post url, etc.
         type: mongoose.Schema.Types.Mixed,
         default: {}
     },
