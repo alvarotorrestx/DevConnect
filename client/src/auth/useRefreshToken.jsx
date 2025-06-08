@@ -20,6 +20,7 @@ const useRefreshToken = () => {
                 totalPosts: response.data.totalPosts,
                 following: response.data.following,
                 followers: response.data.followers,
+                notifications: response.data.notifications,
                 accessToken: response.data.accessToken
             }
 

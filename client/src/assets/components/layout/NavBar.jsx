@@ -1,6 +1,7 @@
-import { useContext } from "react";
+import { useContext, useState, useRef, useEffect } from "react";
 import { NavLink, Link } from 'react-router-dom'
 import useLogout from "../../../auth/useLogout";
+import { motion, AnimatePresence } from 'framer-motion'
 
 // Icon Imports
 import { IoMdHome } from "react-icons/io";
@@ -14,7 +15,7 @@ import { RiLogoutBoxLine } from "react-icons/ri";
 // Context Imports
 import ThemeContext from "../../context/ThemeContext";
 
-const NavBar = ({ avatar, username }) => {
+const NavBar = ({ avatar, username, notifications }) => {
 
     const { darkMode, actions } = useContext(ThemeContext)
 
@@ -25,6 +26,23 @@ const NavBar = ({ avatar, username }) => {
     const handleLogout = async () => {
         await logout();
     };
+
+    const [showDropdown, setShowDropdown] = useState(false);
+    const dropdownRef = useRef(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setShowDropdown(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     return (
         <div className="navbar bg-base-100 w-[95%] mx-auto rounded-lg shadow-md grid grid-cols-2 lg:grid-cols-4 auto-cols-max relative mb-5">
@@ -93,7 +111,11 @@ const NavBar = ({ avatar, username }) => {
 
 
                 {/* Notifications */}
-                <button className="btn btn-ghost btn-circle">
+                <button
+                    className="btn btn-ghost btn-circle"
+                    onClick={() => setShowDropdown(prev => !prev)}
+                    ref={dropdownRef}
+                >
                     <div className="indicator">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -107,9 +129,45 @@ const NavBar = ({ avatar, username }) => {
                                 strokeWidth="2"
                                 d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                         </svg>
-                        <span className="badge badge-xs badge-primary indicator-item"></span>
+                        {notifications && notifications.length > 0 &&
+                            <span className="badge badge-xs badge-primary indicator-item"></span>
+                        }
                     </div>
                 </button>
+                <div
+                    className='absolute top-0 right-0 mt-[4.4rem] lg:mt-[4.55rem] flex flex-wrap flex-row-reverse justify-between items-center'
+                >
+                    <AnimatePresence>
+                        {showDropdown && (
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.95 }}
+                                transition={{ duration: 0.2 }}
+                                className='absolute top-0 right-0 bg-base-200 rounded-box shadow z-50 w-fit min-w-[300px] max-w-xs text-sm/5'
+                            >
+                                <ul>
+                                    {notifications && notifications.length > 0
+                                        ?
+                                        notifications.map((notification, i) => {
+                                            <li key={i}>
+                                                <div className="flex items-center justify-between text-md p-4 hover:bg-base-200 transition rounded-md">
+                                                    <div className="flex justify-between gap-2 items-center">
+                                                        <IoSettingsSharp className="text-xl text-primary" />
+                                                        <span>{notification.message}</span>
+                                                    </div>
+                                                    <button className="">X</button>
+                                                </div>
+                                            </li>
+                                        })
+                                        :
+                                        "No new notifications."
+                                    }
+                                </ul>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </div>
 
                 {/* Profile Avatar and Menu */}
                 <div className="dropdown dropdown-end">
@@ -141,7 +199,6 @@ const NavBar = ({ avatar, username }) => {
                                     <path
                                         d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4" />
                                 </svg>
-                                {/* Theme Switcher */}
                                 <input
                                     type="checkbox"
                                     checked={darkMode ? true : false}
@@ -163,9 +220,9 @@ const NavBar = ({ avatar, username }) => {
                                 </svg>
                             </label>
                         </li>
-                        <li><NavLink to={profileURL} className='py-4 flex items-center'><span className="text-2xl text-primary"><FaUserCircle /></span>Profile</NavLink></li>
-                        <li><button className='py-4 flex items-center'><span className="text-2xl text-primary"><IoSettingsSharp /></span>Settings</button></li>
-                        <li><button onClick={handleLogout} className='py-4 flex items-center'><span className="text-2xl text-primary"><RiLogoutBoxLine /></span>Logout</button></li>
+                        <li><NavLink to={profileURL} className='py-4 flex items-center'><span className="text-xl text-primary"><FaUserCircle /></span>Profile</NavLink></li>
+                        <li><button className='py-4 flex items-center'><span className="text-xl text-primary"><IoSettingsSharp /></span>Settings</button></li>
+                        <li><button onClick={handleLogout} className='py-4 flex items-center'><span className="text-xl text-primary"><RiLogoutBoxLine /></span>Logout</button></li>
                     </ul>
                 </div>
             </div>
