@@ -14,6 +14,7 @@ connectDB();
 app.use(cors(corsOptions))
 
 // Routes
+const systemRoutes = require('./routes/systemRoutes')
 const userRoutes = require('./routes/userRoutes');
 const registerRoutes = require('./routes/registerRoutes');
 const authRoutes = require('./routes/authRoutes');
@@ -35,6 +36,9 @@ app.get('/auth/verify', verifyJWT, (req, res) => {
     res.json({ message: `Hello ${req.user.firstName}, you have successfully logged on.` });
 })
 app.use('/auth/refresh', refreshRoutes);
+
+// System Routes
+app.use('/system', systemRoutes);
 
 // User Routes
 app.use('/api/users', userRoutes);
