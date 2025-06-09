@@ -78,17 +78,46 @@ function Activity({ refreshPosts, auth, setAuth }) {
 
                     // Follow user
                     if (!isFollowing) {
+                      // Update follow list
                       setAuth(prev => ({
                         ...prev,
                         following: [...prev.following, user._id]
                       }));
-                      refreshPosts();
+
+                      // Payload for creating notification
+                      const payload = {
+                        type: 'follow',
+                        from: auth?.id,
+                        to: user._id,
+                        message: `${auth?.firstName} ${auth?.lastName} has followed you.`,
+                        data: '' || null,
+                      }
+
+                      // Send notification
+                      try {
+                        const notifyUser = await axiosPrivate.post('/system/notifications', payload, {
+                          headers: {
+                            Authorization: `Bearer ${auth?.accessToken}`
+                          }
+                        });
+
+                        // Refresh dashboard posts with new follow included
+                        refreshPosts();
+                      }
+                      catch (err) {
+                        console.error('Failed to notify user:', err);
+                      }
+
                     } else { // Unfollow user
+                      // Update follow list
                       setAuth(prev => ({
                         ...prev,
                         following: prev.following.filter(id => id !== user._id)
                       }));
+
+                      // Refresh dashboard posts with unfollow excluded
                       refreshPosts();
+
                     }
                   }
                   catch (err) {
