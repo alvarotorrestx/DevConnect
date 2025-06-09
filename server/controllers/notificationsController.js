@@ -41,6 +41,23 @@ const createNotification = async (req, res) => {
     }
 };
 
+const markAsRead = async (req, res) => {
+    try {
+        const notification = await Notification.findByIdAndUpdate(
+            req.params.id,
+            { read: true },
+            { new: true }
+        );
+
+        res.status(200).json(notification);
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).json({ message: 'Failed to mark notification as read.', error: err.message });
+    }
+}
+
 module.exports = {
     createNotification,
+    markAsRead
 };

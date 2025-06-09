@@ -15,8 +15,12 @@ import { MdCheck } from 'react-icons/md';
 
 // Context Imports
 import ThemeContext from "../../context/ThemeContext";
+import { axiosPrivate } from "../../../api/axios";
+import useAuth from "../../../auth/useAuth";
 
 const NavBar = ({ avatar, username, notifications }) => {
+
+    const { auth, setAuth } = useAuth();
 
     const { darkMode, actions } = useContext(ThemeContext)
 
@@ -30,10 +34,16 @@ const NavBar = ({ avatar, username, notifications }) => {
 
     const [showDropdown, setShowDropdown] = useState(false);
     const dropdownRef = useRef(null);
+    const buttonRef = useRef(null);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+            if (
+                dropdownRef.current &&
+                !dropdownRef.current.contains(event.target) &&
+                buttonRef.current &&
+                !buttonRef.current.contains(event.target)
+            ) {
                 setShowDropdown(false);
             }
         };
@@ -44,6 +54,32 @@ const NavBar = ({ avatar, username, notifications }) => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
+
+
+    const handleMarkAsRead = async (notificationId) => {
+        try {
+            const response = await axiosPrivate.patch(`/system/notifications/${notificationId}/read`, {}, {
+                headers: {
+                    Authorization: `Bearer ${auth?.accessToken}`
+                }
+            });
+
+            console.log(response);
+
+            // Update auth state to reflect change
+            setAuth(prev => ({
+                ...prev,
+                notifications: prev.notifications.map(notification =>
+                    notification._id === notificationId
+                        ? { ...notification, read: true }
+                        : notification
+                )
+            }));
+        }
+        catch (err) {
+            console.error("Failed to mark notification as read.", err);
+        }
+    }
 
     return (
         <div className="navbar bg-base-100 w-[95%] mx-auto rounded-lg shadow-md grid grid-cols-2 lg:grid-cols-4 auto-cols-max relative mb-5">
@@ -115,7 +151,7 @@ const NavBar = ({ avatar, username, notifications }) => {
                 <button
                     className="btn btn-ghost btn-circle"
                     onClick={() => setShowDropdown(prev => !prev)}
-                    ref={dropdownRef}
+                    ref={buttonRef}
                 >
                     <div className="indicator">
                         <svg
@@ -130,7 +166,7 @@ const NavBar = ({ avatar, username, notifications }) => {
                                 strokeWidth="2"
                                 d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                         </svg>
-                        {notifications && notifications.length > 0 &&
+                        {notifications?.some(notification => !notification.read) &&
                             <span className="badge badge-xs badge-primary indicator-item"></span>
                         }
                     </div>
@@ -146,14 +182,15 @@ const NavBar = ({ avatar, username, notifications }) => {
                                 exit={{ opacity: 0, scale: 0.95 }}
                                 transition={{ duration: 0.2 }}
                                 className='absolute top-0 right-0 bg-base-200 rounded-box shadow z-50 w-fit min-w-[275px] md:min-w-[450px] text-xs md:text-sm/5'
+                                ref={dropdownRef}
                             >
                                 <ul>
                                     {notifications && notifications.length > 0
                                         ?
                                         notifications.map((notification, i) => (
                                             <li key={i} className="first:rounded-t-box last:rounded-b-box overflow-hidden">
-                                                <div 
-                                                className={`group flex items-center justify-between text-md p-4
+                                                <div
+                                                    className={`group flex items-center justify-between text-md p-4
                                                 ${!notification.read && 'nav-li-hover'}`}
                                                 >
                                                     <div className="flex justify-between gap-2 items-center">
@@ -167,7 +204,7 @@ const NavBar = ({ avatar, username, notifications }) => {
                                                     </div>
                                                     <button
                                                         className={`text-xs transition hover:text-primary capitalize ${notification.read && 'hidden'}`}
-                                                        onClick="{() => handleMarkAsRead(notification._id)}"
+                                                        onClick={() => handleMarkAsRead(notification._id)}
                                                     >
                                                         <MdCheck className="text-lg md:text-xl" />
                                                     </button>
