@@ -187,31 +187,52 @@ const NavBar = ({ avatar, username, notifications }) => {
                                 <ul>
                                     {notifications && notifications.length > 0
                                         ?
-                                        notifications.map((notification, i) => (
-                                            <li key={i} className="first:rounded-t-box last:rounded-b-box overflow-hidden">
-                                                <div
-                                                    className={`group flex items-center justify-between text-md p-4
-                                                ${!notification.read && 'nav-li-hover'}`}
-                                                >
-                                                    <div className="flex justify-between gap-2 items-center">
-                                                        <div className="avatar">
-                                                            {/* LEAVE THIS FOR WHEN STORIES FEATURE IS ADDED <div className="ring-primary ring-offset-base-100 ring-2 ring-offset-2 w-8 rounded-full"> */}
-                                                            <div className="w-6 md:w-8 rounded-full">
-                                                                <img src={notification?.from?.avatar || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTgD14vQ6I-UBiHTcwxZYnpSfLFJ2fclwS2A&s"} alt={notification?.from?.username} />
-                                                            </div>
-                                                        </div>
-                                                        <span>{notification.message}</span>
-                                                    </div>
-                                                    <button
-                                                        className={`text-xs transition hover:text-primary capitalize ${notification.read && 'hidden'}`}
-                                                        onClick={() => handleMarkAsRead(notification._id)}
-                                                    >
-                                                        <MdCheck className="text-lg md:text-xl" />
-                                                    </button>
+                                        notifications.map((notification, i) => {
+                                            const type = notification.type;
+                                            const username = notification?.from?.username;
 
-                                                </div>
-                                            </li>
-                                        ))
+                                            // Default path fallback
+                                            let linkTo = '#';
+
+                                            if (type === 'follow' && username) {
+                                                linkTo = `/profile/${username}`;
+                                            }
+
+                                            return (
+                                                <li key={i} className="first:rounded-t-box last:rounded-b-box overflow-hidden">
+                                                    <Link
+                                                        to={linkTo}
+                                                        onClick={() => {
+                                                            if (!notification.read && linkTo !== '#') {
+                                                                handleMarkAsRead(notification._id);
+                                                            }
+                                                        }}
+                                                        className={`group flex items-center justify-between text-md p-4
+                                                ${!notification.read && 'nav-li-hover'}`}
+                                                    >
+                                                        <div className="flex justify-between gap-2 items-center">
+                                                            <div className="avatar">
+                                                                {/* LEAVE THIS FOR WHEN STORIES FEATURE IS ADDED <div className="ring-primary ring-offset-base-100 ring-2 ring-offset-2 w-8 rounded-full"> */}
+                                                                <div className="w-6 md:w-8 rounded-full">
+                                                                    <img src={notification?.from?.avatar || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTgD14vQ6I-UBiHTcwxZYnpSfLFJ2fclwS2A&s"} alt={username} />
+                                                                </div>
+                                                            </div>
+                                                            <span>{notification.message}</span>
+                                                        </div>
+                                                        <button
+                                                            className={`text-xs transition hover:text-primary capitalize ${notification.read && 'hidden'}`}
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                handleMarkAsRead(notification._id)
+                                                            }}
+                                                        >
+                                                            <MdCheck className="text-lg md:text-xl" />
+                                                        </button>
+
+                                                    </Link>
+                                                </li>
+                                            )
+                                        })
                                         :
                                         <div className="flex items-center justify-between text-md p-4 hover:bg-base-200 transition rounded-md">
                                             <div className="flex justify-between gap-2 items-center">
