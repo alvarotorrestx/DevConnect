@@ -11,6 +11,7 @@ import { GiSuitcase } from "react-icons/gi";
 import { FaUserCircle } from "react-icons/fa";
 import { IoSettingsSharp } from "react-icons/io5";
 import { RiLogoutBoxLine } from "react-icons/ri";
+import { MdCheck } from 'react-icons/md';
 
 // Context Imports
 import ThemeContext from "../../context/ThemeContext";
@@ -69,10 +70,10 @@ const NavBar = ({ avatar, username, notifications }) => {
                     <ul
                         tabIndex={0}
                         className="menu menu-sm dropdown-content bg-base-200 rounded-box z-[1] mt-3 p-2 shadow w-[95%]">
-                        <li><NavLink to='/dashboard' className='py-4 flex items-center'><span className="text-2xl text-primary"><IoMdHome /></span>Home</NavLink></li>
-                        <li><NavLink to='' className='py-4 flex items-center'><span className="text-2xl text-primary"><HiNewspaper /></span>Blogs</NavLink></li>
-                        <li><NavLink to='/network' className='py-4 flex items-center'><span className="text-2xl text-primary"><IoMdPeople /></span>Network</NavLink></li>
-                        <li><NavLink to='' className='py-4 flex items-center'><span className="text-2xl text-primary"><GiSuitcase /></span>Jobs</NavLink></li>
+                        <li><NavLink to='/dashboard' className='py-4 flex items-center'><span className="text-xl text-primary"><IoMdHome /></span>Home</NavLink></li>
+                        <li><NavLink to='' className='py-4 flex items-center'><span className="text-xl text-primary"><HiNewspaper /></span>Blogs</NavLink></li>
+                        <li><NavLink to='/network' className='py-4 flex items-center'><span className="text-xl text-primary"><IoMdPeople /></span>Network</NavLink></li>
+                        <li><NavLink to='' className='py-4 flex items-center'><span className="text-xl text-primary"><GiSuitcase /></span>Jobs</NavLink></li>
                     </ul>
                 </div>
 
@@ -83,10 +84,10 @@ const NavBar = ({ avatar, username, notifications }) => {
             {/* Desktop Nav */}
             <div className="navbar-center hidden lg:flex w-[unset] justify-center lg:col-span-2">
                 <ul className="menu menu-horizontal px-1">
-                    <li><NavLink to='/dashboard' className="flex items-center"><span className="text-2xl text-primary"><IoMdHome /></span>Home</NavLink></li>
-                    <li><NavLink to='' className="flex items-center"><span className="text-2xl text-primary"><HiNewspaper /></span>Blogs</NavLink></li>
-                    <li><NavLink to='/network' className="flex items-center"><span className="text-2xl text-primary"><IoMdPeople /></span>Network</NavLink></li>
-                    <li><NavLink to='' className="flex items-center"><span className="text-2xl text-primary"><GiSuitcase /></span>Jobs</NavLink></li>
+                    <li><NavLink to='/dashboard' className="flex items-center"><span className="text-xl text-primary"><IoMdHome /></span>Home</NavLink></li>
+                    <li><NavLink to='' className="flex items-center"><span className="text-xl text-primary"><HiNewspaper /></span>Blogs</NavLink></li>
+                    <li><NavLink to='/network' className="flex items-center"><span className="text-xl text-primary"><IoMdPeople /></span>Network</NavLink></li>
+                    <li><NavLink to='' className="flex items-center"><span className="text-xl text-primary"><GiSuitcase /></span>Jobs</NavLink></li>
                 </ul>
             </div>
 
@@ -144,24 +145,33 @@ const NavBar = ({ avatar, username, notifications }) => {
                                 animate={{ opacity: 1, scale: 1 }}
                                 exit={{ opacity: 0, scale: 0.95 }}
                                 transition={{ duration: 0.2 }}
-                                className='absolute top-0 right-0 bg-base-200 rounded-box shadow z-50 w-fit min-w-[275px] md:min-w-[350px] text-sm/5 menu'
+                                className='absolute top-0 right-0 bg-base-200 rounded-box shadow z-50 w-fit min-w-[275px] md:min-w-[450px] text-xs md:text-sm/5'
                             >
                                 <ul>
                                     {notifications && notifications.length > 0
                                         ?
                                         notifications.map((notification, i) => (
-                                            <li key={i}>
-                                                <div className="flex items-center justify-between text-md p-4 transition rounded-md">
+                                            <li key={i} className="first:rounded-t-box last:rounded-b-box overflow-hidden">
+                                                <div 
+                                                className={`group flex items-center justify-between text-md p-4
+                                                ${!notification.read && 'nav-li-hover'}`}
+                                                >
                                                     <div className="flex justify-between gap-2 items-center">
                                                         <div className="avatar">
                                                             {/* LEAVE THIS FOR WHEN STORIES FEATURE IS ADDED <div className="ring-primary ring-offset-base-100 ring-2 ring-offset-2 w-8 rounded-full"> */}
-                                                            <div className="w-8 rounded-full">
-                                                                <img src={notification?.from?.avatar} alt={notification?.from?.username} />
+                                                            <div className="w-6 md:w-8 rounded-full">
+                                                                <img src={notification?.from?.avatar || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTgD14vQ6I-UBiHTcwxZYnpSfLFJ2fclwS2A&s"} alt={notification?.from?.username} />
                                                             </div>
                                                         </div>
                                                         <span>{notification.message}</span>
                                                     </div>
-                                                    <button className="">X</button>
+                                                    <button
+                                                        className={`text-xs transition hover:text-primary capitalize ${notification.read && 'hidden'}`}
+                                                        onClick="{() => handleMarkAsRead(notification._id)}"
+                                                    >
+                                                        <MdCheck className="text-lg md:text-xl" />
+                                                    </button>
+
                                                 </div>
                                             </li>
                                         ))

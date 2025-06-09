@@ -68,3 +68,7 @@ h1, h2, h3, h4, h5, h6 {
 .valid {
   color: rgb(12, 166, 233);
 }
+
+.nav-li-hover {
+  background-color: var(--fallback-bc, oklch(var(--bc) / 0.1));
+}
