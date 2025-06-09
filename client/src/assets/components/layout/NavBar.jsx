@@ -144,24 +144,35 @@ const NavBar = ({ avatar, username, notifications }) => {
                                 animate={{ opacity: 1, scale: 1 }}
                                 exit={{ opacity: 0, scale: 0.95 }}
                                 transition={{ duration: 0.2 }}
-                                className='absolute top-0 right-0 bg-base-200 rounded-box shadow z-50 w-fit min-w-[300px] max-w-xs text-sm/5'
+                                className='absolute top-0 right-0 bg-base-200 rounded-box shadow z-50 w-fit min-w-[275px] md:min-w-[350px] text-sm/5 menu'
                             >
                                 <ul>
                                     {notifications && notifications.length > 0
                                         ?
-                                        notifications.map((notification, i) => {
+                                        notifications.map((notification, i) => (
                                             <li key={i}>
-                                                <div className="flex items-center justify-between text-md p-4 hover:bg-base-200 transition rounded-md">
+                                                <div className="flex items-center justify-between text-md p-4 transition rounded-md">
                                                     <div className="flex justify-between gap-2 items-center">
-                                                        <IoSettingsSharp className="text-xl text-primary" />
+                                                        <div className="avatar">
+                                                            {/* LEAVE THIS FOR WHEN STORIES FEATURE IS ADDED <div className="ring-primary ring-offset-base-100 ring-2 ring-offset-2 w-8 rounded-full"> */}
+                                                            <div className="w-8 rounded-full">
+                                                                <img src={notification?.from?.avatar} alt={notification?.from?.username} />
+                                                            </div>
+                                                        </div>
                                                         <span>{notification.message}</span>
                                                     </div>
                                                     <button className="">X</button>
                                                 </div>
                                             </li>
-                                        })
+                                        ))
                                         :
-                                        "No new notifications."
+                                        <div className="flex items-center justify-between text-md p-4 hover:bg-base-200 transition rounded-md">
+                                            <div className="flex justify-between gap-2 items-center">
+                                                <li>
+                                                    No new notifications.
+                                                </li>
+                                            </div>
+                                        </div>
                                     }
                                 </ul>
                             </motion.div>
