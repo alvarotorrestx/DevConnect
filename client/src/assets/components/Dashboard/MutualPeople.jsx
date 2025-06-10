@@ -115,8 +115,28 @@ function Activity({ refreshPosts, auth, setAuth }) {
                         following: prev.following.filter(id => id !== user._id)
                       }));
 
-                      // Refresh dashboard posts with unfollow excluded
-                      refreshPosts();
+                      // Payload for deleting notification
+                      const payload = {
+                        type: 'follow',
+                        from: auth?.id,
+                        to: user._id,
+                      }
+
+                      // Delete notification
+                      try {
+                        const deleteNotification = await axiosPrivate.delete('/system/notifications', {
+                          headers: {
+                            Authorization: `Bearer ${auth?.accessToken}`,
+                          },
+                          data: payload
+                        });
+
+                        // Refresh dashboard posts with new follow included
+                        refreshPosts();
+                      }
+                      catch (err) {
+                        console.error('Failed to notify user:', err);
+                      }
 
                     }
                   }

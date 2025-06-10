@@ -57,7 +57,29 @@ const markAsRead = async (req, res) => {
     }
 }
 
+const removeNotification = async (req, res) => {
+    const { from, to, type } = req.body;
+
+    try {
+        const deletedNotification = await Notification.findOneAndDelete({ type, from, to });
+
+        if (!deletedNotification) {
+            return res.status(404).json({ message: 'Notification not found.' });
+        }
+
+        const userDeletedNotification = await User.findByIdAndUpdate(to, {
+            $pull: { notifications: deletedNotification._id }
+        });
+
+        res.status(200).json({ message: 'Notification successfully removed.' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Failed to remove notification.', error: err.message });
+    }
+}
+
 module.exports = {
     createNotification,
-    markAsRead
+    markAsRead,
+    removeNotification
 };
