@@ -63,11 +63,57 @@ const Profile = () => {
           ...prev,
           following: [...prev.following, profile.id]
         }));
+
+        // Payload for creating notification
+        const payload = {
+          type: 'follow',
+          from: auth?.id,
+          to: profile.id,
+          message: `${auth?.firstName} ${auth?.lastName} has followed you.`,
+          data: '' || null,
+        }
+
+        // Send notification
+        try {
+          const notifyUser = await axiosPrivate.post('/system/notifications', payload, {
+            headers: {
+              Authorization: `Bearer ${auth?.accessToken}`
+            }
+          });
+
+        }
+        catch (err) {
+          console.error('Failed to notify user:', err);
+        }
+
+
       } else { // Unfollow user
         setAuth(prev => ({
           ...prev,
           following: prev.following.filter(id => id !== profile.id)
         }));
+
+        // Payload for deleting notification
+        const payload = {
+          type: 'follow',
+          from: auth?.id,
+          to: profile.id,
+        }
+
+        // Delete notification
+        try {
+          const deleteNotification = await axiosPrivate.delete('/system/notifications', {
+            headers: {
+              Authorization: `Bearer ${auth?.accessToken}`,
+            },
+            data: payload
+          });
+
+        }
+        catch (err) {
+          console.error('Failed to notify user:', err);
+        }
+
       }
     }
     catch (err) {
