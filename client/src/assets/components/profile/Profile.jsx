@@ -63,11 +63,57 @@ const Profile = () => {
           ...prev,
           following: [...prev.following, profile.id]
         }));
+
+        // Payload for creating notification
+        const payload = {
+          type: 'follow',
+          from: auth?.id,
+          to: profile.id,
+          message: `${auth?.firstName} ${auth?.lastName} has followed you.`,
+          data: '' || null,
+        }
+
+        // Send notification
+        try {
+          const notifyUser = await axiosPrivate.post('/system/notifications', payload, {
+            headers: {
+              Authorization: `Bearer ${auth?.accessToken}`
+            }
+          });
+
+        }
+        catch (err) {
+          console.error('Failed to notify user:', err);
+        }
+
+
       } else { // Unfollow user
         setAuth(prev => ({
           ...prev,
           following: prev.following.filter(id => id !== profile.id)
         }));
+
+        // Payload for deleting notification
+        const payload = {
+          type: 'follow',
+          from: auth?.id,
+          to: profile.id,
+        }
+
+        // Delete notification
+        try {
+          const deleteNotification = await axiosPrivate.delete('/system/notifications', {
+            headers: {
+              Authorization: `Bearer ${auth?.accessToken}`,
+            },
+            data: payload
+          });
+
+        }
+        catch (err) {
+          console.error('Failed to notify user:', err);
+        }
+
       }
     }
     catch (err) {
@@ -94,7 +140,7 @@ const Profile = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.2 }}
-                  className='absolute top-0 right-0 mt-8 mr-2 md:mr-4 bg-base-300 rounded-lg shadow-lg z-50'
+                  className='absolute top-0 right-0 mt-8 mr-2 md:mr-4 bg-base-200 rounded-box shadow z-50'
                 >
                   <ul>
                     {/* Edit Button */}
@@ -102,10 +148,10 @@ const Profile = () => {
                       <li>
                         <Link
                           to='edit'
-                          className="opacity-75 hover:opacity-100 transition text-md py-4 px-6 flex"
+                          className="opacity-75 hover:opacity-100 transition text-sm/5 py-4 px-6 flex"
                         >
                           <div className="flex flex-row justify-center items-center">
-                            <MdModeEdit />&nbsp;&nbsp;Edit
+                            <MdModeEdit className="text-xl text-primary" />&nbsp;&nbsp;Edit
                           </div>
 
                         </Link>
@@ -116,14 +162,14 @@ const Profile = () => {
 
                         {/* Follow/Unfollow button */}
                         <li>
-                          <button className='opacity-75 hover:opacity-100 transition text-md py-4 px-6 flex' onClick={() => handleFollow()}>
+                          <button className='opacity-75 hover:opacity-100 transition text-sm/5 py-4 px-6 flex' onClick={() => handleFollow()}>
                             {isFollowing ?
                               <div className='flex flex-row justify-center items-center'>
-                                <RiUserUnfollowFill />&nbsp;&nbsp;Unfollow
+                                <RiUserUnfollowFill className="text-xl text-primary" />&nbsp;&nbsp;Unfollow
                               </div>
                               :
                               <div className='flex flex-row justify-center items-center'>
-                                <IoPersonAddSharp />&nbsp;&nbsp;Follow
+                                <IoPersonAddSharp className="text-xl text-primary" />&nbsp;&nbsp;Follow
                               </div>
                             }
                           </button>
@@ -132,10 +178,10 @@ const Profile = () => {
                         {/* Block button */}
                         <li>
                           <button
-                            className="opacity-75 hover:opacity-100 transition text-md py-4 px-6 flex"
+                            className="opacity-75 hover:opacity-100 transition text-sm/5 py-4 px-6 flex"
                           >
                             <div className="flex flex-row justify-center items-center">
-                              <MdBlock />&nbsp;&nbsp;Block
+                              <MdBlock className="text-xl text-primary" />&nbsp;&nbsp;Block
                             </div>
 
                           </button>
@@ -144,10 +190,10 @@ const Profile = () => {
                         {/* Report button */}
                         <li>
                           <button
-                            className="opacity-75 hover:opacity-100 transition text-md py-4 px-6 flex"
+                            className="opacity-75 hover:opacity-100 transition text-sm/5 py-4 px-6 flex"
                           >
                             <div className="flex flex-row justify-center items-center">
-                              <IoFlag />&nbsp;&nbsp;Report
+                              <IoFlag className="text-xl text-primary" />&nbsp;&nbsp;Report
                             </div>
 
                           </button>

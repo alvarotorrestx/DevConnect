@@ -1,6 +1,7 @@
-import { useContext } from "react";
+import { useContext, useState, useRef, useEffect } from "react";
 import { NavLink, Link } from 'react-router-dom'
 import useLogout from "../../../auth/useLogout";
+import { motion, AnimatePresence } from 'framer-motion'
 
 // Icon Imports
 import { IoMdHome } from "react-icons/io";
@@ -10,11 +11,16 @@ import { GiSuitcase } from "react-icons/gi";
 import { FaUserCircle } from "react-icons/fa";
 import { IoSettingsSharp } from "react-icons/io5";
 import { RiLogoutBoxLine } from "react-icons/ri";
+import { MdCheck } from 'react-icons/md';
 
 // Context Imports
 import ThemeContext from "../../context/ThemeContext";
+import { axiosPrivate } from "../../../api/axios";
+import useAuth from "../../../auth/useAuth";
 
-const NavBar = ({ avatar, username }) => {
+const NavBar = ({ avatar, username, notifications }) => {
+
+    const { auth, setAuth } = useAuth();
 
     const { darkMode, actions } = useContext(ThemeContext)
 
@@ -25,6 +31,55 @@ const NavBar = ({ avatar, username }) => {
     const handleLogout = async () => {
         await logout();
     };
+
+    const [showDropdown, setShowDropdown] = useState(false);
+    const dropdownRef = useRef(null);
+    const buttonRef = useRef(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                dropdownRef.current &&
+                !dropdownRef.current.contains(event.target) &&
+                buttonRef.current &&
+                !buttonRef.current.contains(event.target)
+            ) {
+                setShowDropdown(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
+
+    const handleMarkAsRead = async (notificationId) => {
+        try {
+            const response = await axiosPrivate.patch(`/system/notifications/${notificationId}/read`, {}, {
+                headers: {
+                    Authorization: `Bearer ${auth?.accessToken}`
+                }
+            });
+
+            console.log(response);
+
+            // Update auth state to reflect change
+            setAuth(prev => ({
+                ...prev,
+                notifications: prev.notifications.map(notification =>
+                    notification._id === notificationId
+                        ? { ...notification, read: true }
+                        : notification
+                )
+            }));
+        }
+        catch (err) {
+            console.error("Failed to mark notification as read.", err);
+        }
+    }
 
     return (
         <div className="navbar bg-base-100 w-[95%] mx-auto rounded-lg shadow-md grid grid-cols-2 lg:grid-cols-4 auto-cols-max relative mb-5">
@@ -51,10 +106,10 @@ const NavBar = ({ avatar, username }) => {
                     <ul
                         tabIndex={0}
                         className="menu menu-sm dropdown-content bg-base-200 rounded-box z-[1] mt-3 p-2 shadow w-[95%]">
-                        <li><NavLink to='/dashboard' className='py-4 flex items-center'><span className="text-2xl text-primary"><IoMdHome /></span>Home</NavLink></li>
-                        <li><NavLink to='' className='py-4 flex items-center'><span className="text-2xl text-primary"><HiNewspaper /></span>Blogs</NavLink></li>
-                        <li><NavLink to='/network' className='py-4 flex items-center'><span className="text-2xl text-primary"><IoMdPeople /></span>Network</NavLink></li>
-                        <li><NavLink to='' className='py-4 flex items-center'><span className="text-2xl text-primary"><GiSuitcase /></span>Jobs</NavLink></li>
+                        <li><NavLink to='/dashboard' className='py-4 flex items-center'><span className="text-xl text-primary"><IoMdHome /></span>Home</NavLink></li>
+                        <li><NavLink to='' className='py-4 flex items-center'><span className="text-xl text-primary"><HiNewspaper /></span>Blogs</NavLink></li>
+                        <li><NavLink to='/network' className='py-4 flex items-center'><span className="text-xl text-primary"><IoMdPeople /></span>Network</NavLink></li>
+                        <li><NavLink to='' className='py-4 flex items-center'><span className="text-xl text-primary"><GiSuitcase /></span>Jobs</NavLink></li>
                     </ul>
                 </div>
 
@@ -65,10 +120,10 @@ const NavBar = ({ avatar, username }) => {
             {/* Desktop Nav */}
             <div className="navbar-center hidden lg:flex w-[unset] justify-center lg:col-span-2">
                 <ul className="menu menu-horizontal px-1">
-                    <li><NavLink to='/dashboard' className="flex items-center"><span className="text-2xl text-primary"><IoMdHome /></span>Home</NavLink></li>
-                    <li><NavLink to='' className="flex items-center"><span className="text-2xl text-primary"><HiNewspaper /></span>Blogs</NavLink></li>
-                    <li><NavLink to='/network' className="flex items-center"><span className="text-2xl text-primary"><IoMdPeople /></span>Network</NavLink></li>
-                    <li><NavLink to='' className="flex items-center"><span className="text-2xl text-primary"><GiSuitcase /></span>Jobs</NavLink></li>
+                    <li><NavLink to='/dashboard' className="flex items-center"><span className="text-xl text-primary"><IoMdHome /></span>Home</NavLink></li>
+                    <li><NavLink to='' className="flex items-center"><span className="text-xl text-primary"><HiNewspaper /></span>Blogs</NavLink></li>
+                    <li><NavLink to='/network' className="flex items-center"><span className="text-xl text-primary"><IoMdPeople /></span>Network</NavLink></li>
+                    <li><NavLink to='' className="flex items-center"><span className="text-xl text-primary"><GiSuitcase /></span>Jobs</NavLink></li>
                 </ul>
             </div>
 
@@ -93,7 +148,11 @@ const NavBar = ({ avatar, username }) => {
 
 
                 {/* Notifications */}
-                <button className="btn btn-ghost btn-circle">
+                <button
+                    className="btn btn-ghost btn-circle"
+                    onClick={() => setShowDropdown(prev => !prev)}
+                    ref={buttonRef}
+                >
                     <div className="indicator">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -107,9 +166,87 @@ const NavBar = ({ avatar, username }) => {
                                 strokeWidth="2"
                                 d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                         </svg>
-                        <span className="badge badge-xs badge-primary indicator-item"></span>
+                        {notifications?.some(notification => !notification.read) &&
+                            <span className="badge badge-xs badge-primary indicator-item"></span>
+                        }
                     </div>
                 </button>
+                <div
+                    className='absolute top-0 right-0 mt-[4.4rem] lg:mt-[4.55rem] flex flex-wrap flex-row-reverse justify-between items-center'
+                >
+                    <AnimatePresence>
+                        {showDropdown && (
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.95 }}
+                                transition={{ duration: 0.2 }}
+                                className='absolute top-0 right-0 bg-base-200 rounded-box shadow z-50 w-fit min-w-[275px] md:min-w-[450px] text-xs md:text-sm/5'
+                                ref={dropdownRef}
+                            >
+                                <ul>
+                                    {notifications && notifications.length > 0
+                                        ?
+                                        notifications.map((notification, i) => {
+                                            const type = notification.type;
+                                            const username = notification?.from?.username;
+
+                                            // Default path fallback
+                                            let linkTo = '#';
+
+                                            if (type === 'follow' && username) {
+                                                linkTo = `/profile/${username}`;
+                                            }
+
+                                            return (
+                                                <li key={i} className="first:rounded-t-box last:rounded-b-box overflow-hidden">
+                                                    <Link
+                                                        to={linkTo}
+                                                        onClick={() => {
+                                                            if (!notification.read && linkTo !== '#') {
+                                                                handleMarkAsRead(notification._id);
+                                                            }
+                                                        }}
+                                                        className={`group flex items-center justify-between text-md p-4
+                                                ${!notification.read && 'nav-li-hover'}`}
+                                                    >
+                                                        <div className="flex justify-between gap-2 items-center">
+                                                            <div className="avatar">
+                                                                {/* LEAVE THIS FOR WHEN STORIES FEATURE IS ADDED <div className="ring-primary ring-offset-base-100 ring-2 ring-offset-2 w-8 rounded-full"> */}
+                                                                <div className="w-6 md:w-8 rounded-full">
+                                                                    <img src={notification?.from?.avatar || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTgD14vQ6I-UBiHTcwxZYnpSfLFJ2fclwS2A&s"} alt={username} />
+                                                                </div>
+                                                            </div>
+                                                            <span>{notification.message}</span>
+                                                        </div>
+                                                        <button
+                                                            className={`text-xs transition hover:text-primary capitalize ${notification.read && 'hidden'}`}
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                handleMarkAsRead(notification._id)
+                                                            }}
+                                                        >
+                                                            <MdCheck className="text-lg md:text-xl" />
+                                                        </button>
+
+                                                    </Link>
+                                                </li>
+                                            )
+                                        })
+                                        :
+                                        <div className="flex items-center justify-between text-md p-4 hover:bg-base-200 transition rounded-md">
+                                            <div className="flex justify-between gap-2 items-center">
+                                                <li>
+                                                    No new notifications.
+                                                </li>
+                                            </div>
+                                        </div>
+                                    }
+                                </ul>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </div>
 
                 {/* Profile Avatar and Menu */}
                 <div className="dropdown dropdown-end">
@@ -141,7 +278,6 @@ const NavBar = ({ avatar, username }) => {
                                     <path
                                         d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4" />
                                 </svg>
-                                {/* Theme Switcher */}
                                 <input
                                     type="checkbox"
                                     checked={darkMode ? true : false}
@@ -163,9 +299,9 @@ const NavBar = ({ avatar, username }) => {
                                 </svg>
                             </label>
                         </li>
-                        <li><NavLink to={profileURL} className='py-4 flex items-center'><span className="text-2xl text-primary"><FaUserCircle /></span>Profile</NavLink></li>
-                        <li><button className='py-4 flex items-center'><span className="text-2xl text-primary"><IoSettingsSharp /></span>Settings</button></li>
-                        <li><button onClick={handleLogout} className='py-4 flex items-center'><span className="text-2xl text-primary"><RiLogoutBoxLine /></span>Logout</button></li>
+                        <li><NavLink to={profileURL} className='py-4 flex items-center'><span className="text-xl text-primary"><FaUserCircle /></span>Profile</NavLink></li>
+                        <li><button className='py-4 flex items-center'><span className="text-xl text-primary"><IoSettingsSharp /></span>Settings</button></li>
+                        <li><button onClick={handleLogout} className='py-4 flex items-center'><span className="text-xl text-primary"><RiLogoutBoxLine /></span>Logout</button></li>
                     </ul>
                 </div>
             </div>

@@ -24,6 +24,14 @@ const userSchema = new mongoose.Schema({
     linkedin: { type: String, default: '' },
     otherWebsite: { type: String, default: '' },
 
+    // User notifications
+    notifications: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Notification'
+        }
+    ],
+
     // User following other users
     following: [
         {
