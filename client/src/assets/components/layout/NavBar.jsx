@@ -64,8 +64,6 @@ const NavBar = ({ avatar, username, notifications }) => {
                 }
             });
 
-            console.log(response);
-
             // Update auth state to reflect change
             setAuth(prev => ({
                 ...prev,
