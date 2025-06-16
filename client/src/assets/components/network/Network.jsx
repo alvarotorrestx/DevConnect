@@ -32,6 +32,7 @@ const Network = () => {
 
     return (
         <div className="max-w-[90%] lg:max-w-4xl mx-auto p-6 bg-base-100 rounded-lg shadow-md">
+            {/*Add scroll bar here if needed*/}
             {loading
                 ?
                 <Loading />

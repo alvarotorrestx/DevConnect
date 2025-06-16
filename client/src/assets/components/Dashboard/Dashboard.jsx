@@ -48,7 +48,8 @@ const Dashboard = () => {
   })
 
   return (
-    <div className="flex flex-col h-auto">
+    <div className="h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-base-content scrollbar-track-base-200 dark:scrollbar-thumb-base-100 dark:scrollbar-track-base-300">
+      {/*responsive scroll bar added*/}
       {/* main container */}
       <div className="md:grid w-[95%] h-auto md:grid-cols-4 gap-3 mx-auto">
         {/* first column */}
