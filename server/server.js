@@ -8,6 +8,12 @@ const corsOptions = require('./config/corsOptions')
 const app = express();
 const port = process.env.PORT || 3000;
 
+{/*you can add if needed for check res i have added this*/}
+// app.get('/' , (req, res)=>{
+//     res.send('Dev Connecct to server')
+//     console.log('Dev Coonect to server');
+// })
+
 connectDB();
 
 // Cross Origin Resource Sharing
@@ -22,6 +28,8 @@ const refreshRoutes = require('./routes/refreshRoutes');
 const logoutRoutes = require('./routes/logoutRoutes');
 const profileRoutes = require('./routes/profileRoutes');
 const blogPostRoutes = require('./routes/blogPostRoutes');
+
+
 
 // Middleware
 app.use(express.json());
