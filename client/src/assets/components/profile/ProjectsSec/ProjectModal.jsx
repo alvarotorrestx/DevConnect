@@ -1,30 +1,92 @@
 import { useState } from "react";
+import { axiosPrivate } from "../../../../api/axios";
+import useAuth from "../../../../auth/useAuth";
 
 function ProjectModal({ onClose, onSave, initialData }) {
+  const { auth, setAuth } = useAuth();
+  const [type, setType] = useState(initialData ? "update" : "Add");
   const [form, setForm] = useState({
+    id: initialData?._id || "",
     title: initialData?.title || "",
     duration: initialData?.duration || "",
     description: initialData?.description || "",
-    skills: initialData?.skills || "",
-    image: initialData?.image || "",
+    media: initialData?.media || { images: [], videos: [] },
+    sourceCodeLink: initialData?.sourceCodeLink || "",
+    liveLink: initialData?.livelink || "",
+    techStack: initialData?.techStack || [],
   });
 
+  console.log("initial data", initialData);
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSave(form);
+    if (type === "Add") {
+      console.log(form);
+      try {
+        const response = await axiosPrivate.post("/project/create", form, {
+          headers: {
+            Authorization: `Bearer ${auth?.accessToken}`,
+          },
+        });
+        console.log(response.data);
+      } catch (err) {
+        console.log(err);
+      }
+      onSave(form);
+   
+    } else if (type === "update") {
+   
+      const updatedForm = { _id: form.id };
+
+      for (const key in form) {
+        const currentVal = form[key];
+        const initialVal = initialData?.[key];
+
+        if (JSON.stringify(currentVal) !== JSON.stringify(initialVal)) {
+          updatedForm[key] = currentVal;
+        }
+      }
+
+      try {
+        const response = await axiosPrivate.patch(
+          "/project/update",
+          updatedForm,
+
+          {
+            headers: {
+              Authorization: `Bearer ${auth?.accessToken}`,
+            },
+          }
+        );
+        onClose(false)
+        console.log("updated project",response.data)
+        onSave(response.data)
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+
+  const handleImageChange = (e) => {
+    const url = e.target.value.trim();
+    setForm((prev) => ({
+      ...prev,
+      media: {
+        ...prev.media,
+        images: url ? [url] : [],
+      },
+    }));
   };
 
   return (
-<div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
-  <div className="bg-base-200 p-4 sm:p-8 rounded-xl shadow-xl w-[95%] max-w-2xl">
-    <h2 className="text-2xl font-semibold text-base-content mb-4">
-      {initialData ? "Edit Project" : "Add Project"}
-    </h2>
-
+    <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
+      <div className="bg-base-200 p-4 sm:p-8 rounded-xl shadow-xl w-[95%] max-w-2xl">
+        <h2 className="text-2xl font-semibold text-base-content mb-4">
+          {initialData ? "Edit Project" : "Add Project"}
+        </h2>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input
@@ -56,18 +118,36 @@ function ProjectModal({ onClose, onSave, initialData }) {
 
           <input
             type="text"
-            name="skills"
+            name="techStack"
             placeholder="Skills (e.g., React, Node)"
-            value={form.skills}
+            value={form.techStack}
             onChange={handleChange}
             className="input input-bordered w-full bg-base-100 text-base-content"
           />
 
           <input
             type="text"
-            name="image"
+            name="images"
             placeholder="Image URL"
-            value={form.image}
+            value={form.media.images[0] || ""}
+            onChange={handleImageChange}
+            className="input input-bordered w-full bg-base-100 text-base-content"
+          />
+
+          <input
+            type="text"
+            name="sourceCodeLink"
+            placeholder="Github URL"
+            value={form.sourceCodeLink}
+            onChange={handleChange}
+            className="input input-bordered w-full bg-base-100 text-base-content"
+          />
+
+          <input
+            type="text"
+            name="liveLink"
+            placeholder="Live Preview URL"
+            value={form.liveLink}
             onChange={handleChange}
             className="input input-bordered w-full bg-base-100 text-base-content"
           />
@@ -81,7 +161,7 @@ function ProjectModal({ onClose, onSave, initialData }) {
               Cancel
             </button>
             <button type="submit" className="btn btn-primary">
-              {initialData ? "Update" : "Add"}
+              {type}
             </button>
           </div>
         </form>
