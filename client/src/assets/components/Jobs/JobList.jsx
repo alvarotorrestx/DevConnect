@@ -122,41 +122,13 @@ const jobs = [
 ]
 
 
-const JobList = () => {
+const JobList = ({onJobSelect}) => {
     return (
-        // <div className="bg-base-100 w-[100%] mx-auto rounded-md shadow-md">
-        //         {/* List container */}
-        //         {jobs.map((x)=>(
-        //             <ul className="space-y-2 bg-base-100">  {/* Adds spacing between list items */}
-        //             {/* List item */}
-        //             <li className="flex gap-3 shadow-md p-2">
-        //                 <div className="left">
-        //                     <img
-        //                         src={x.icon}
-        //                         alt="https://img.icons8.com/?size=100&id=4pNZwCiLSsRv&format=png&color=000000"
-        //                         className="w-[60px] h-[60px]"
-        //                     />
-        //                 </div>
-        //                 <div className="rights flex flex-col">
-        //                     <span className="name font-semibold">{x.jobTitle}</span>
-        //                     <span className="time text-[12px]">{x.companyName}</span>
-        //                     <span className="time text-[12px]">{x.postedAt}</span>
-        //                     <span className="time text-[12px]">{x.location}</span>
-        //                 </div>
-        //             </li>
-
-        //             {/* You can add more list items here */}
-        //         </ul>
-
-        //         ))}
-
-
-        // </div>
         <div className="">
             {/* List container */}
             <ul className="space-y-2 bg-base-100">
                 {jobs.map((x) => (
-                    <li key={x.id} className="flex gap-3 shadow-md p-2">
+                    <li key={x._id} onClick={()=>onJobSelect(x)} className="flex gap-3 shadow-md p-2">
                         <div className="left">
                             <img
                                 src={x.icon}
