@@ -14,18 +14,7 @@ import { useSuccessToast } from "../../toast/useSuccessToast";
 
 function Project() {
   const [showAll, setShowAll] = useState(false);
-  const [projects, setProjects] = useState([{
-      title: "",
-      duration: "",
-      description: "",
-      techStack: "",
-      media: {
-        images: [],
-        videos: [],
-      },
-      liveLink: "",
-      sourceCodeLink: ""
-    }])
+  const [projects, setProjects] = useState([])
 
   const { auth } = useAuth();
   const { profile } = useContext(ProfileContext);
@@ -93,14 +82,9 @@ function Project() {
     fetchProjects();
   };
 
-  const handleSave = async (newProject) => {
+  const handleSave = async () => {
    try {
     if (editProject) {
-      setProjects((prev) =>
-        prev.map((p) =>
-          p.id === editProject.id ? { ...newProject, id: p.id } : p
-        )
-      );
       showSuccess("Project updated successfully");
     } else {
       showSuccess("Project added successfully");
@@ -134,9 +118,9 @@ function Project() {
 
       <div className="mt-3 flex flex-col space-y-4">
 
-        {projects.length>0 ? (showAll ? projects : projects.slice(0, 2)).map((project) => (
+        {projects.length>0 ? (showAll ? projects : projects.slice(0, 2)).map((project,index) => (
           <ProjectCopo
-            key={project.id}
+            key={project._id || project.id || index}
             project={project}
             onEdit={() => handleEdit(project)}
             canEdit={canEdit}
