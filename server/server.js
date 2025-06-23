@@ -50,7 +50,7 @@ app.use('/profile', profileRoutes);
 // Blog Post Routes
 app.use('/api/posts', blogPostRoutes)
 
-app.use('/project',projectRoutes)
+app.use('/projects',projectRoutes)
 
 app.listen(port, () => {
     console.log(`Server running on port: ${port}`);

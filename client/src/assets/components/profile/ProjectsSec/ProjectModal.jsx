@@ -12,7 +12,7 @@ function ProjectModal({ onClose, onSave, initialData }) {
     description: initialData?.description || "",
     media: initialData?.media || { images: [], videos: [] },
     sourceCodeLink: initialData?.sourceCodeLink || "",
-    liveLink: initialData?.livelink || "",
+    liveLink: initialData?.liveLink || "",
     techStack: initialData?.techStack || [],
   });
 
@@ -26,12 +26,11 @@ function ProjectModal({ onClose, onSave, initialData }) {
     if (type === "Add") {
       console.log(form);
       try {
-        const response = await axiosPrivate.post("/project/create", form, {
+        const response = await axiosPrivate.post("/projects/create", form, {
           headers: {
             Authorization: `Bearer ${auth?.accessToken}`,
           },
         });
-        console.log(response.data);
       } catch (err) {
         console.log(err);
       }
@@ -52,7 +51,7 @@ function ProjectModal({ onClose, onSave, initialData }) {
 
       try {
         const response = await axiosPrivate.patch(
-          "/project/update",
+          "/projects/update",
           updatedForm,
 
           {
@@ -62,7 +61,6 @@ function ProjectModal({ onClose, onSave, initialData }) {
           }
         );
         onClose(false)
-        console.log("updated project",response.data)
         onSave(response.data)
       } catch (err) {
         console.log(err);

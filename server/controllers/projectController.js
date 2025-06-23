@@ -5,7 +5,7 @@ const createProject = async (req, res) => {
   const userId = req.user.id;
 
   if (!req.user || !req.user.id) {
-    return res.status(401).json({ messaeg: "unauthorized user" });
+    return res.status(401).json({ messaeg: "Unauthorized user" });
   }
 
   if (!req.body || !req.body.title || !req.body.description) {
@@ -98,7 +98,7 @@ const updateProject = async (req, res) => {
   const { _id, owner, ...updates } = req.body; 
 
    if(!req.user || !req.user.id){
-    return res.status(401).json({message:"unauthorized user"})
+    return res.status(401).json({message:"Unauthorized user"})
    }
 
    if(!updates || Object.keys(updates).length===0){
@@ -128,7 +128,7 @@ const updateProject = async (req, res) => {
 
 const getAllProjects = async (req, res) => {
   if (!req.user || !req.user.id) {
-    return res.status(401).json({ message: "unauthorized user" });
+    return res.status(401).json({ message: "Unauthorized user" });
   }
 
   try {
@@ -136,7 +136,7 @@ const getAllProjects = async (req, res) => {
     const projects = await Project.find({ owner: req.user.id });
     
     if(!projects || projects.length ===0){
-      return res.status(404).json({message:"No project found"})
+      return res.status(200).json({message:"No project found",projects:[]})
     }
  
     return res.status(200).json(projects);

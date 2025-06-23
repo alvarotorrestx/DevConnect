@@ -14,8 +14,7 @@ import { useSuccessToast } from "../../toast/useSuccessToast";
 
 function Project() {
   const [showAll, setShowAll] = useState(false);
-  const [projects, setProjects] = useState([
-    {
+  const [projects, setProjects] = useState([{
       title: "",
       duration: "",
       description: "",
@@ -25,9 +24,8 @@ function Project() {
         videos: [],
       },
       liveLink: "",
-      sourceCodeLink: "",
-    },
-  ]);
+      sourceCodeLink: ""
+    }])
 
   const { auth } = useAuth();
   const { profile } = useContext(ProfileContext);
@@ -66,7 +64,7 @@ function Project() {
 
   const fetchProjects = async () => {
     try {
-      const response = await axiosPrivate.get("/project/allProjects", {
+      const response = await axiosPrivate.get("/projects/allProjects", {
         headers: {
           Authorization: `Bearer ${auth?.accessToken}`,
         },
@@ -81,7 +79,7 @@ function Project() {
   const handleDelete = async (id) => {
     console.log("delete project", id);
     try {
-      const deleteProject = await axiosPrivate.delete(`/project/${id}`, {
+      const deleteProject = await axiosPrivate.delete(`/projects/${id}`, {
         headers: {
           Authorization: `Bearer ${auth?.accessToken}`,
         },
@@ -105,8 +103,6 @@ function Project() {
       );
       showSuccess("Project updated successfully");
     } else {
-      const id = Date.now();
-      setProjects((prev) => [...prev, { ...newProject, id }]);
       showSuccess("Project added successfully");
     }
     setIsModalOpen(false);
@@ -137,7 +133,8 @@ function Project() {
       </div>
 
       <div className="mt-3 flex flex-col space-y-4">
-        {(showAll ? projects : projects.slice(0, 2)).map((project) => (
+
+        {projects.length>0 ? (showAll ? projects : projects.slice(0, 2)).map((project) => (
           <ProjectCopo
             key={project.id}
             project={project}
@@ -146,7 +143,10 @@ function Project() {
             canDelete={canDelete}
             onDelete={handleDelete}
           />
-        ))}
+        )): <div className="text-center text-gray-600 mb-3 bg-[#20252e] p-10 rounded-lg">
+             <p className="text-lg font-bold">No projects were added yet</p>
+             <p className="text-sm mt-2">Create a project to see it listed here.</p>
+        </div>}
 
         {projects.length > 2 && (
           <button

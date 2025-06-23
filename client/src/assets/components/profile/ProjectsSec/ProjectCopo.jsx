@@ -4,9 +4,9 @@ import ThemeContext from "../../../context/ThemeContext";
 
 function ProjectCopo({ project, onEdit, canEdit ,onDelete }) {
   const { darkMode } = useContext(ThemeContext);
-  console.log(project);
 
   return (
+   
     <div className="relative mt-3 p-3 pl-5 bg-base-300 rounded-lg">
       {canEdit && (
         <div
@@ -60,7 +60,7 @@ function ProjectCopo({ project, onEdit, canEdit ,onDelete }) {
               <FaGithub size={30} color="black" />
             </a>
             <a
-              href={project.livelink}
+              href={project.liveLink}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-black hover:underline text-2xl"
@@ -81,6 +81,7 @@ function ProjectCopo({ project, onEdit, canEdit ,onDelete }) {
         </div>
       </div>
     </div>
+   
   );
 }
 
