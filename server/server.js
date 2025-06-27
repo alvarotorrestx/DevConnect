@@ -2,8 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const connectDB = require('./config/db');
 const cookieParser = require('cookie-parser');
-const cors = require('cors')
-const corsOptions = require('./config/corsOptions')
+const cors = require('cors');
+const corsOptions = require('./config/corsOptions');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -12,6 +12,12 @@ connectDB();
 
 // Cross Origin Resource Sharing
 app.use(cors(corsOptions))
+
+// Socket.io
+const http = require('http');
+const server = http.createServer(app);
+const socket = require('./socket');
+socket.init(server);
 
 // Routes
 const systemRoutes = require('./routes/systemRoutes')
@@ -49,6 +55,6 @@ app.use('/profile', profileRoutes);
 // Blog Post Routes
 app.use('/api/posts', blogPostRoutes)
 
-app.listen(port, () => {
+server.listen(port, () => {
     console.log(`Server running on port: ${port}`);
 });

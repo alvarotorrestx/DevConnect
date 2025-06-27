@@ -6,14 +6,17 @@ import App from './App.jsx'
 // Context imports
 import { ThemeProvider } from './assets/context/ThemeContext'
 import { AuthProvider } from './assets/context/AuthContext.jsx'
+import { SocketProvider } from './assets/context/SocketContext.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ThemeProvider>
       <AuthProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
+        <SocketProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </SocketProvider>
       </AuthProvider>
     </ThemeProvider>
   </React.StrictMode>,

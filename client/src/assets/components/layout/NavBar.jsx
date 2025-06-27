@@ -9,7 +9,7 @@ import { HiNewspaper } from "react-icons/hi2";
 import { IoMdPeople } from "react-icons/io";
 import { GiSuitcase } from "react-icons/gi";
 import { FaUserCircle } from "react-icons/fa";
-import { IoSettingsSharp } from "react-icons/io5";
+import { IoSettingsSharp, IoNotificationsOutline, IoNotificationsSharp } from "react-icons/io5";
 import { RiLogoutBoxLine } from "react-icons/ri";
 import { MdCheck } from 'react-icons/md';
 
@@ -17,6 +17,7 @@ import { MdCheck } from 'react-icons/md';
 import ThemeContext from "../../context/ThemeContext";
 import { axiosPrivate } from "../../../api/axios";
 import useAuth from "../../../auth/useAuth";
+import { useSocket } from "../../context/SocketContext";
 
 const NavBar = ({ avatar, username, notifications }) => {
 
@@ -64,8 +65,6 @@ const NavBar = ({ avatar, username, notifications }) => {
                 }
             });
 
-            console.log(response);
-
             // Update auth state to reflect change
             setAuth(prev => ({
                 ...prev,
@@ -80,6 +79,38 @@ const NavBar = ({ avatar, username, notifications }) => {
             console.error("Failed to mark notification as read.", err);
         }
     }
+
+    // Socket updates for incoming notifications
+    const socket = useSocket();
+
+    useEffect(() => {
+        const handleNewNotification = (noti) => {
+            setAuth(prev => ({
+                ...prev,
+                notifications: [noti, ...prev.notifications],
+            }));
+        };
+
+        const handleRemoveNotification = (noti) => {
+            setAuth(prev => ({
+                ...prev,
+                notifications: prev.notifications.filter(n => n._id !== noti._id),
+            }));
+        };
+
+        if (socket) {
+            socket.on('new-notification', handleNewNotification);
+            socket.on('remove-notification', handleRemoveNotification);
+        }
+
+        return () => {
+            if (socket) {
+                socket.off('new-notification', handleNewNotification);
+                socket.off('remove-notification', handleRemoveNotification);
+            }
+        };
+    }, [socket]);
+
 
     return (
         <div className="navbar bg-base-100 w-[95%] mx-auto rounded-lg shadow-md grid grid-cols-2 lg:grid-cols-4 auto-cols-max relative mb-5">
@@ -154,20 +185,14 @@ const NavBar = ({ avatar, username, notifications }) => {
                     ref={buttonRef}
                 >
                     <div className="indicator">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                        </svg>
-                        {notifications?.some(notification => !notification.read) &&
-                            <span className="badge badge-xs badge-primary indicator-item"></span>
+                        {notifications?.some(notification => !notification.read)
+                            ?
+                            <>
+                                <IoNotificationsSharp className="text-xl" />
+                                <span className="badge badge-xs badge-primary indicator-item"></span>
+                            </>
+                            :
+                            <IoNotificationsOutline className="text-xl" />
                         }
                     </div>
                 </button>
@@ -181,10 +206,11 @@ const NavBar = ({ avatar, username, notifications }) => {
                                 animate={{ opacity: 1, scale: 1 }}
                                 exit={{ opacity: 0, scale: 0.95 }}
                                 transition={{ duration: 0.2 }}
-                                className='absolute top-0 right-0 bg-base-200 rounded-box shadow z-50 w-fit min-w-[275px] md:min-w-[450px] text-xs md:text-sm/5'
+                                className='absolute top-0 right-0 bg-base-200 rounded-box shadow z-50 w-fit min-w-[275px] md:min-w-[450px] text-xs md:text-sm/5 menu'
                                 ref={dropdownRef}
                             >
-                                <ul>
+                                <h1 className="text-lg font-bold p-2 flex flex-row items-center justify-start gap-2"><IoNotificationsSharp className="text-xl" />Notifications</h1>
+                                <ul className="bg-base-300 rounded-box">
                                     {notifications && notifications.length > 0
                                         ?
                                         notifications.map((notification, i) => {
@@ -207,7 +233,7 @@ const NavBar = ({ avatar, username, notifications }) => {
                                                                 handleMarkAsRead(notification._id);
                                                             }
                                                         }}
-                                                        className={`group flex items-center justify-between text-md p-4
+                                                        className={`flex items-center justify-between text-md p-[unset] px-2 py-4
                                                 ${!notification.read && 'nav-li-hover'}`}
                                                     >
                                                         <div className="flex justify-between gap-2 items-center">
