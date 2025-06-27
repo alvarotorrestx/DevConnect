@@ -84,15 +84,33 @@ const NavBar = ({ avatar, username, notifications }) => {
     const socket = useSocket();
 
     useEffect(() => {
-        socket.on('new-notification', notif => {
+        const handleNewNotification = (noti) => {
             setAuth(prev => ({
                 ...prev,
-                notifications: [notif, ...prev.notifications]
+                notifications: [noti, ...prev.notifications],
             }));
-        });
+        };
 
-        return () => socket.off('new-notification');
+        const handleRemoveNotification = (noti) => {
+            setAuth(prev => ({
+                ...prev,
+                notifications: prev.notifications.filter(n => n._id !== noti._id),
+            }));
+        };
+
+        if (socket) {
+            socket.on('new-notification', handleNewNotification);
+            socket.on('remove-notification', handleRemoveNotification);
+        }
+
+        return () => {
+            if (socket) {
+                socket.off('new-notification', handleNewNotification);
+                socket.off('remove-notification', handleRemoveNotification);
+            }
+        };
     }, [socket]);
+
 
     return (
         <div className="navbar bg-base-100 w-[95%] mx-auto rounded-lg shadow-md grid grid-cols-2 lg:grid-cols-4 auto-cols-max relative mb-5">

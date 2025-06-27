@@ -81,6 +81,13 @@ const removeNotification = async (req, res) => {
             $pull: { notifications: deletedNotification._id }
         });
 
+         // Socket remove notification
+        io.to(to.toString()).emit('remove-notification', {
+            _id: deletedNotification._id,
+            type,
+            from,
+        });
+
         res.status(200).json({ message: 'Notification successfully removed.' });
     } catch (err) {
         console.error(err);
