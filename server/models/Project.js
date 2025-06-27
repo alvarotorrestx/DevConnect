@@ -4,10 +4,10 @@ const mongoose = require('mongoose');
 const projectSchema = new mongoose.Schema({
     title: { type: String, required: true },
     description: { type: String, required: true },
-    media: {
-        images: [String],
-        videos: [String]
-    },
+    media: { 
+        images:{type: [String], default: []},
+        videos:{type: [String], default: []}
+     },
 
     tags: { type: [String], default: [] },
     userTags: { type: [String], default: [] },
@@ -16,8 +16,8 @@ const projectSchema = new mongoose.Schema({
     liveLink: { type: String, default: '' },
     sourceCodeLink: { type: String, default: '' },
 
-    startDate: { type: Date },
-    endDate: { type: Date },
+    
+    duration:{type:String,default:Date.now()},
 
     // For Project URL
     slug: { type: String, unique: true },

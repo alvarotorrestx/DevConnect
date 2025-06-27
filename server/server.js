@@ -28,6 +28,7 @@ const refreshRoutes = require('./routes/refreshRoutes');
 const logoutRoutes = require('./routes/logoutRoutes');
 const profileRoutes = require('./routes/profileRoutes');
 const blogPostRoutes = require('./routes/blogPostRoutes');
+const projectRoutes=require('./routes/projectRoutes')
 
 // Middleware
 app.use(express.json());
@@ -54,6 +55,8 @@ app.use('/profile', profileRoutes);
 
 // Blog Post Routes
 app.use('/api/posts', blogPostRoutes)
+
+app.use('/projects',projectRoutes)
 
 server.listen(port, () => {
     console.log(`Server running on port: ${port}`);
