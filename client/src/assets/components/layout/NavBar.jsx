@@ -17,6 +17,7 @@ import { MdCheck } from 'react-icons/md';
 import ThemeContext from "../../context/ThemeContext";
 import { axiosPrivate } from "../../../api/axios";
 import useAuth from "../../../auth/useAuth";
+import { useSocket } from "../../context/SocketContext";
 
 const NavBar = ({ avatar, username, notifications }) => {
 
@@ -78,6 +79,20 @@ const NavBar = ({ avatar, username, notifications }) => {
             console.error("Failed to mark notification as read.", err);
         }
     }
+
+    // Socket updates for incoming notifications
+    const socket = useSocket();
+
+    useEffect(() => {
+        socket.on('new-notification', notif => {
+            setAuth(prev => ({
+                ...prev,
+                notifications: [notif, ...prev.notifications]
+            }));
+        });
+
+        return () => socket.off('new-notification');
+    }, [socket]);
 
     return (
         <div className="navbar bg-base-100 w-[95%] mx-auto rounded-lg shadow-md grid grid-cols-2 lg:grid-cols-4 auto-cols-max relative mb-5">

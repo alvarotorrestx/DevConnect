@@ -16,18 +16,8 @@ app.use(cors(corsOptions))
 // Socket.io
 const http = require('http');
 const server = http.createServer(app);
-const { Server } = require("socket.io");
-const io = new Server(server, {
-    cors: corsOptions,
-});
-
-io.on('connection', (socket) => {
-    console.log('user connected');
-
-    socket.on('disconnect', () => {
-        console.log('user disconnected');
-    });
-});
+const socket = require('./socket');
+socket.init(server);
 
 // Routes
 const systemRoutes = require('./routes/systemRoutes')
