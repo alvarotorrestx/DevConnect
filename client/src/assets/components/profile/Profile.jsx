@@ -12,6 +12,7 @@ import Experiance from './Experience/Experience'
 import Blog from './Blog/Blog';
 import { axiosPrivate } from '../../../api/axios';
 import { motion, AnimatePresence } from 'framer-motion'
+import { notificationTemplate } from '../../utils/notificationTemplate';
 
 const Profile = () => {
 
@@ -65,13 +66,7 @@ const Profile = () => {
         }));
 
         // Payload for creating notification
-        const payload = {
-          type: 'follow',
-          from: auth?.id,
-          to: profile.id,
-          message: `${auth?.firstName} ${auth?.lastName} has followed you.`,
-          data: '' || null,
-        }
+        const payload = notificationTemplate.follow(auth, profile.id);
 
         // Send notification
         try {

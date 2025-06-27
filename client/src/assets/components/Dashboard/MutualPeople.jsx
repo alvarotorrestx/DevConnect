@@ -5,6 +5,7 @@ import { IoPersonAddSharp } from "react-icons/io5";
 import { FaUserCheck } from "react-icons/fa6";
 import Loading from '../subcomponents/Loading';
 import { axiosPrivate } from '../../../api/axios';
+import { notificationTemplate } from '../../utils/notificationTemplate';
 
 function Activity({ refreshPosts, auth, setAuth }) {
 
@@ -85,13 +86,7 @@ function Activity({ refreshPosts, auth, setAuth }) {
                       }));
 
                       // Payload for creating notification
-                      const payload = {
-                        type: 'follow',
-                        from: auth?.id,
-                        to: user._id,
-                        message: `${auth?.firstName} ${auth?.lastName} has followed you.`,
-                        data: '' || null,
-                      }
+                      const payload = notificationTemplate.follow(auth, user._id);
 
                       // Send notification
                       try {

@@ -1,3 +1,5 @@
+const { getIO } = require('../socket');
+const io = getIO();
 const User = require('../models/User');
 const Notification = require('../models/Notification');
 
@@ -20,6 +22,7 @@ const createNotification = async (req, res) => {
 
         if (!targetUser) return res.status(404).json({ message: 'User not found.' });
 
+        // Create the notification
         const newNotification = await Notification.create({
             type,
             from,
@@ -28,12 +31,19 @@ const createNotification = async (req, res) => {
             data,
         });
 
+        // Save the notification to the db user's notification array
         targetUser.notifications.unshift(newNotification._id);
         await targetUser.save();
 
+        // Populate user: "from” (so the client gets username/avatar right away)
+        const populatedNotif = await newNotification.populate('from', 'username avatar');
+
+        // Socket emit to user on new notification
+        io.to(to.toString()).emit('new-notification', populatedNotif);
+
         res.status(201).json({
             message: `Notification sent to ${targetUser.username}`,
-            notification: newNotification,
+            notification: populatedNotif,
         });
     } catch (err) {
         console.error(err);
@@ -69,6 +79,13 @@ const removeNotification = async (req, res) => {
 
         const userDeletedNotification = await User.findByIdAndUpdate(to, {
             $pull: { notifications: deletedNotification._id }
+        });
+
+         // Socket remove notification
+        io.to(to.toString()).emit('remove-notification', {
+            _id: deletedNotification._id,
+            type,
+            from,
         });
 
         res.status(200).json({ message: 'Notification successfully removed.' });
