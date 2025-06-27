@@ -1,8 +1,10 @@
-import React from 'react'
+import { useState } from 'react'
 import useAuth from '../../../auth/useAuth'
 import { Link } from 'react-router-dom';
+import FollowModal from './FollowModal';
 
 const UserInfo = () => {
+    const [open, setOpen] = useState(false);
 
     const { auth } = useAuth();
 
@@ -28,7 +30,7 @@ const UserInfo = () => {
             </div>
 
             <div className="flex lg:flex-row justify-around gap-5 align-center w-auto md:flex-wrap">
-                <div className="flex flex-col text-center">
+                <div className="flex flex-col text-center" onClick={() => setOpen(true)}>
                     <div className="font-extrabold">{auth?.followers?.length ?? 0}</div>
                     <div className="">Followers</div>
                 </div>
@@ -41,7 +43,10 @@ const UserInfo = () => {
                     <div>Posts</div>
                 </div>
             </div>
-        </div >
+
+            {/* Modal */}
+            <FollowModal open={open} onClose={() => setOpen(false)} />
+        </div>
     )
 }
 
