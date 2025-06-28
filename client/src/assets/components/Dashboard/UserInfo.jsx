@@ -30,7 +30,7 @@ const UserInfo = () => {
             </div>
 
             <div className="flex lg:flex-row justify-around gap-5 align-center w-auto md:flex-wrap">
-                <div className="flex flex-col text-center" onClick={() => setOpen(true)}>
+                <div className="flex flex-col text-center cursor-pointer" onClick={() => setOpen(true)}>
                     <div className="font-extrabold">{auth?.followers?.length ?? 0}</div>
                     <div className="">Followers</div>
                 </div>
