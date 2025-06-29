@@ -5,6 +5,7 @@ import FollowModal from './FollowModal';
 
 const UserInfo = () => {
     const [open, setOpen] = useState(false);
+    const [modalType, setModalType] = useState();
 
     const { auth } = useAuth();
 
@@ -30,11 +31,17 @@ const UserInfo = () => {
             </div>
 
             <div className="flex lg:flex-row justify-around gap-5 align-center w-auto md:flex-wrap">
-                <div className="flex flex-col text-center cursor-pointer" onClick={() => setOpen(true)}>
+                <div className="flex flex-col text-center cursor-pointer" onClick={() => {
+                    setOpen(true);
+                    setModalType('followers')
+                }}>
                     <div className="font-extrabold">{auth?.followers?.length ?? 0}</div>
                     <div className="">Followers</div>
                 </div>
-                <div className="flex flex-col text-center">
+                <div className="flex flex-col text-center cursor-pointer" onClick={() => {
+                    setOpen(true);
+                    setModalType('following')
+                }}>
                     <div className="font-extrabold">{auth?.following?.length ?? 0}</div>
                     <div>Following</div>
                 </div>
@@ -45,7 +52,7 @@ const UserInfo = () => {
             </div>
 
             {/* Modal */}
-            <FollowModal open={open} onClose={() => setOpen(false)} />
+            <FollowModal open={open} onClose={() => setOpen(false)} modalType={modalType} />
         </div>
     )
 }
