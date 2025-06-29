@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { verifyJWT } = require('../middleware/verifyJWT');
 const { verifyRoles } = require('../middleware/verifyRoles');
-const { getAllPosts, getPostById, createPost, updatePost, deletePost } = require('../controllers/blogPostController')
+const { getAllPosts, getPostById, createPost, updatePost, deletePost } = require('../controllers/postsController')
 
 router.route('/')
     .get(verifyJWT, verifyRoles('user', 'moderator', 'admin', 'owner'), getAllPosts)
