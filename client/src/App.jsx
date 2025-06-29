@@ -13,7 +13,6 @@ import Login from './assets/components/subcomponents/Login';
 import Dashboard from './assets/components/Dashboard/Dashboard';
 import Posts from './assets/components/posts/Posts';
 import Network from './assets/components/network/Network';
-import TesterComponent from './assets/components/TesterComponent';
 import Profile from './assets/components/profile/Profile';
 import EditProfile from './assets/components/profile/EditProfile'
 import NotFound from './assets/components/subcomponents/NotFound';
