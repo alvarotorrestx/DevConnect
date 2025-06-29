@@ -61,10 +61,12 @@ const FollowModal = ({ open, onClose, modalType }) => {
 
     }, [open, followersFetched, followingFetched, auth?.accessToken]);
 
+    // Closes the dialog box on outside box click
     const handleBackdropClick = (e) => {
         if (e.target.tagName === 'DIALOG') onClose();
     };
 
+    // Closes dialog box on esc button push
     useEffect(() => {
         const handleEsc = (e) => {
             if (e.key === "Escape" && open) {
