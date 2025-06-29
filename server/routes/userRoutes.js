@@ -3,7 +3,7 @@ const router = express.Router();
 const { verifyJWT } = require('../middleware/verifyJWT');
 const { verifyRoles } = require('../middleware/verifyRoles');
 const { getAllUsers, getUserByUsername, createUser, getUserByEmail, updateUser, deleteUser } = require('../controllers/userController');
-const { toggleFollowUser } = require('../controllers/userNetworkController');
+const { toggleFollowUser, getAllFollowers, getAllFollowing } = require('../controllers/userNetworkController');
 
 // userController routes
 router.route('/')
@@ -23,6 +23,10 @@ router.route('/email/:email')
 // userNetworkController routes
 router.route('/follow/:id')
     .post(verifyJWT, verifyRoles('user', 'moderator', 'admin', 'owner'), toggleFollowUser)
+router.route('/followers')
+    .get(verifyJWT, verifyRoles('user', 'moderator', 'admin', 'owner'), getAllFollowers)
+router.route('/following')
+    .get(verifyJWT, verifyRoles('user', 'moderator', 'admin', 'owner'), getAllFollowing)
 
 
 module.exports = router;
