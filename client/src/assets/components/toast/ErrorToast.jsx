@@ -13,15 +13,15 @@ const ErrorToast = ({ message, show, icon, iconBgColor, status, onClose }) => {
             transition={{ duration: 0.4 }}
             className="w-[55%] "
           >
-            <Alert className="alert alert-error shadow-lg relative pr-2 rounded-[8px]">
+            <Alert className="alert alert-error bg-[#ffa1af] shadow-lg relative pr-2 rounded-lg">
 
               {icon && (
-                <div className="rounded-full bg-white">
+                <div>
                   {icon}
                 </div>
 
               )}
-              <span className="font-medium text-[19px]">
+              <span className="font-medium text-base">
                 {message}
               </span>
             </Alert>

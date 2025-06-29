@@ -31,8 +31,9 @@ module.exports = {
         nord: {
           ...require("daisyui/src/theming/themes")["nord"],
           info: "#28ebff",
-          success: "#62efbd",
+          success: "#3f5069",
           error: "#ff637d",
+          "--tertiary": "#3f5069",
         },
       },
       {
@@ -46,6 +47,7 @@ module.exports = {
           neutral: "#4c566a",
           "--rounded-btn": "0.25rem",
           error: "#ff637d",
+          "--tertiary": "#3f5069",
         },
       },
     ]

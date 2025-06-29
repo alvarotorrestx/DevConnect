@@ -13,13 +13,13 @@ const SuccessToast = ({ message, show, icon }) => {
             transition={{ duration: 0.4 }}
             className="w-[55%]"
           >
-            <Alert className="alert alert-success shadow-lg relative pr-2 rounded-[8px]">
+            <Alert className="alert alert-success bg-accent shadow-lg relative pr-2 rounded-lg">
               {icon && (
-                <div className="rounded-full bg-white">
+                <div>
                   {icon}
                 </div>
               )}
-              <span className="font-medium text-[19px]">{message}</span>
+              <span className="font-medium text-base">{message}</span>
             </Alert>
           </motion.div>
         </div>
