@@ -208,14 +208,13 @@ const Login = () => {
         message={successMessage}
         show={showSuccessToast}
         status="success"
-        icon={<FaCheckCircle className="text-green-600 text-4xl" />}
-        iconBgColor="bg-green-700"
+        icon={<FaCheckCircle className="text-[--tertiary] text-2xl" />}
       />
       <ErrorToast
         message={errorMessage}
         show={showErrorToast}
         status="error"
-        icon={<FaTimesCircle className="text-red-600 text-4xl" />}
+        icon={<FaTimesCircle className="text-red-600 text-2xl" />}
         iconBgColor="bg-red-700"
       />
     </div>

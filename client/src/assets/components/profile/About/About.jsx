@@ -112,12 +112,12 @@ const About = () => {
       <SuccessToast
         message={successMessage}
         show={showSuccessToast}
-        icon={<FaCheckCircle className="text-green-600 text-4xl" />}
+        icon={<FaCheckCircle className="text-[--tertiary] text-2xl" />}
       />
       <ErrorToast
         message={errorMessage}
         show={showErrorToast}
-        icon={<FaTimesCircle className="text-red-600 text-4xl" />}
+        icon={<FaTimesCircle className="text-red-600 text-2xl" />}
         iconBgColor="bg-red-700"
       />
     </div>

@@ -225,15 +225,14 @@ const Posts = ({ auth, POST_URL, setAuth, loading, currentPage, setCurrentPage, 
                 show={showSuccessToast}
                 status="success"
                 icon={
-                    <FaCheckCircle className="text-green-600 text-4xl bg-transparent p-0 m-0" />
+                    <FaCheckCircle className="text-[--tertiary] text-2xl" />
                 }
-                iconBgColor="bg-blue-200"
             />
             <ErrorToast
                 message={errorMessage}
                 show={showErrorToast}
                 status="error"
-                icon={<FaTimesCircle className="text-red-600 text-4xl" />}
+                icon={<FaTimesCircle className="text-red-600 text-2xl" />}
                 iconBgColor="bg-red-700"
             />
         </div >
