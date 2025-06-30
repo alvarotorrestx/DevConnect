@@ -28,6 +28,7 @@ const refreshRoutes = require('./routes/refreshRoutes');
 const logoutRoutes = require('./routes/logoutRoutes');
 const profileRoutes = require('./routes/profileRoutes');
 const postsRoutes = require('./routes/postsRoutes');
+const jobsRoutes = require('./routes/jobsRoutes');
 
 // Middleware
 app.use(express.json());
@@ -54,6 +55,9 @@ app.use('/profile', profileRoutes);
 
 // Post Routes
 app.use('/api/posts', postsRoutes)
+
+// Job Routes
+app.use('/jobs', jobsRoutes);
 
 server.listen(port, () => {
     console.log(`Server running on port: ${port}`);

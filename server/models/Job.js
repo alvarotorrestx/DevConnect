@@ -31,14 +31,6 @@ const jobSchema = new mongoose.Schema({
     // URL to job listing
     slug: { type: String, unique: true, sparse: true },
 
-    // Reference to User's Applications
-    applications: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User',
-        }
-    ],
-
     // Reference to User - Recruiter
     owner: {
         type: mongoose.Schema.Types.ObjectId,
