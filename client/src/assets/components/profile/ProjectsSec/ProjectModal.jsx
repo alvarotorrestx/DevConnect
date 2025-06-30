@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { axiosPrivate } from "../../../../api/axios";
 import useAuth from "../../../../auth/useAuth";
-import { FaTimesCircle,FaCheckCircle } from "react-icons/fa";
+import { FaTimesCircle, FaCheckCircle } from "react-icons/fa";
 
 // Toast imports
 import ErrorToast from "../../toast/ErrorToast";
@@ -75,9 +75,8 @@ function ProjectModal({ onClose, onSave, initialData }) {
     if (name === "techStack") {
       setForm({
         ...form,
-        techStack: value
-          .split(",")
-          
+        techStack: value.split(",")
+        .map((t) => t.trim())
       });
     } else {
       setForm({ ...form, [name]: value });
@@ -99,19 +98,19 @@ function ProjectModal({ onClose, onSave, initialData }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const v1 = TITLE_REGEX.test(form.title);
+    const v2 = DURATION_REGEX.test(form.duration);
+    const v3 = DESCRIPTION_REGEX.test(form.description);
+    const v4 = URL_REGEX.test(form.sourceCodeLink) || form.sourceCodeLink === "";
+    const v5 = URL_REGEX.test(form.liveLink) || form.liveLink === "";
+    const v6 = form.techStack.every((t) => TECH_STACK_ITEM_REGEX.test(t));
+
+    if (!v1 || !v2 || !v3 || !v4 || !v5 || !v6) {
+      showError("Invalid Entry");
+      return;
+    }
     if (type === "Add") {
-      const v1 = TITLE_REGEX.test(form.title);
-      const v2 = DURATION_REGEX.test(form.duration);
-      const v3 = DESCRIPTION_REGEX.test(form.description);
-      const v4 = URL_REGEX.test(form.sourceCodeLink);
-      const v5 = URL_REGEX.test(form.liveLink);
-      const v6 = form.techStack.every((t) => TECH_STACK_ITEM_REGEX.test(t));
-
-      if (!v1 || !v2 || !v3 || !v4 || !v5 || !v6) {
-        showError("Invalid Entry");
-        return;
-      }
-
       try {
         const response = await axiosPrivate.post("/projects/create", form, {
           headers: {
@@ -210,7 +209,7 @@ function ProjectModal({ onClose, onSave, initialData }) {
             type="text"
             name="techStack"
             placeholder="Skills (e.g., React, Node)"
-            value={form.techStack.join(",")}
+            value={form.techStack.join(", ")}
             onChange={handleChange}
             className="input input-bordered w-full bg-base-100 text-base-content"
           />

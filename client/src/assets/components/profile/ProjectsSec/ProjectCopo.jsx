@@ -43,7 +43,10 @@ function ProjectCopo({ project, onEdit, canEdit ,onDelete }) {
 
             <h3 className="font-semibold">
               Tech Stack:{" "}
-              <span className="font-normal">{project.techStack}</span>
+              {project?.techStack?.map((item,index)=>(
+                      <span className="font-normal" key={index}>{index > 0 && ", "}{item}</span>
+              ))}
+             
             </h3>
             <h3 className="font-semibold">
               Description:{" "}

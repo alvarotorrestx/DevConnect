@@ -5,6 +5,7 @@ import useAuth from "../../../../auth/useAuth";
 import ProfileContext from "../../../context/ProfileContext";
 import { useState, useContext, useEffect } from "react";
 import { axiosPrivate } from "../../../../api/axios";
+import ThemeContext from "../../../context/ThemeContext";
 
 // Toast imports
 import ErrorToast from "../../toast/ErrorToast";
@@ -13,6 +14,7 @@ import SuccessToast from "../../toast/SuccessToast";
 import { useSuccessToast } from "../../toast/useSuccessToast";
 
 function Project() {
+  const { darkMode } = useContext(ThemeContext);
   const [showAll, setShowAll] = useState(false);
   const [projects, setProjects] = useState([])
 
@@ -127,7 +129,11 @@ function Project() {
             canDelete={canDelete}
             onDelete={handleDelete}
           />
-        )): <div className="text-center text-gray-600 mb-3 bg-[#20252e] p-10 rounded-lg">
+        )): <div className={`text-center ${
+            darkMode
+              ? "bg-[#20252e] text-gray-600"
+              : "bg-[#d8dee9] opacity-70"
+          } p-10 rounded-lg`}>
              <p className="text-lg font-bold">No projects were added yet</p>
              <p className="text-sm mt-2">Create a project to see it listed here.</p>
         </div>}
