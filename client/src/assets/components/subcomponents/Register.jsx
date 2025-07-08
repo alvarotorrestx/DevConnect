@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import axios from "../../../api/axios";
 import { IoMdEyeOff, IoMdEye } from "react-icons/io";
 import { FaTimesCircle } from "react-icons/fa";
@@ -10,6 +10,8 @@ import ErrorToast from "../toast/ErrorToast";
 import { useErrorToast } from "../toast/useErrorToast";
 import SuccessToast from "../toast/SuccessToast";
 import { useSuccessToast } from "../toast/useSuccessToast";
+// import CountdownTimer
+import CountdownTimer from "./CountdownTimer";
 
 // REGEX for validation
 const NAME_REGEX = /^[a-zA-Z][a-zA-Z- ]{1,50}$/;
@@ -75,6 +77,9 @@ const Register = () => {
   const [emailAvailable, setEmailAvailable] = useState(null);
 
   const [buttonStatus, setButtonStatus] = useState("Sign Up");
+
+  // For countdowntimer
+  const isCountdownTimer = success;
 
   useEffect(() => {
     firstNameRef.current.focus();
@@ -197,7 +202,7 @@ const Register = () => {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
-
+      
       showSuccess("Registration Successful! You can now log in.");
       setSuccess(true);
       // Optionally: navigate to login page
@@ -255,12 +260,9 @@ const Register = () => {
                   <p className="text-md mt-1">
                     You’re all set to start connecting with developers.
                   </p>
-                  <p className="text-md mt-1">
-                    <Link to="/login" className="link link-primary">
-                      Click here to log in
-                    </Link>{" "}
-                    and get started!
-                  </p>
+                  <div className="countdown-timer">
+                    {isCountdownTimer && <CountdownTimer className="text-green-600 text-4xl" />}
+                  </div>
                 </div>
               </div>
             </div>
@@ -916,6 +918,9 @@ const Register = () => {
             </form>
           )}
         </div>
+        <div className="countdown-timer">
+          {isCountdownTimer && <CountdownTimer className="text-green-600 text-4xl" />}
+        </div>
       </div>
       <SuccessToast
         message={successMessage}
@@ -932,6 +937,6 @@ const Register = () => {
       />
     </div>
   );
-};
+}
 
 export default Register;
