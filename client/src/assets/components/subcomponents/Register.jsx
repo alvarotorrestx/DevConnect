@@ -201,12 +201,9 @@ const Register = () => {
                   <p className="text-md mt-1">
                     You’re all set to start connecting with developers.
                   </p>
-                  <p className="text-md mt-1">
-                    <Link to="/login" className="link link-primary">
-                      Click here to log in
-                    </Link>{" "}
-                    and get started!
-                  </p>
+                  <div className="countdown-timer">
+                    {isCountdownTimer && <CountdownTimer className="text-green-600 text-4xl" />}
+                  </div>
                 </div>
               </div>
             </div>

@@ -45,7 +45,6 @@ const Login = () => {
   const {
     message: successMessage,
     show: showSuccessToast,
-    //showSuccess,
   } = useSuccessToast();
 
   const handleChange = (e) => {
