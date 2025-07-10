@@ -23,24 +23,25 @@ const dummyjob_desc = {
 }
 const JobDescriptions = ({job}) => {
     //detecting mobile or desktop to display the back button
-    const [isMobile, setIsMobile] = React.useState(window.innerWidth < 768);
+   // const [isMobile, setIsMobile] = React.useState(window.innerWidth < 768);
     const [back,setBack] = useState(false)
-    React.useEffect(() => {
-        const handleResize = () => setIsMobile(window.innerWidth<768)
-        window.addEventListener("resize",handleResize);
-        handleResize();
-         if(isMobile) setBack(false)
-        return ()=>window.addEventListener("resize",handleResize)
+    // React.useEffect(() => {
+    //     const handleResize = () => setIsMobile(window.innerWidth<768)
+    //     window.addEventListener("resize",handleResize);
+    //     handleResize();
+    //      if(isMobile) setBack(false)
+    //     return ()=>window.addEventListener("resize",handleResize)
        
-    })
+    // })
     const BackButton=()=>{
-       return <button className="p-2 w-40 bg-primary text-white rounded-full">BACK</button>
+       return <button className="p-2 w-40 bg-primary text-white rounded-full md:hidden ">BACK</button>
     }
-    if(!job) return <div className="w-full h-full flex items-center justify-center">Please select a job...</div>; // Fallback for no job data
+    if(!job) return <div className="w-full h-full flex items-center justify-center">Please select a job...</div>; 
     return (
         <div className="grid p-5 gap-y-6"> {/* Increased gap-y to 6 for better spacing */}
-            {isMobile && back ? <BackButton/> : null} {/* Show Back button only on mobile and if back is true */}
+            {/* {isMobile && back ? <BackButton/> : null} Show Back button only on mobile and if back is true */}
             {/* Company icon and name */}
+            {/* <BackButton/> */}
             <div className="top-details flex flex-row gap-2 items-center">
                 <img src={dummyjob_desc.icon} className="h-[40px] w-[40px]" />
                 <p className="m-0 font-bold">{dummyjob_desc.companyName}</p>
